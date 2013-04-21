@@ -65,11 +65,34 @@ namespace PaganSoft.Aria2
         public string Version;
     }
 
+    public struct CheckSum
+    {
+        string Type;
+        string Checksum;
+    }
+
     public struct Options
     {
+        /// <summary>
+        /// Use this proxy server for all protocols. 
+        /// To erase previously defined proxy, use "". 
+        /// You can override this setting and specify a proxy server for a 
+        /// particular protocol using Http.Proxy, Https.Proxy and Ftp.Proxy options. 
+        /// This affects all URIs. The format of Proxy is 
+        /// [http://][USER:PASSWORD@]HOST[:PORT]. See also ENVIRONMENT section.
+        /// </summary>
         public string AllProxy;
-        public string ProxyPasswd;
+
+        /// <summary>
+        /// Set password for AllProxy option
+        /// </summary>
+        public string AllProxyPasswd;
+
+        /// <summary>
+        /// Set user for AllProxy option.
+        /// </summary>
         public string AllProxyUser;
+
         public bool AllowOverwrite;
         public bool AllowPieceLengthChange;
         public bool AlwaysResume;
@@ -91,11 +114,24 @@ namespace PaganSoft.Aria2
         /// </summary>
         public bool CheckIntegrity;
 
-        public string Checksum;
+        /// <summary>
+        /// Set checksum. TYPE is hash type. The supported hash type is 
+        /// listed in Hash Algorithms in aria2c -v. DIGEST is hex digest. 
+        /// For example, setting sha-1 digest looks like this: 
+        /// sha-1=0192ba11326fe2298c8cb4de616f4d4140213838 
+        /// This option applies only to HTTP(S)/FTP downloads.
+        /// </summary>
+        public CheckSum Checksum;
 
         public string ConditionalGet;
 
-        public string ConnectTimeout;
+        /// <summary>
+        /// Set the connect timeout in seconds to establish connection 
+        /// to HTTP/FTP/proxy server. After the connection is established, 
+        /// this option makes no effect and Timeout option is used instead. 
+        /// Default: 60
+        /// </summary>
+        public int ConnectTimeout;
 
         /// <summary>
         /// Continue downloading a partially downloaded file. 
@@ -105,9 +141,19 @@ namespace PaganSoft.Aria2
         /// </summary>
         public bool Continue;
 
-        /// <summary>The directory to store the downloaded file</summary>
+        /// <summary>
+        /// The directory to store the downloaded file
+        /// </summary>
         public string Dir;
-        public string DryRun;
+
+        /// <summary>
+        /// If true is given, aria2 just checks whether the 
+        /// remote file is available and doesn't download data. 
+        /// This option has effect on HTTP/FTP download. 
+        /// BitTorrent downloads are canceled if true is specified. 
+        /// Default: false
+        /// </summary>
+        public bool DryRun;
         public bool EnableAsyncDns6;
         public bool EnableHttpKeepAlive;
         public bool EnableHttpPipelining;
@@ -117,11 +163,11 @@ namespace PaganSoft.Aria2
         public bool FollowMetalink;
         public bool FollowTorrent;
         public bool ForceSave;
-        public FtpOptions FTP;
+        public FtpOptions Ftp;
         public string HashCheckOnly;
         public string Header;
-        public HttpOptions HTTP;
-        public HttpsOptions HTTPS;
+        public HttpOptions Http;
+        public HttpsOptions Https;
         public string IndexOut;
         public string LowestSpeedLimit;
         public string MaxConnectionPerServer;

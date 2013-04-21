@@ -1,3 +1,5 @@
+using PaganSoft.Aria2.Options.Enums;
+
 namespace PaganSoft.Aria2.Options
 {
 
@@ -51,7 +53,7 @@ namespace PaganSoft.Aria2.Options
         /// Set FTP transfer type. TYPE is either binary or ascii. 
         /// Default: binary
         /// </summary>
-        public FtpTransferType TransferType;
+        public FtpTransferTypeOption TransferType;
 
         /// <summary>
         /// Set FTP user. This affects all URIs. 

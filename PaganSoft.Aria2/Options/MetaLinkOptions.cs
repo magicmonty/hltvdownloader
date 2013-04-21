@@ -1,3 +1,5 @@
+using PaganSoft.Aria2.Options.Enums;
+
 namespace PaganSoft.Aria2.Options
 {
     public struct MetaLinkOptions
@@ -41,7 +43,7 @@ namespace PaganSoft.Aria2.Options
         /// Specify none to disable this feature. 
         /// Default: None
         /// </summary>
-        public Protocol PreferredProtocol;
+        public ProtocolOption PreferredProtocol;
 
         /// <summary>
         /// The version of the file to download.

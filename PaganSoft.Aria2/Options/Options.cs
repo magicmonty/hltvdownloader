@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PaganSoft.Aria2.Options.Enums;
 
 namespace PaganSoft.Aria2.Options
 {
@@ -94,7 +95,7 @@ namespace PaganSoft.Aria2.Options
         /// sha-1=0192ba11326fe2298c8cb4de616f4d4140213838 
         /// This option applies only to HTTP(S)/FTP downloads.
         /// </summary>
-        public CheckSum Checksum;
+        public CheckSumOption Checksum;
 
         /// <summary>
         /// Download file only when the local file is older than remote file. 
@@ -194,7 +195,7 @@ namespace PaganSoft.Aria2.Options
         /// Possible Values: none, prealloc, trunc, falloc 
         /// Default: prealloc
         /// </summary>
-        public FileAllocation FileAllocation;
+        public FileAllocationOption FileAllocation;
 
         /// <summary>
         /// If True or Mem is specified, when a file whose suffix is .meta4 or .metalink 
@@ -206,7 +207,7 @@ namespace PaganSoft.Aria2.Options
         /// If False is specified, the action mentioned above is not taken. 
         /// Default: True
         /// </summary>
-        public Follow FollowMetalink;
+        public FollowOption FollowMetalink;
 
         /// <summary>
         /// if True or Mem is specified, when a file whose suffix is .torrent or 
@@ -217,7 +218,7 @@ namespace PaganSoft.Aria2.Options
         /// If False is specified, the action mentioned above is not taken. 
         /// Default: True
         /// </summary>
-        public Follow FollowTorrent;
+        public FollowOption FollowTorrent;
 
         /// <summary>
         /// Save download with <see cref="SaveSession"/> option even if the download 
@@ -397,7 +398,7 @@ namespace PaganSoft.Aria2.Options
         /// HTTPS downloads always use tunnel regardless of this option. 
         /// Default: get
         /// </summary>
-        public ProxyMethod ProxyMethod;
+        public ProxyMethodOption ProxyMethod;
 
         /// <summary>
         /// Validate chunk of data by calculating checksum while 
@@ -535,7 +536,7 @@ namespace PaganSoft.Aria2.Options
         /// performance profile of servers. 
         /// Default: feedback
         /// </summary>
-        public URISelector UriSelector;
+        public URISelectorOption UriSelector;
 
         /// <summary>
         /// Use HEAD method for the first request to the HTTP server. 

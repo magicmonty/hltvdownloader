@@ -1,6 +1,6 @@
-namespace PaganSoft.Aria2.Options
+namespace PaganSoft.Aria2.Options.Enums
 {
-    public enum FileAllocation
+    public enum FileAllocationOption
     {
         None, 
         Prealloc, 

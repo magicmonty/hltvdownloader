@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PaganSoft.Aria2.Options.Enums;
 
 namespace PaganSoft.Aria2.Options
 {
@@ -64,7 +65,7 @@ namespace PaganSoft.Aria2.Options
         /// aria2 chooses the lowest one which satisfies the given level. 
         /// Default: plain
         /// </summary>
-        public BitTorrentCryptoLevel MinCryptoLevel;
+        public BitTorrentCryptoLevelOption MinCryptoLevel;
 
         /// <summary>
         /// Try to download first and last pieces of each file first. 

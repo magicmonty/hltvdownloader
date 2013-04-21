@@ -1,6 +1,6 @@
-namespace PaganSoft.Aria2.Options
+namespace PaganSoft.Aria2.Options.Enums
 {
-    public enum Protocol
+    public enum ProtocolOption
     {
         Http, 
         Https, 

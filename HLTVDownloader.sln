@@ -3,12 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLTVDownloader", "HLTVDownloader\HLTVDownloader.csproj", "{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaganSoft.Aria2", "PaganSoft.Aria2\PaganSoft.Aria2.csproj", "{981868A9-275A-4139-8DC7-13CEFCC13BAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{981868A9-275A-4139-8DC7-13CEFCC13BAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{981868A9-275A-4139-8DC7-13CEFCC13BAA}.Debug|x86.Build.0 = Debug|Any CPU
+		{981868A9-275A-4139-8DC7-13CEFCC13BAA}.Release|x86.ActiveCfg = Release|Any CPU
+		{981868A9-275A-4139-8DC7-13CEFCC13BAA}.Release|x86.Build.0 = Release|Any CPU
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Debug|x86.ActiveCfg = Debug|x86
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Debug|x86.Build.0 = Debug|x86
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Release|x86.ActiveCfg = Release|x86

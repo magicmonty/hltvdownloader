@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.HLTVDownloader.Aria.XmlRpc
+namespace PaganSoft.Aria2.XmlRpc
 {
     [XmlRpcUrl("http://localhost:6800/rpc")]
     public interface IAria2c : IXmlRpcProxy

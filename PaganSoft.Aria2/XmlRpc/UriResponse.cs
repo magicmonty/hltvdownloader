@@ -1,6 +1,6 @@
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.HLTVDownloader.Aria.XmlRpc
+namespace PaganSoft.Aria2.XmlRpc
 {
     public struct UriResponse
     {

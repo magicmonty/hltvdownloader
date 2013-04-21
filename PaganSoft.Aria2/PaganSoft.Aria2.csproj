@@ -50,7 +50,20 @@
     <Compile Include="XmlRpc\VersionResponse.cs" />
     <Compile Include="XmlRpc\IAria2c.cs" />
     <Compile Include="IAria2.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="Options\Options.cs" />
+    <Compile Include="Options\URISelector.cs" />
+    <Compile Include="Options\ProxyMethod.cs" />
+    <Compile Include="Options\Follow.cs" />
+    <Compile Include="Options\FileAllocation.cs" />
+    <Compile Include="Options\BitTorrentCryptoLevel.cs" />
+    <Compile Include="Options\BitTorrentOptions.cs" />
+    <Compile Include="Options\FtpOptions.cs" />
+    <Compile Include="Options\FtpTransferType.cs" />
+    <Compile Include="Options\HttpOptions.cs" />
+    <Compile Include="Options\HttpsOptions.cs" />
+    <Compile Include="Options\Protocol.cs" />
+    <Compile Include="Options\MetaLinkOptions.cs" />
+    <Compile Include="Options\CheckSum.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -62,5 +75,8 @@
     <Content Include="aria2c">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Options\" />
   </ItemGroup>
 </Project>

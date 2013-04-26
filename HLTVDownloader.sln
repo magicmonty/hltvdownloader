@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLTVDownloader", "HLTVDownl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaganSoft.Aria2", "PaganSoft.Aria2\PaganSoft.Aria2.csproj", "{981868A9-275A-4139-8DC7-13CEFCC13BAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaganSoft.Aria2.Test", "PaganSoft.Aria2.Test\PaganSoft.Aria2.Test.csproj", "{EBDFC58B-4347-4C46-AF7F-9600918EA12E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,8 +21,12 @@ Global
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Debug|x86.Build.0 = Debug|x86
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Release|x86.ActiveCfg = Release|x86
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Release|x86.Build.0 = Release|x86
+		{EBDFC58B-4347-4C46-AF7F-9600918EA12E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EBDFC58B-4347-4C46-AF7F-9600918EA12E}.Debug|x86.Build.0 = Debug|Any CPU
+		{EBDFC58B-4347-4C46-AF7F-9600918EA12E}.Release|x86.ActiveCfg = Release|Any CPU
+		{EBDFC58B-4347-4C46-AF7F-9600918EA12E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = HLTVDownloader\HLTVDownloader.csproj
+		StartupItem = PaganSoft.Aria2.Test\PaganSoft.Aria2.Test.csproj
 	EndGlobalSection
 EndGlobal

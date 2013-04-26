@@ -6,7 +6,7 @@ namespace PaganSoft.Aria2.Options
     /// <summary>
     /// The aria2 options
     /// </summary>
-    public struct Options
+    public struct AriaOptions
     {
         /// <summary>
         /// Use this proxy server for all protocols. 

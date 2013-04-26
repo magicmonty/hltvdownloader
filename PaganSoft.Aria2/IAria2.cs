@@ -1,51 +1,53 @@
 using System;
+using PaganSoft.Aria2.Core;
+using PaganSoft.Aria2.Options;
+using System.Collections.Generic;
 
 namespace PaganSoft.Aria2
 {
-    public class GID : String
-    {
-    };
-
-
     public interface IAria2
     {
-        GID AddUri(Uri[] uris, Options options = null, int position = -1);
-        string AddTorrent(byte[] torrent, Uri[] uris = null, Options options = null, int position = -1);
-        string AddMetalink(byte[] metalink);
-        string AddMetalink(byte[] metalink, Options options);
-        string AddMetalink(byte[] metalink, Options options, int position);
-        string Remove(string gid);
-        string ForceRemove(string gid);
-        string Pause(string gid);
-        string PauseAll();
-        string ForcePause(string gid);
-        string ForcePauseAll();
-        string Unpause(string gid);
-        string UnpauseAll();
-        StatusResponse TellStatus(string gid);
-        StatusResponse TellStatus(string gid, string[] keys);
-        UriResponse[] GetUris(string gid);
-        FileResponse[] GetFiles(string gid);
-        PeerResponse[] GetPeers(string gid);
-        ServersResponse[] GetServers(string gid);
-        StatusResponse[] TellActive();
-        StatusResponse[] TellActive(string[] keys);
-        StatusResponse[] TellWaiting(int offset, int num);
-        StatusResponse[] TellWaiting(int offset, int num, string[] keys);
-        StatusResponse[] TellStopped(int offset, int num);
-        StatusResponse[] TellStopped(int offset, int num, string[] keys);
+        GID AddUri(IEnumerable<Uri> uris, AriaOptions? options = null, int position = -1);
+        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris = null, AriaOptions? options = null, int position = -1);
+        GID AddMetalink(byte[] metalink);
+        GID AddMetalink(byte[] metalink, AriaOptions options);
+        GID AddMetalink(byte[] metalink, AriaOptions options, int position);
+        GID Remove(string gid);
+        GID ForceRemove(string gid);
+        GID Pause(string gid);
+        bool PauseAll();
+        GID ForcePause(string gid);
+        bool ForcePauseAll();
+        GID Unpause(string gid);
+        bool UnpauseAll();
+        StatusInfo TellStatus(string gid);
+        StatusInfo TellStatus(string gid, IEnumerable<string> keys);
+        IEnumerable<UriStatus> GetUris(string gid);
+        IEnumerable<FileInfo> GetFiles(string gid);
+        IEnumerable<PeerInfo> GetPeers(string gid);
+        IEnumerable<ServersInfo> GetServers(string gid);
+        IEnumerable<StatusInfo> TellActive(IEnumerable<string> keys = null);
+        IEnumerable<StatusInfo> TellWaiting(int offset, int num, IEnumerable<string> keys = null);
+        IEnumerable<StatusInfo> TellStopped(int offset, int num, IEnumerable<string> keys = null);
         int ChangePosition(string gid, int pos, string how);
-        int[] ChangeUri(string gid, int fileIndex, string[] delUris, string[] addUris);
-        int[] ChangeUri(string gid, int fileIndex, string[] delUris, string[] addUris, int position);
-        IDictionary<string, string> GetOption(string gid);
-        string ChangeOption(string gid, Options options);
-        Options GetGlobalOption();
-        string ChangeGlobalOption(Options options);
-        GlobalStatResponse GetGlobalStat();
-        string PurgeDownloadResult();
-        string RemoveDownloadResult(string gid);
-        VersionResponse GetVersion();
-        SessionInfoResponse GetSessionInfo();
+        IEnumerable<int> ChangeUri(string gid, 
+                                   int fileIndex, 
+                                   IEnumerable<string> delUris, 
+                                   IEnumerable<string> addUris);
+        int[] ChangeUri(string gid, 
+                        int fileIndex, 
+                        IEnumerable<string> delUris, 
+                        IEnumerable<string> addUris, 
+                        int position);
+        AriaOptions GetOption(string gid);
+        bool ChangeOption(string gid, AriaOptions options);
+        AriaOptions GetGlobalOption();
+        bool ChangeGlobalOption(AriaOptions options);
+        GlobalStats GetGlobalStat();
+        bool PurgeDownloadResult();
+        bool RemoveDownloadResult(string gid);
+        VersionInfo GetVersion();
+        string GetSessionId();
         bool Shutdown();
         bool ForceShutdown();
     }

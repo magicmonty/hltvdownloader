@@ -50,7 +50,6 @@
     <Compile Include="XmlRpc\VersionResponse.cs" />
     <Compile Include="XmlRpc\IAria2c.cs" />
     <Compile Include="IAria2.cs" />
-    <Compile Include="Options\Options.cs" />
     <Compile Include="Options\BitTorrentOptions.cs" />
     <Compile Include="Options\FtpOptions.cs" />
     <Compile Include="Options\HttpOptions.cs" />
@@ -64,6 +63,17 @@
     <Compile Include="Options\Enums\ProtocolOption.cs" />
     <Compile Include="Options\Enums\ProxyMethodOption.cs" />
     <Compile Include="Options\Enums\URISelectorOption.cs" />
+    <Compile Include="Core\GID.cs" />
+    <Compile Include="Core\FileInfo.cs" />
+    <Compile Include="Core\BitTorrentInfo.cs" />
+    <Compile Include="Core\GlobalStats.cs" />
+    <Compile Include="Core\PeerInfo.cs" />
+    <Compile Include="Core\ServerInfo.cs" />
+    <Compile Include="Core\ServersInfo.cs" />
+    <Compile Include="Core\UriStatus.cs" />
+    <Compile Include="Core\VersionInfo.cs" />
+    <Compile Include="Core\StatusInfo.cs" />
+    <Compile Include="Options\AriaOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -79,5 +89,6 @@
   <ItemGroup>
     <Folder Include="Options\" />
     <Folder Include="Options\Enums\" />
+    <Folder Include="Core\" />
   </ItemGroup>
 </Project>

@@ -5,49 +5,51 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}</ProjectGuid>
+    <ProjectGuid>{EBDFC58B-4347-4C46-AF7F-9600918EA12E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Pagansoft.Homeload</RootNamespace>
-    <AssemblyName>Pagansoft.Homeload.Test</AssemblyName>
+    <RootNamespace>Pagansoft.Aria2</RootNamespace>
+    <AssemblyName>Pagansoft.Aria2.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>..\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="nunit.framework">
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Pagansoft.Homeload\Pagansoft.Homeload.csproj">
-      <Project>{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}</Project>
-      <Name>Pagansoft.Homeload</Name>
+    <ProjectReference Include="..\..\src\Pagansoft.Aria2\Pagansoft.Aria2.csproj">
+      <Project>{981868A9-275A-4139-8DC7-13CEFCC13BAA}</Project>
+      <Name>Pagansoft.Aria2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj">
+      <Project>{1B6E9A56-71A9-4580-8243-7B498B39DF56}</Project>
+      <Name>Pagansoft.Aria2.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\LinkListItemTest.cs" />
-    <Compile Include="Core\LinkListTest.cs" />
+    <Compile Include="Core\GIDTest.cs" />
   </ItemGroup>
 </Project>

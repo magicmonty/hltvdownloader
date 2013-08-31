@@ -1,17 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLTVDownloader", "HLTVDownloader\HLTVDownloader.csproj", "{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLTVDownloader", "src\HLTVDownloader\HLTVDownloader.csproj", "{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2", "Pagansoft.Aria2\Pagansoft.Aria2.csproj", "{981868A9-275A-4139-8DC7-13CEFCC13BAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2", "src\Pagansoft.Aria2\Pagansoft.Aria2.csproj", "{981868A9-275A-4139-8DC7-13CEFCC13BAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2.Test", "Pagansoft.Aria2.Test\Pagansoft.Aria2.Test.csproj", "{EBDFC58B-4347-4C46-AF7F-9600918EA12E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2.Test", "test\Pagansoft.Aria2.Test\Pagansoft.Aria2.Test.csproj", "{EBDFC58B-4347-4C46-AF7F-9600918EA12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2.Interfaces", "Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj", "{1B6E9A56-71A9-4580-8243-7B498B39DF56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2.Interfaces", "src\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj", "{1B6E9A56-71A9-4580-8243-7B498B39DF56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Homeload.Test", "Pagansoft.Homeload.Test\Pagansoft.Homeload.Test.csproj", "{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Homeload.Test", "test\Pagansoft.Homeload.Test\Pagansoft.Homeload.Test.csproj", "{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Homeload", "Pagansoft.Homeload\Pagansoft.Homeload.csproj", "{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Homeload", "src\Pagansoft.Homeload\Pagansoft.Homeload.csproj", "{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A102AB7-A69A-45CD-9A08-66A1320FB20D}"
+	ProjectSection(SolutionItems) = preProject
+		build.xml = build.xml
+		README.md = README.md
+		.travis.yml = .travis.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,7 +51,9 @@ Global
 		{EBDFC58B-4347-4C46-AF7F-9600918EA12E}.Release|x86.ActiveCfg = Release|Any CPU
 		{EBDFC58B-4347-4C46-AF7F-9600918EA12E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Pagansoft.Aria2.Test\Pagansoft.Aria2.Test.csproj
+		StartupItem = src\HLTVDownloader\HLTVDownloader.csproj
 	EndGlobalSection
 EndGlobal

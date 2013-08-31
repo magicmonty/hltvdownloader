@@ -30,7 +30,9 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                         .Returns(LinkListResponse)
                         .Verifiable();
 
-            var actual = _sut.GetLinks();
+            var task = _sut.GetLinksAsync();
+            task.Wait();
+            var actual = task.Result;
 
             _httpService.Verify();
 
@@ -58,7 +60,11 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                         .Returns("OK")
                         .Verifiable();
 
-            var actual = _sut.SetState("linkId", "listId", LinkState.Finished);
+            var task = _sut.SetStateAsync("linkId", "listId", LinkState.Finished);
+
+            task.Wait();
+
+            var actual = task.Result;
             _httpService.Verify();
             Assert.That(actual, Is.True);
         }
@@ -70,8 +76,13 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                     .Returns("OK")
                     .Verifiable();
 
-            Assert.That(_sut.SetProcessing("listId"), Is.True);
+            var task = _sut.SetProcessingAsync("listId");
+
+            task.Wait();
+
+            var actual = task.Result;
             _httpService.Verify();
+            Assert.That(actual, Is.True);
         }
     }
 }

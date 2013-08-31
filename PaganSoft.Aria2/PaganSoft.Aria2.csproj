@@ -56,14 +56,6 @@
     <Compile Include="Options\HttpOptions.cs" />
     <Compile Include="Options\HttpsOptions.cs" />
     <Compile Include="Options\MetaLinkOptions.cs" />
-    <Compile Include="Options\Enums\BitTorrentCryptoLevelOption.cs" />
-    <Compile Include="Options\Enums\CheckSumOption.cs" />
-    <Compile Include="Options\Enums\FileAllocationOption.cs" />
-    <Compile Include="Options\Enums\FollowOption.cs" />
-    <Compile Include="Options\Enums\FtpTransferTypeOption.cs" />
-    <Compile Include="Options\Enums\ProtocolOption.cs" />
-    <Compile Include="Options\Enums\ProxyMethodOption.cs" />
-    <Compile Include="Options\Enums\URISelectorOption.cs" />
     <Compile Include="Core\FileInfo.cs" />
     <Compile Include="Core\BitTorrentInfo.cs" />
     <Compile Include="Core\GlobalStats.cs" />

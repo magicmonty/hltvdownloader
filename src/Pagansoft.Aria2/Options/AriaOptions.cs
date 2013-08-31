@@ -6,8 +6,15 @@ namespace Pagansoft.Aria2.Options
     /// <summary>
     /// The aria2 options
     /// </summary>
-    public struct AriaOptions
+    public class AriaOptions : IAriaOptions
     {
+        public static AriaOptions From(XmlRpc.Options response)
+        {
+            return new AriaOptions {
+
+            };
+        }
+
         /// <summary>
         /// Use this proxy server for all protocols. 
         /// To erase previously defined proxy, use "". 
@@ -16,28 +23,33 @@ namespace Pagansoft.Aria2.Options
         /// This affects all URIs. The format of Proxy is 
         /// [http://][USER:PASSWORD@]HOST[:PORT]. See also ENVIRONMENT section.
         /// </summary>
-        public string AllProxy;
+        public string AllProxy { get; set; }
+
         /// <summary>
         /// Set password for AllProxy option
         /// </summary>
-        public string AllProxyPasswd;
+        public string AllProxyPasswd { get; set; }
+
         /// <summary>
         /// Set user for AllProxy option.
         /// </summary>
-        public string AllProxyUser;
+        public string AllProxyUser { get; set; }
+
         /// <summary>
         /// Restart download from scratch if the corresponding control 
         /// file doesn't exist. <seealso cref="AutoFileRenaming"/> option. 
         /// Default: false
         /// </summary>
-        public bool AllowOverwrite;
+        public bool AllowOverwrite { get; set; }
+
         /// <summary>
         /// If false is given, aria2 aborts download when a piece 
         /// length is different from one in a control file. If true is given, 
         /// you can proceed but some download progress will be lost. 
         /// Default: false
         /// </summary>
-        public bool AllowPieceLengthChange;
+        public bool AllowPieceLengthChange { get; set; }
+
         /// <summary>
         /// Always resume download. If true is given, aria2 always tries to 
         /// resume download and if resume is not possible, aborts download. 
@@ -48,23 +60,27 @@ namespace Pagansoft.Aria2.Options
         /// <see cref="MaxResumeFailureTries"/> option. 
         /// Default: true
         /// </summary>
-        public bool AlwaysResume;
+        public bool AlwaysResume { get; set; }
+
         /// <summary>
         /// Enable asynchronous DNS. 
         /// Default: true
         /// </summary>
-        public bool AsyncDns;
+        public bool AsyncDns { get; set; }
+
         /// <summary>
         /// Rename file name if the same file already exists. 
         /// This option works only in HTTP(S)/FTP download. 
         /// The new file name has a dot and a number(1..9999) appended. 
         /// Default: true
         /// </summary>
-        public bool AutoFileRenaming;
+        public bool AutoFileRenaming { get; set; }
+
         /// <summary>
         /// The bit torrent specific options.
         /// </summary>
-        public BitTorrentOptions BitTorrent;
+        public IBitTorrentOptions BitTorrent { get; set; }
+
         /// <summary>
         /// Check file integrity by validating piece hashes 
         /// or a hash of entire file. This option has effect only in 
@@ -77,7 +93,8 @@ namespace Pagansoft.Aria2.Options
         /// If both piece hashes and a hash of entire file are provided, 
         /// only piece hashes are used. Default: false
         /// </summary>
-        public bool CheckIntegrity;
+        public bool CheckIntegrity { get; set; }
+
         /// <summary>
         /// Set checksum. TYPE is hash type. The supported hash type is 
         /// listed in Hash Algorithms in aria2c -v. DIGEST is hex digest. 
@@ -85,7 +102,8 @@ namespace Pagansoft.Aria2.Options
         /// sha-1=0192ba11326fe2298c8cb4de616f4d4140213838 
         /// This option applies only to HTTP(S)/FTP downloads.
         /// </summary>
-        public CheckSumOption Checksum;
+        public ICheckSumOption Checksum { get; set; }
+
         /// <summary>
         /// Download file only when the local file is older than remote file. 
         /// This function only works with HTTP(S) downloads only. 
@@ -100,25 +118,29 @@ namespace Pagansoft.Aria2.Options
         /// is required. 
         /// Default: false
         /// </summary>
-        public bool ConditionalGet;
+        public bool ConditionalGet { get; set; }
+
         /// <summary>
         /// Set the connect timeout in seconds to establish connection 
         /// to HTTP/FTP/proxy server. After the connection is established, 
         /// this option makes no effect and Timeout option is used instead. 
         /// Default: 60
         /// </summary>
-        public int ConnectTimeout;
+        public int ConnectTimeout { get; set; }
+
         /// <summary>
         /// Continue downloading a partially downloaded file. 
         /// Use this option to resume a download started by a web browser or 
         /// another program which downloads files sequentially from the beginning. 
         /// Currently this option is only applicable to HTTP(S)/FTP downloads.
         /// </summary>
-        public bool Continue;
+        public bool Continue { get; set; }
+
         /// <summary>
         /// The directory to store the downloaded file
         /// </summary>
-        public string Dir;
+        public string Dir { get; set; }
+
         /// <summary>
         /// If true is given, aria2 just checks whether the 
         /// remote file is available and doesn't download data. 
@@ -126,35 +148,41 @@ namespace Pagansoft.Aria2.Options
         /// BitTorrent downloads are canceled if true is specified. 
         /// Default: false
         /// </summary>
-        public bool DryRun;
+        public bool DryRun { get; set; }
+
         /// <summary>
         /// Enable IPv6 name resolution in asynchronous DNS resolver. 
         /// This option will be ignored when <see cref="AsyncDns"/>=false. 
         /// Default: false
         /// </summary>
-        public bool EnableAsyncDns6;
+        public bool EnableAsyncDns6 { get; set; }
+
         /// <summary>
         /// Enable HTTP/1.1 persistent connection. 
         /// Default: true
         /// </summary>
-        public bool EnableHttpKeepAlive;
+        public bool EnableHttpKeepAlive { get; set; }
+
         /// <summary>
         /// Enable HTTP/1.1 pipelining. 
         /// Default: false
         /// </summary>
-        public bool EnableHttpPipelining;
+        public bool EnableHttpPipelining { get; set; }
+
         /// <summary>
         /// Map files into memory. This option may not work if the file space is 
         /// not pre-allocated. <see cref="FileAllocation"/>.
         /// Default: false
         /// </summary>
-        public bool EnableMmap;
+        public bool EnableMmap { get; set; }
+
         /// <summary>
         /// Enable Peer Exchange extension. If a private flag is set in a torrent, 
         /// this feature is disabled for that download even if true is given. 
         /// Default: true
         /// </summary>
-        public bool EnablePeerExchange;
+        public bool EnablePeerExchange { get; set; }
+
         /// <summary>
         /// Specify file allocation method. 
         /// None doesn't pre-allocate file space. 
@@ -174,7 +202,8 @@ namespace Pagansoft.Aria2.Options
         /// Possible Values: none, prealloc, trunc, falloc 
         /// Default: prealloc
         /// </summary>
-        public FileAllocationOption FileAllocation;
+        public FileAllocationOption FileAllocation { get; set; }
+
         /// <summary>
         /// If True or Mem is specified, when a file whose suffix is .meta4 or .metalink 
         /// or content type of application/metalink4+xml or application/metalink+xml 
@@ -185,7 +214,8 @@ namespace Pagansoft.Aria2.Options
         /// If False is specified, the action mentioned above is not taken. 
         /// Default: True
         /// </summary>
-        public FollowOption FollowMetalink;
+        public FollowOption FollowMetalink { get; set; }
+
         /// <summary>
         /// if True or Mem is specified, when a file whose suffix is .torrent or 
         /// content type is application/x-bittorrent is downloaded, 
@@ -195,7 +225,8 @@ namespace Pagansoft.Aria2.Options
         /// If False is specified, the action mentioned above is not taken. 
         /// Default: True
         /// </summary>
-        public FollowOption FollowTorrent;
+        public FollowOption FollowTorrent { get; set; }
+
         /// <summary>
         /// Save download with <see cref="SaveSession"/> option even if the download 
         /// is completed or removed. 
@@ -203,30 +234,36 @@ namespace Pagansoft.Aria2.Options
         /// completed state. 
         /// Default: false
         /// </summary>
-        public bool ForceSave;
+        public bool ForceSave { get; set; }
+
         /// <summary>
         /// The FTP specific options
         /// </summary>
-        public FtpOptions Ftp;
+        public IFtpOptions Ftp { get; set; }
+
         /// <summary>
         /// If true is given, after hash check using <see cref="CheckIntegrity"/> option, 
         /// abort download whether or not download is complete. 
         /// Default: false
         /// </summary>
-        public bool HashCheckOnly;
+        public bool HashCheckOnly { get; set; }
+
         /// <summary>
         /// Append HEADER to HTTP request header. 
         /// You can use this to specify more than one header
         /// </summary>
-        public IEnumerable<string> Header;
+        public IEnumerable<string> Header { get; set; }
+
         /// <summary>
         /// The HTTP specific options.
         /// </summary>
-        public HttpOptions Http;
+        public IHttpOptions Http { get; set; }
+
         /// <summary>
         /// The HTTPS specific options.
         /// </summary>
-        public HttpsOptions Https;
+        public IHttpsOptions Https { get; set; }
+
         /// <summary>
         /// Set file path for file with index=INDEX. 
         /// You can find the file index using the ShowFiles option. 
@@ -234,7 +271,8 @@ namespace Pagansoft.Aria2.Options
         /// You can use this option multiple times. 
         /// Using this option, you can specify the output filenames of BitTorrent downloads.
         /// </summary>
-        public IEnumerable<IDictionary<int, string>> IndexOut;
+        public IEnumerable<IDictionary<int, string>> IndexOut { get; set; }
+
         /// <summary>
         /// lose connection if download speed is lower than or 
         /// equal to this value(bytes per sec). 
@@ -243,18 +281,21 @@ namespace Pagansoft.Aria2.Options
         /// This option does not affect BitTorrent downloads. 
         /// Default: 0
         /// </summary>
-        public long LowestSpeedLimit;
+        public long LowestSpeedLimit { get; set; }
+
         /// <summary>
         /// The maximum number of connections to one server for each download. 
         /// Default: 1
         /// </summary>
-        public int MaxConnectionPerServer;
+        public int MaxConnectionPerServer { get; set; }
+
         /// <summary>
         /// Set max download speed per each download in bytes/sec. 
         /// 0 means unrestricted. 
         /// Default: 0
         /// </summary>
-        public long MaxDownloadLimit;
+        public long MaxDownloadLimit { get; set; }
+
         /// <summary>
         /// If aria2 receives "file not found" status from the remote HTTP/FTP servers 
         /// NUM times without getting a single byte, then force the download to fail. 
@@ -262,7 +303,8 @@ namespace Pagansoft.Aria2.Options
         /// using HTTP/FTP servers. 
         /// Default: 0
         /// </summary>
-        public int MaxFileNotFound;
+        public int MaxFileNotFound { get; set; }
+
         /// <summary>
         /// When used with <see cref="AlwaysResume"/>=false, aria2 downloads file 
         /// from scratch when aria2 detects N number of URIs that does not support resume. 
@@ -270,24 +312,28 @@ namespace Pagansoft.Aria2.Options
         /// support resume. 
         /// Default: 0
         /// </summary>
-        public string MaxResumeFailureTries;
+        public string MaxResumeFailureTries { get; set; }
+
         /// <summary>
         /// Set number of tries. 
         /// 0 means unlimited. 
         /// <seealso cref="RetryWait" />. 
         /// Default: 5
         /// </summary>
-        public int MaxTries;
+        public int MaxTries { get; set; }
+
         /// <summary>
         /// Set max upload speed per each torrent in bytes/sec. 
         /// 0 means unrestricted.
         /// Default: 0
         /// </summary>
-        public long MaxUploadLimit;
+        public long MaxUploadLimit { get; set; }
+
         /// <summary>
         /// The metalink specific options.
         /// </summary>
-        public MetaLinkOptions Metalink;
+        public IMetaLinkOptions Metalink { get; set; }
+
         /// <summary>
         /// aria2 does not split less than 2 * MinSplitSize byte range. 
         /// For example, let's consider downloading 20MiB file. 
@@ -298,27 +344,32 @@ namespace Pagansoft.Aria2.Options
         /// Possible Values: 1M -1024M 
         /// Default: 20M
         /// </summary>
-        public long MinSplitSize;
+        public long MinSplitSize { get; set; }
+
         /// <summary>
         /// No file allocation is made for files whose size is smaller than SIZE.
         /// Default: 5M
         /// </summary>
-        public long NoFileAllocationLimit;
+        public long NoFileAllocationLimit { get; set; }
+
         /// <summary>
         /// Disables netrc support. 
         /// netrc support is enabled by default.
         /// </summary>
-        public bool NoNetrc;
+        public bool NoNetrc { get; set; }
+
         /// <summary>
         /// Specify hostnames, domains and network addresses 
         /// with or without CIDR block where proxy should not be used.
         /// </summary>
-        public IEnumerable<string> NoProxy;
+        public IEnumerable<string> NoProxy { get; set; }
+
         /// <summary>
         /// The file name of the downloaded file. 
         /// When ForceSequential option is used, this option is ignored.
         /// </summary>
-        public string Out;
+        public string Out { get; set; }
+
         /// <summary>
         /// Enable parameterized URI support. You can specify set of 
         /// parts: http://{sv1,sv2,sv3}/foo.iso. 
@@ -329,13 +380,15 @@ namespace Pagansoft.Aria2.Options
         /// -Z option is required. 
         /// Default: false
         /// </summary>
-        public bool ParameterizedUri;
+        public bool ParameterizedUri { get; set; }
+
         /// <summary>
         /// Pause download after added. 
         /// This option is effective only when RPC is enabled. 
         /// Default: false
         /// </summary>
-        public bool Pause;
+        public bool Pause { get; set; }
+
         /// <summary>
         /// Set a piece length for HTTP/FTP downloads. 
         /// This is the boundary when aria2 splits a file. 
@@ -344,51 +397,59 @@ namespace Pagansoft.Aria2.Options
         /// It will be also ignored if Metalink file contains piece hashes. 
         /// Default: 1M
         /// </summary>
-        public long PieceLength;
+        public long PieceLength { get; set; }
+
         /// <summary>
         /// Set the method to use in proxy request. 
         /// ProxyMethod is either get or tunnel. 
         /// HTTPS downloads always use tunnel regardless of this option. 
         /// Default: get
         /// </summary>
-        public ProxyMethodOption ProxyMethod;
+        public ProxyMethodOption ProxyMethod { get; set; }
+
         /// <summary>
         /// Validate chunk of data by calculating checksum while 
         /// downloading a file if chunk checksums are provided. 
         /// Default: true
         /// </summary>
-        public bool RealtimeChunkChecksum;
+        public bool RealtimeChunkChecksum { get; set; }
+
         /// <summary>
         /// Set Referer. This affects all URIs. 
         /// If * is given, each request URI is used as a referer. 
         /// This may be useful when used with <see cref="ParameterizedUri"/> option.
         /// </summary>
-        public string Referer;
+        public string Referer { get; set; }
+
         /// <summary>
         /// Retrieve timestamp of the remote file from the remote HTTP/FTP server 
         /// and if it is available, apply it to the local file. 
         /// Default: false
         /// </summary>
-        public bool RemoteTime;
+        public bool RemoteTime { get; set; }
+
         /// <summary>
         /// Remove control file before download. 
         /// Using with <see cref="AllowOverwrite"/>=true, download always starts 
         /// from scratch. 
         /// This will be useful for users behind proxy server which disables resume.
         /// </summary>
-        public bool RemoveControlFile;
+        public bool RemoveControlFile { get; set; }
+
         /// <summary>
         /// Set the seconds to wait between retries. 
         /// With RetryWait > 0, aria2 will retry download when the 
         /// HTTP server returns 503 response. 
         /// Default: 0
         /// </summary>
-        public int RetryWait;
+        public int RetryWait { get; set; }
+
         /// <summary>
         /// Reuse already used URIs if no unused URIs are left. 
         /// Default: true
         /// </summary>
-        public bool ReuseUri;
+        public bool ReuseUri { get; set; }
+
         /// <summary>
         /// Save the uploaded torrent or metalink metadata in the directory 
         /// specified by <see cref="Dir"/> option. The filename consists of 
@@ -399,7 +460,8 @@ namespace Pagansoft.Aria2.Options
         /// AddMetalink() will not be saved by <see cref="SaveSession"/> option. 
         /// Default: false
         /// </summary>
-        public bool RpcSaveUploadMetadata;
+        public bool RpcSaveUploadMetadata { get; set; }
+
         /// <summary>
         /// Specify share ratio. Seed completed torrents until share ratio reaches RATIO. 
         /// You are strongly encouraged to specify equals or more than 1.0 here. 
@@ -408,11 +470,13 @@ namespace Pagansoft.Aria2.Options
         /// seeding ends when at least one of the conditions is satisfied. 
         /// Default: 1.0
         /// </summary>
-        public double SeedRatio;
+        public double SeedRatio { get; set; }
+
         /// <summary>
         /// Specify seeding time in minutes. <seealso cref="SeedRatio"/> option.
         /// </summary>
-        public int SeedTime;
+        public int SeedTime { get; set; }
+
         /// <summary>
         /// Set file to download by specifying its index. 
         /// You can find the file index using the ShowFiles option. 
@@ -421,7 +485,8 @@ namespace Pagansoft.Aria2.Options
         /// When used with the -M option, index may vary depending on the query 
         /// (see --metalink-* options).
         /// </summary>
-        public string SelectFile;
+        public string SelectFile { get; set; }
+
         /// <summary>
         /// Download a file using N connections. If more than N URIs are given, 
         /// first N URIs are used and remaining URIs are used for backup. 
@@ -431,7 +496,8 @@ namespace Pagansoft.Aria2.Options
         /// <seealso cref="MinSplitSize"/> option. 
         /// Default: 5
         /// </summary>
-        public int Split;
+        public int Split { get; set; }
+
         /// <summary>
         /// Specify piece selection algorithm used in HTTP/FTP download. 
         /// Piece means fixed length segment which is downloaded in parallel in 
@@ -454,12 +520,14 @@ namespace Pagansoft.Aria2.Options
         /// to view movie while downloading it. 
         /// Default: default
         /// </summary>
-        public string StreamPieceSelector;
+        public string StreamPieceSelector { get; set; }
+
         /// <summary>
         /// Set timeout in seconds. 
         /// Default: 60
         /// </summary>
-        public int Timeout;
+        public int Timeout { get; set; }
+
         /// <summary>
         /// Specify URI selection algorithm. 
         /// The possible values are inorder, feedback and adaptive. 
@@ -475,16 +543,18 @@ namespace Pagansoft.Aria2.Options
         /// performance profile of servers. 
         /// Default: feedback
         /// </summary>
-        public URISelectorOption UriSelector;
+        public URISelectorOption UriSelector { get; set; }
+
         /// <summary>
         /// Use HEAD method for the first request to the HTTP server. 
         /// Default: false
         /// </summary>
-        public bool UseHead;
+        public bool UseHead { get; set; }
+
         /// <summary>
         /// Set user agent for HTTP(S) downloads. 
         /// Default: aria2/$VERSION, $VERSION is replaced by package version.
         /// </summary>
-        public string UserAgent;
+        public string UserAgent { get; set; }
     }
 }

@@ -34,6 +34,7 @@
     <Reference Include="CookComputing.XmlRpcV2">
       <HintPath>..\..\libs\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Core\VersionInfo.cs" />
     <Compile Include="Core\StatusInfo.cs" />
     <Compile Include="Options\AriaOptions.cs" />
+    <Compile Include="Aria2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

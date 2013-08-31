@@ -7,9 +7,19 @@ namespace Pagansoft.Aria2
 {
     public interface IAria2
     {
-        GID AddUri(IEnumerable<Uri> uris, IAriaOptions options = null, int position = -1);
+        GID AddUri(IEnumerable<Uri> uris);
 
-        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris = null, IAriaOptions options = null, int position = -1);
+        GID AddUri(IEnumerable<Uri> uris, IAriaOptions options);
+
+        GID AddUri(IEnumerable<Uri> uris, IAriaOptions options, int position);
+
+        GID AddTorrent(byte[] torrent);
+
+        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris);
+
+        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IAriaOptions options);
+
+        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IAriaOptions options, int position);
 
         GID AddMetalink(byte[] metalink);
 
@@ -45,11 +55,17 @@ namespace Pagansoft.Aria2
 
         IEnumerable<IServersInfo> GetServers(string gid);
 
-        IEnumerable<IStatusInfo> TellActive(IEnumerable<string> keys = null);
+        IEnumerable<IStatusInfo> TellActive();
 
-        IEnumerable<IStatusInfo> TellWaiting(int offset, int num, IEnumerable<string> keys = null);
+        IEnumerable<IStatusInfo> TellActive(IEnumerable<string> keys);
 
-        IEnumerable<IStatusInfo> TellStopped(int offset, int num, IEnumerable<string> keys = null);
+        IEnumerable<IStatusInfo> TellWaiting(int offset, int num);
+
+        IEnumerable<IStatusInfo> TellWaiting(int offset, int num, IEnumerable<string> keys);
+
+        IEnumerable<IStatusInfo> TellStopped(int offset, int num);
+
+        IEnumerable<IStatusInfo> TellStopped(int offset, int num, IEnumerable<string> keys);
 
         int ChangePosition(string gid, int pos, string how);
 

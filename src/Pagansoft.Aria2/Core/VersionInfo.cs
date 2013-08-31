@@ -1,10 +1,20 @@
 using System.Collections.Generic;
+using Pagansoft.Aria2.XmlRpc;
 
 namespace Pagansoft.Aria2.Core
 {
-    public struct VersionInfo
+    public class VersionInfo : IVersionInfo
     {
-        public string Version;
-        public IEnumerable<string> EnabledFeatures;
+        public static VersionInfo From(VersionResponse response)
+        {
+            return new VersionInfo {
+                Version = response.Version,
+                EnabledFeatures = response.EnabledFeatures
+            };
+        }
+
+        public string Version { get; private set; }
+
+        public IEnumerable<string> EnabledFeatures { get; private set; }
     }
 }

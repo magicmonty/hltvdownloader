@@ -8,13 +8,13 @@ namespace Pagansoft.Aria2.XmlRpc
     public interface IAria2c : IXmlRpcProxy
     {
         [XmlRpcMethod("aria2.addUri")]
-        string AddUri(Uri[] uris);
+        string AddUri(string[] uris);
 
         [XmlRpcMethod("aria2.addUri")]
-        string AddUri(Uri[] uris, Options options);
+        string AddUri(string[] uris, Options options);
 
         [XmlRpcMethod("aria2.addUri")]
-        string AddUri(Uri[] uris, Options options, int position);
+        string AddUri(string[] uris, Options options, int position);
 
         [XmlRpcMethod("aria2.addTorrent")]
         string AddTorrent(byte[] torrent);

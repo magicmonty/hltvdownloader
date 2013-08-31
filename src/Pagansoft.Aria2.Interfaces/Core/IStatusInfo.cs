@@ -32,7 +32,7 @@ namespace Pagansoft.Aria2.Core
 
         string ErrorCode { get; }
 
-        IEnumerable<string> FollewedBy { get; }
+        IEnumerable<string> FollowedBy { get; }
 
         string BelongsTo { get; }
 

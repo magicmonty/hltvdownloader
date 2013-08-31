@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EBDFC58B-4347-4C46-AF7F-9600918EA12E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>PaganSoft.Aria2.Test</RootNamespace>
-    <AssemblyName>PaganSoft.Aria2.Test</AssemblyName>
+    <RootNamespace>Pagansoft.Aria2</RootNamespace>
+    <AssemblyName>Pagansoft.Aria2.Test</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,14 +34,21 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="GID.cs" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\PaganSoft.Aria2\PaganSoft.Aria2.csproj">
+    <ProjectReference Include="..\Pagansoft.Aria2\Pagansoft.Aria2.csproj">
       <Project>{981868A9-275A-4139-8DC7-13CEFCC13BAA}</Project>
-      <Name>PaganSoft.Aria2</Name>
+      <Name>Pagansoft.Aria2</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj">
+      <Project>{1B6E9A56-71A9-4580-8243-7B498B39DF56}</Project>
+      <Name>Pagansoft.Aria2.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\GIDTest.cs" />
   </ItemGroup>
 </Project>

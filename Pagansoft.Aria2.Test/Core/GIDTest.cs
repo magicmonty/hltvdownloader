@@ -1,13 +1,12 @@
 using NUnit.Framework;
-using Core = PaganSoft.Aria2.Core;
 using NUnit.Framework.SyntaxHelpers;
- 
-namespace PaganSoft.Aria2.Test
+
+namespace Pagansoft.Aria2.Core
 {
     [TestFixture]
-    public class GID
+    public class GIDTest
     {
-        private Core.GID _sut;
+        private GID _sut;
 
         [SetUp]
         public void SetUp()
@@ -56,7 +55,7 @@ namespace PaganSoft.Aria2.Test
             Core.GID other = null;
             Assert.That(_sut != other, Is.True);
         }
-                
+
         [Test]
         public void ShouldNotBeSameIfBothValuesAreNull()
         {
@@ -64,21 +63,21 @@ namespace PaganSoft.Aria2.Test
             _sut = null;
             Assert.IsTrue(_sut != other);
         }
-        
+
         [Test]
         public void ShouldBeSameIfValueIsMatchingString()
         {
             Core.GID other = "TEST";
             Assert.IsTrue(_sut == other);
         }
-        
+
         [Test]
         public void ShouldNotBeSameIfValueIsNonMatchingString()
         {
             Core.GID other = "TEST1";
             Assert.IsTrue(_sut != other);
         }
-        
+
         [Test]
         public void ShouldBeSameIfValueIsRealString()
         {

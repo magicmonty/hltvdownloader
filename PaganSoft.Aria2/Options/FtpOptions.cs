@@ -1,8 +1,7 @@
-using PaganSoft.Aria2.Options.Enums;
+using Pagansoft.Aria2.Options.Enums;
 
-namespace PaganSoft.Aria2.Options
+namespace Pagansoft.Aria2.Options
 {
-
     /// <summary>
     /// Encapsulates FTP specific options
     /// </summary>
@@ -17,14 +16,12 @@ namespace PaganSoft.Aria2.Options
         /// Default: ARIA2USER@
         /// </summary>
         public string Passwd;
-
         /// <summary>
         /// Use the passive mode in FTP. 
         /// If false is given, the active mode will be used. 
         /// Default: true
         /// </summary>
         public bool Pasv;
-
         /// <summary>
         /// Use this proxy server for FTP. To erase previously defined proxy, use "". 
         /// <seealso cref="Options.AllProxy"/> option. 
@@ -32,29 +29,24 @@ namespace PaganSoft.Aria2.Options
         /// The format is [http://][USER:PASSWORD@]HOST[:PORT]
         /// </summary>
         public string Proxy;
-
         /// <summary>
         /// Set password for <see cref="Proxy"/> option.
         /// </summary>
         public string ProxyPasswd;
-
         /// <summary>
         /// Set user for <see cref="Proxy"/> option.
         /// </summary>
         public string ProxyUser;
-
         /// <summary>
         /// Reuse connection in FTP. 
         /// Default: true
         /// </summary>
         public bool ReuseConnection;
-
         /// <summary>
         /// Set FTP transfer type. TYPE is either binary or ascii. 
         /// Default: binary
         /// </summary>
         public FtpTransferTypeOption TransferType;
-
         /// <summary>
         /// Set FTP user. This affects all URIs. 
         /// Default: anonymous

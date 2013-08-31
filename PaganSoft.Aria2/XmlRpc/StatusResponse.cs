@@ -1,8 +1,7 @@
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.Aria2.XmlRpc
+namespace Pagansoft.Aria2.XmlRpc
 {
-
     [XmlRpcMissingMapping(MappingAction.Ignore)]
     public struct StatusResponse
     {
@@ -64,5 +63,4 @@ namespace PaganSoft.Aria2.XmlRpc
         public BitTorrentResponse
             BitTorrent;
     }
-    
 }

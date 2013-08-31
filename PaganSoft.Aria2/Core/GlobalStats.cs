@@ -1,6 +1,5 @@
-namespace PaganSoft.Aria2.Core
+namespace Pagansoft.Aria2.Core
 {
-
     public struct GlobalStats
     {
         public long DownloadSpeed;
@@ -9,5 +8,4 @@ namespace PaganSoft.Aria2.Core
         public int NumWaiting;
         public int NumStopped;
     }
-    
 }

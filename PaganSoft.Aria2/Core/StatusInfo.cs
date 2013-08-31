@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PaganSoft.Aria2.Core
+namespace Pagansoft.Aria2.Core
 {
     public struct StatusInfo
     {
@@ -24,5 +24,4 @@ namespace PaganSoft.Aria2.Core
         public IEnumerable<FileInfo> Files;
         public BitTorrentInfo BitTorrent;
     }
-    
 }

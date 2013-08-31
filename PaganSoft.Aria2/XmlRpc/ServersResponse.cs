@@ -1,8 +1,7 @@
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.Aria2.XmlRpc
+namespace Pagansoft.Aria2.XmlRpc
 {
-
     public struct ServersResponse
     {
         [XmlRpcMember("index")]
@@ -12,5 +11,4 @@ namespace PaganSoft.Aria2.XmlRpc
         public ServerResponse[]
             Servers;
     }
-    
 }

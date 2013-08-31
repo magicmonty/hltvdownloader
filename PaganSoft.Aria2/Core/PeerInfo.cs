@@ -1,6 +1,5 @@
-namespace PaganSoft.Aria2.Core
+namespace Pagansoft.Aria2.Core
 {
-
     public struct PeerInfo
     {
         public string PeerId;
@@ -13,5 +12,4 @@ namespace PaganSoft.Aria2.Core
         public long UploadSpeed;
         public bool Seeder;
     }
-    
 }

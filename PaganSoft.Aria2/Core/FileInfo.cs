@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 
-namespace PaganSoft.Aria2.Core
+namespace Pagansoft.Aria2.Core
 {
-
     public struct FileInfo
     {
         public int Index;
@@ -12,5 +11,4 @@ namespace PaganSoft.Aria2.Core
         public bool Selected;
         public IEnumerable<UriStatus> Uris;
     }
-    
 }

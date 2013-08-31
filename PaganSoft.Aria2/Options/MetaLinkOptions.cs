@@ -1,6 +1,6 @@
-using PaganSoft.Aria2.Options.Enums;
+using Pagansoft.Aria2.Options.Enums;
 
-namespace PaganSoft.Aria2.Options
+namespace Pagansoft.Aria2.Options
 {
     public struct MetaLinkOptions
     {
@@ -10,7 +10,6 @@ namespace PaganSoft.Aria2.Options
         /// If URI points to a directory, URI must end with /.
         /// </summary>
         public string BaseUri;
-
         /// <summary>
         /// If true is given and several protocols are available for a mirror in a 
         /// metalink file, aria2 uses one of them. 
@@ -19,24 +18,20 @@ namespace PaganSoft.Aria2.Options
         /// Default: true
         /// </summary>
         public bool EnableUniqueProtocol;
-
         /// <summary>
         /// The language of the file to download.
         /// </summary>
         public string Language;
-
         /// <summary>
         /// The location of the preferred server. 
         /// A comma-delimited list of locations is acceptable, 
         /// for example, jp,us.
         /// </summary>
         public string Location;
-
         /// <summary>
         /// The operating system of the file to download.
         /// </summary>
         public string Os;
-
         /// <summary>
         /// Specify preferred protocol. 
         /// The possible values are Http, Https, Ftp and None. 
@@ -44,7 +39,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: None
         /// </summary>
         public ProtocolOption PreferredProtocol;
-
         /// <summary>
         /// The version of the file to download.
         /// </summary>

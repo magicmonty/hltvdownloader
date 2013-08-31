@@ -1,4 +1,4 @@
-namespace PaganSoft.Aria2.Options
+namespace Pagansoft.Aria2.Options
 {
     /// <summary>
     /// Encapsulates HTTPS specific options
@@ -13,12 +13,10 @@ namespace PaganSoft.Aria2.Options
         /// The is [http://][USER:PASSWORD@]HOST[:PORT]
         /// </summary>
         public string Proxy;
-
         /// <summary>
         /// Set password for <see cref="Proxy"/>> option.
         /// </summary>
         public string ProxyPasswd;
-
         /// <summary>
         /// Set user for <see cref="Proxy"/>> option.
         /// </summary>

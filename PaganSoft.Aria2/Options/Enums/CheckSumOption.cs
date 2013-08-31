@@ -1,4 +1,4 @@
-namespace PaganSoft.Aria2.Options.Enums
+namespace Pagansoft.Aria2.Options.Enums
 {
     public struct CheckSumOption
     {

@@ -1,5 +1,4 @@
-using System;
-using PaganSoft.Aria2.XmlRpc;
+using Pagansoft.Aria2.XmlRpc;
 
 namespace PaganSoft.HLTVDownloader
 {

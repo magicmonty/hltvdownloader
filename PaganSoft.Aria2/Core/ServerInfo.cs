@@ -1,6 +1,6 @@
 using System;
 
-namespace PaganSoft.Aria2.Core
+namespace Pagansoft.Aria2.Core
 {
     public struct ServerInfo
     {
@@ -8,5 +8,4 @@ namespace PaganSoft.Aria2.Core
         public Uri CurrentUri;
         public long DownloadSpeed;
     }
-    
 }

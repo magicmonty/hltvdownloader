@@ -1,8 +1,7 @@
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.Aria2.XmlRpc
+namespace Pagansoft.Aria2.XmlRpc
 {
-
     [XmlRpcMissingMapping(MappingAction.Ignore)]
     public struct Options
     {
@@ -319,5 +318,4 @@ namespace PaganSoft.Aria2.XmlRpc
         public string
             UserAgent;
     }
-    
 }

@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{981868A9-275A-4139-8DC7-13CEFCC13BAA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>PaganSoft.Aria2</RootNamespace>
-    <AssemblyName>PaganSoft.Aria2</AssemblyName>
+    <RootNamespace>Pagansoft.Aria2</RootNamespace>
+    <AssemblyName>Pagansoft.Aria2</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +33,7 @@
     <Reference Include="CookComputing.XmlRpcV2">
       <HintPath>CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,7 +50,6 @@
     <Compile Include="XmlRpc\UriResponse.cs" />
     <Compile Include="XmlRpc\VersionResponse.cs" />
     <Compile Include="XmlRpc\IAria2c.cs" />
-    <Compile Include="IAria2.cs" />
     <Compile Include="Options\BitTorrentOptions.cs" />
     <Compile Include="Options\FtpOptions.cs" />
     <Compile Include="Options\HttpOptions.cs" />
@@ -63,7 +63,6 @@
     <Compile Include="Options\Enums\ProtocolOption.cs" />
     <Compile Include="Options\Enums\ProxyMethodOption.cs" />
     <Compile Include="Options\Enums\URISelectorOption.cs" />
-    <Compile Include="Core\GID.cs" />
     <Compile Include="Core\FileInfo.cs" />
     <Compile Include="Core\BitTorrentInfo.cs" />
     <Compile Include="Core\GlobalStats.cs" />
@@ -90,5 +89,11 @@
     <Folder Include="Options\" />
     <Folder Include="Options\Enums\" />
     <Folder Include="Core\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj">
+      <Project>{1B6E9A56-71A9-4580-8243-7B498B39DF56}</Project>
+      <Name>Pagansoft.Aria2.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

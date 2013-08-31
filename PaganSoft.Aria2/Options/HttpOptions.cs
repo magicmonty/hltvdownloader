@@ -1,4 +1,4 @@
-namespace PaganSoft.Aria2.Options
+namespace Pagansoft.Aria2.Options
 {
     /// <summary>
     /// Encapsulated HTTP specific options
@@ -12,7 +12,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool AcceptGzip;
-
         /// <summary>
         /// Send HTTP authorization header only when it is requested by the server. 
         /// If false is set, then authorization header is always sent to the server. 
@@ -21,7 +20,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool AuthChallenge;
-
         /// <summary>
         /// Send Cache-Control: no-cache and Pragma: no-cache header to avoid cached 
         /// content. 
@@ -31,12 +29,10 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool NoCache;
-
         /// <summary>
         /// Set HTTP password. This affects all URIs.
         /// </summary>
         public string Passwd;
-
         /// <summary>
         /// Use this proxy server for HTTP. 
         /// To erase previously defined proxy, use "". 
@@ -45,17 +41,14 @@ namespace PaganSoft.Aria2.Options
         /// The format is [http://][USER:PASSWORD@]HOST[:PORT]
         /// </summary>
         public string Proxy;
-
         /// <summary>
         /// Set password for <see cref="Proxy"/> option.
         /// </summary>
         public string ProxyPasswd;
-
         /// <summary>
         /// Set user for <see cref="Proxy"/> option.
         /// </summary>
         public string ProxyUser;
-
         /// <summary>
         /// Set HTTP user. This affects all URIs.
         /// </summary>

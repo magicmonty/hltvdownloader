@@ -1,6 +1,4 @@
-using System;
-
-namespace PaganSoft.Aria2.Core
+namespace Pagansoft.Aria2.Core
 {
     public class GID
     {
@@ -10,6 +8,7 @@ namespace PaganSoft.Aria2.Core
         }
 
         public string Value { get { return _value; } }
+
         private readonly string _value;
 
         public override bool Equals(object obj)
@@ -47,12 +46,11 @@ namespace PaganSoft.Aria2.Core
             return (object)gid1 != (object)null && (object)gid2 != (object)null
                 && gid1.Value == gid2.Value;
         }
-        
+
         public static bool operator !=(GID gid1, GID gid2)
         {
             return (object)gid1 == (object)null || (object)gid2 == (object)null
                 || gid1.Value != gid2.Value;
         }
     };
-    
 }

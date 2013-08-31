@@ -1,6 +1,6 @@
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.Aria2.XmlRpc
+namespace Pagansoft.Aria2.XmlRpc
 {
     public struct InfoResponse
     {
@@ -8,5 +8,4 @@ namespace PaganSoft.Aria2.XmlRpc
         public string
             Name;
     }
-    
 }

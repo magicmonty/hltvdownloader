@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using PaganSoft.Aria2.Options.Enums;
+using Pagansoft.Aria2.Options.Enums;
 
-namespace PaganSoft.Aria2.Options
+namespace Pagansoft.Aria2.Options
 {
     public struct BitTorrentOptions
     {
@@ -11,7 +11,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool EnableLpd;
-
         /// <summary>
         /// List of BitTorrent tracker's announce URI to remove. 
         /// You can use special value * which matches all URIs, thus removes 
@@ -19,14 +18,12 @@ namespace PaganSoft.Aria2.Options
         /// don't forget to escape or quote it. <seealso cref="Tracker"/> option.
         /// </summary>
         public IEnumerable<string> ExcludeTracker;
-
         /// <summary>
         /// Specify the external IP address to report to a BitTorrent tracker. 
         /// Although this function is named external, it can accept any kind 
         /// of IP addresses. IPADDRESS must be a numeric IP address.
         /// </summary>
         public string ExternalIp;
-
         /// <summary>
         /// If true is given, after hash check using <see cref="Options.CheckIntegrity"/> 
         /// option and file is complete, continue to seed file. If you want to check file 
@@ -35,13 +32,11 @@ namespace PaganSoft.Aria2.Options
         /// Default: true
         /// </summary>
         public string HashCheckSeed;
-
         /// <summary>
         /// Specify maximum number of files to open in each BitTorrent download. 
         /// Default: 100
         /// </summary>
         public int MaxOpenFiles;
-
         /// <summary>
         /// Specify the maximum number of peers per torrent. 
         /// 0 means unlimited. 
@@ -49,7 +44,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: 55
         /// </summary>
         public int MaxPeers;
-
         /// <summary>
         /// Download metadata only. 
         /// The file(s) described in metadata will not be downloaded. 
@@ -58,7 +52,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool MetadataOnly;
-
         /// <summary>
         /// Set minimum level of encryption method. 
         /// If several encryption methods are provided by a peer, 
@@ -66,7 +59,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: plain
         /// </summary>
         public BitTorrentCryptoLevelOption MinCryptoLevel;
-
         /// <summary>
         /// Try to download first and last pieces of each file first. 
         /// This is useful for previewing files. 
@@ -80,7 +72,6 @@ namespace PaganSoft.Aria2.Options
         /// If SIZE is omitted, SIZE=1M is used.
         /// </summary>
         public string PrioritizePiece;
-
         /// <summary>
         /// Removes the unselected files when download is completed in BitTorrent. 
         /// To select files, use <see cref="Options.SelectFile"/> option. 
@@ -90,7 +81,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool RemoveUnselectedFile;
-
         /// <summary>
         /// If the whole download speed of every torrent is lower than SPEED, 
         /// aria2 temporarily increases the number of peers to try for more 
@@ -101,7 +91,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: 50K
         /// </summary>
         public long RequestPeerSpeedLimit;
-
         /// <summary>
         /// If true is given, aria2 doesn't accept and establish connection with legacy 
         /// BitTorrent handshake(19BitTorrent protocol). 
@@ -109,7 +98,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool RequireCrypto;
-
         /// <summary>
         /// Save metadata as ".torrent" file. This option has effect 
         /// only when BitTorrent Magnet URI is used. The filename is hex 
@@ -120,13 +108,11 @@ namespace PaganSoft.Aria2.Options
         /// Default: false
         /// </summary>
         public bool SaveMetadata;
-
         /// <summary>
         /// Seed previously downloaded files without verifying piece hashes. 
         /// Default: false
         /// </summary>
         public bool SeedUnverified;
-
         /// <summary>
         /// Stop BitTorrent download if download speed is 0 in 
         /// consecutive SEC seconds. 
@@ -134,14 +120,12 @@ namespace PaganSoft.Aria2.Options
         /// Default: 0
         /// </summary>
         public int StopTimeout;
-
         /// <summary>
         /// List of additional BitTorrent tracker's announce URI. 
         /// These URIs are not affected by <see cref="ExcludeTracker"/>≈ option because 
         /// they are added after URIs in <see cref="ExcludeTracker"/> option are removed.
         /// </summary>
         public IEnumerable<string> Tracker;
-
         /// <summary>
         /// Set the connect timeout in seconds to establish connection to tracker. 
         /// After the connection is established, this option makes no effect and 
@@ -149,7 +133,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: 60
         /// </summary>
         public int TrackerConnectTimeout;
-
         /// <summary>
         /// Set the interval in seconds between tracker requests. 
         /// This completely overrides interval value and aria2 just 
@@ -160,7 +143,6 @@ namespace PaganSoft.Aria2.Options
         /// Default: 0
         /// </summary>
         public int TrackerInterval;
-
         /// <summary>
         /// Set timeout in seconds. 
         /// Default: 60

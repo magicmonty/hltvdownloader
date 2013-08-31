@@ -1,8 +1,7 @@
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.Aria2.XmlRpc
+namespace Pagansoft.Aria2.XmlRpc
 {
-
     public struct FileResponse
     {
         [XmlRpcMember("index")]
@@ -24,5 +23,4 @@ namespace PaganSoft.Aria2.XmlRpc
         public UriResponse[]
             Uris;
     }
-    
 }

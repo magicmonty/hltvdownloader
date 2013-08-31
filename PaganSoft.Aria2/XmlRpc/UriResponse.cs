@@ -1,6 +1,6 @@
 using CookComputing.XmlRpc;
 
-namespace PaganSoft.Aria2.XmlRpc
+namespace Pagansoft.Aria2.XmlRpc
 {
     public struct UriResponse
     {
@@ -11,5 +11,4 @@ namespace PaganSoft.Aria2.XmlRpc
         public string
             Status;
     }
-    
 }

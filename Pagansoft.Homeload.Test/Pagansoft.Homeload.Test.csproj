@@ -34,6 +34,7 @@
     <Reference Include="nunit.framework">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -47,5 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\LinkListItemTest.cs" />
+    <Compile Include="Core\LinkListTest.cs" />
   </ItemGroup>
 </Project>

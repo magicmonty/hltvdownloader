@@ -19,6 +19,16 @@ namespace Pagansoft.Homeload.Core
         public string Url { get; private set; }
 
         public string Id { get; private set; }
+
+        public static LinkListItem Parse(string response)
+        {
+            var parts = response.Split(';');
+            if (parts.Length >= 2) {
+                return new LinkListItem(parts[0], parts[1]);
+            }
+
+            return null;
+        }
     }
 }
 

@@ -49,6 +49,21 @@ namespace Pagansoft.Homeload.Core
         {
             new LinkListItem(url: "http://www.google.de", id: "  ");
         }
+
+        [Test]
+        public void ShouldParseCorrectly()
+        {
+            var actual = LinkListItem.Parse("http://81.95.11.6/download/de/Sandmaennchen.avi;11272262;");
+            Assert.That(actual.Id, Is.EqualTo("11272262"));
+            Assert.That(actual.Url, Is.EqualTo("http://81.95.11.6/download/de/Sandmaennchen.avi"));
+        }
+
+        [Test]
+        public void ShouldReturnNullOnParseError()
+        {
+            var actual = LinkListItem.Parse("http://81.95.11.6/download/de/Sandmaennchen.avi");
+            Assert.That(actual, Is.Null);
+        }
     }
 }
 

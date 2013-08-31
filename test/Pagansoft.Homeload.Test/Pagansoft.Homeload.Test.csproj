@@ -34,6 +34,9 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="Moq">
+      <HintPath>..\..\libs\Moq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -48,5 +51,7 @@
   <ItemGroup>
     <Compile Include="Core\LinkListItemTest.cs" />
     <Compile Include="Core\LinkListTest.cs" />
+    <Compile Include="Core\ApiTest.cs" />
+    <Compile Include="Core\UrlBuilderTest.cs" />
   </ItemGroup>
 </Project>

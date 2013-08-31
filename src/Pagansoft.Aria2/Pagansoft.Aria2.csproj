@@ -30,10 +30,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="CookComputing.XmlRpcV2">
-      <HintPath>CookComputing.XmlRpcV2.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="CookComputing.XmlRpcV2">
+      <HintPath>..\..\libs\CookComputing.XmlRpcV2.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,16 +67,6 @@
     <Compile Include="Options\AriaOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <None Include="CookComputing.XmlRpcV2.dll">
-      <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="aria2c">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="Options\" />
     <Folder Include="Options\Enums\" />

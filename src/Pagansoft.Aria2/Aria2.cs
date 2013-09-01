@@ -194,10 +194,9 @@ namespace Pagansoft.Aria2
             return proxy.ChangeUri(gid, fileIndex, delUris.ToArray(), addUris.ToArray(), position);
         }
 
-        public IAriaOptions GetOption(string gid)
+        public IDictionary<string, string> GetOption(string gid)
         {
-            return null;
-            // return proxy.GetOption(gid);
+            return proxy.GetOption(gid);
         }
 
         public bool ChangeOption(string gid, IAriaOptions options)

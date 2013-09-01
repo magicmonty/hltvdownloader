@@ -3,7 +3,7 @@ namespace Pagansoft.Aria2.Options
     /// <summary>
     /// Encapsulates HTTPS specific options
     /// </summary>
-    public struct HttpsOptions
+    public class HttpsOptions : IHttpsOptions
     {
         /// <summary>
         /// Use this proxy server for HTTPS. 
@@ -12,14 +12,16 @@ namespace Pagansoft.Aria2.Options
         /// This affects all URIs. 
         /// The is [http://][USER:PASSWORD@]HOST[:PORT]
         /// </summary>
-        public string Proxy;
+        public string Proxy { get; set; }
+
         /// <summary>
         /// Set password for <see cref="Proxy"/>> option.
         /// </summary>
-        public string ProxyPasswd;
+        public string ProxyPasswd { get; set; }
+
         /// <summary>
         /// Set user for <see cref="Proxy"/>> option.
         /// </summary>
-        public string ProxyUser;
+        public string ProxyUser { get; set; }
     }
 }

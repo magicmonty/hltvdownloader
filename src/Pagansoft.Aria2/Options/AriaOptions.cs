@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using Pagansoft.Aria2.Options.Enums;
+using System;
+using System.Linq;
+using Pagansoft.Aria2.Extensions;
 
 namespace Pagansoft.Aria2.Options
 {
@@ -10,8 +13,138 @@ namespace Pagansoft.Aria2.Options
     {
         public static AriaOptions From(XmlRpc.Options response)
         {
-            return new AriaOptions {
+            var indexOut = (response.IndexOut ?? string.Empty).Split(',').Select(i => 
+            {
+                var s = i.Split('=');
+                try {
+                    if (s.Length == 2) {
+                        var key = int.Parse(s[0]);
+                        var value = s[1];
+                        return new KeyValuePair<int, string>(key, value);
+                    }
+                }
+                catch {
+                }
 
+                return new KeyValuePair<int, string>(-1, string.Empty);
+            }).Where(i => i.Key != -1 || !string.IsNullOrEmpty(i.Value));
+
+           
+            return new AriaOptions {
+                AllProxy = response.AllProxy,
+                AllProxyPasswd = response.AllProxyPasswd,
+                AllProxyUser = response.AllProxyUser,
+                AllowOverwrite = response.AllowOverwrite.AsBoolean(),
+                AllowPieceLengthChange = response.AllowPieceLengthChange.AsBoolean(),
+                AlwaysResume = response.AlwaysResume.AsBoolean(),
+                AsyncDns = response.AsyncDns.AsBoolean(),
+                AutoFileRenaming = response.AutoFileRenaming.AsBoolean(),
+                BitTorrent = new BitTorrentOptions {
+                    EnableLpd = response.BtEnableLpd.AsBoolean(),
+                    ExcludeTracker = response.BtExcludeTracker.AsEnumerable(),
+                    ExternalIp = response.BtExternalIp,
+                    HashCheckSeed = response.BtHashCheckSeed,
+                    MaxOpenFiles = response.BtMaxOpenFiles.AsInt(),
+                    MaxPeers = response.BtMaxPeers.AsInt(),
+                    MetadataOnly = response.BtMetadataOnly.AsBoolean(),
+                    MinCryptoLevel = response.BtMinCryptoLevel.AsEnum<BitTorrentCryptoLevelOption>(BitTorrentCryptoLevelOption.Plain),
+                    PrioritizePiece = response.BtPrioritizePiece,
+                    RemoveUnselectedFile = response.BtRemoveUnselectedFile.AsBoolean(),
+                    RequestPeerSpeedLimit = response.BtRequestPeerSpeedLimit.AsLong(),
+                    RequireCrypto = response.BtRequireCrypto.AsBoolean(),
+                    SaveMetadata = response.BtSaveMetadata.AsBoolean(),
+                    SeedUnverified = response.BtSeedUnverified.AsBoolean(),
+                    StopTimeout = response.BtStopTimeout.AsInt(),
+                    Tracker = response.BtTracker.AsEnumerable(),
+                    TrackerConnectTimeout = response.BtTrackerConnectTimeout.AsInt(),
+                    TrackerInterval = response.BtTrackerInterval.AsInt(),
+                    TrackerTimeout = response.BtTrackerTimeout.AsInt()
+                },
+                CheckIntegrity = response.CheckIntegrity.AsBoolean(),
+                Checksum = CheckSumOption.From(response.Checksum),
+                ConditionalGet = response.ConditionalGet.AsBoolean(),
+                ConnectTimeout = response.ConnectTimeout.AsInt(),
+                Continue = response.Continue.AsBoolean(),
+                Dir = response.Dir,
+                DryRun = response.DryRun.AsBoolean(),
+                EnableAsyncDns6 = response.EnableAsyncDns6.AsBoolean(),
+                EnableHttpKeepAlive = response.EnableHttpKeepAlive.AsBoolean(),
+                EnableHttpPipelining = response.EnableHttpPipelining.AsBoolean(),
+                EnableMmap = response.EnableMmap.AsBoolean(),
+                EnablePeerExchange = response.EnablePeerExchange.AsBoolean(),
+                FileAllocation = response.FileAllocation.AsEnum<FileAllocationOption>(FileAllocationOption.Prealloc),
+                FollowMetalink = response.FollowMetalink.AsEnum<FollowOption>(FollowOption.True),
+                FollowTorrent = response.FollowTorrent.AsEnum<FollowOption>(FollowOption.True),
+                ForceSave = response.ForceSave.AsBoolean(),
+                Ftp = new FtpOptions {
+                    Passwd = response.FtpPasswd,
+                    Pasv = response.FtpPasv.AsBoolean(),
+                    Proxy = response.FtpProxy,
+                    ProxyPasswd = response.FtpProxyPasswd,
+                    ProxyUser = response.FtpProxyUser,
+                    ReuseConnection = response.FtpReuseConnection.AsBoolean(),
+                    TransferType = response.FtpType.AsEnum<FtpTransferTypeOption>(FtpTransferTypeOption.Binary),
+                    User = response.FtpUser
+                },
+                HashCheckOnly = response.HashCheckOnly.AsBoolean(),
+                Header = response.Header.AsEnumerable(),
+                Http = new HttpOptions {
+                    AcceptGzip = response.HttpAcceptGzip.AsBoolean(),
+                    AuthChallenge = response.HttpAuthChallenge.AsBoolean(),
+                    NoCache = response.HttpNoCache.AsBoolean(),
+                    Passwd = response.HttpPasswd,
+                    Proxy = response.HttpProxy,
+                    ProxyPasswd = response.HttpProxyPasswd,
+                    ProxyUser = response.HttpProxyUser,
+                    User = response.HttpUser
+                },
+                Https = new HttpsOptions {
+                    Proxy = response.HttpsProxy,
+                    ProxyPasswd = response.HttpsProxyPasswd,
+                    ProxyUser = response.HttpsProxyUser
+                },
+                IndexOut = indexOut,
+                LowestSpeedLimit = response.LowestSpeedLimit.AsLong(),
+                MaxConnectionPerServer = response.MaxConnectionPerServer.AsInt(),
+                MaxDownloadLimit = response.MaxDownloadLimit.AsLong(),
+                MaxFileNotFound = response.MaxFileNotFound.AsInt(),
+                MaxResumeFailureTries = response.MaxResumeFailureTries,
+                MaxTries = response.MaxTries.AsInt(),
+                MaxUploadLimit = response.MaxUploadLimit.AsLong(),
+                Metalink = new MetaLinkOptions {
+                    BaseUri = response.MetalinkBaseUri,
+                    EnableUniqueProtocol = response.MetalinkEnableUniqueProtocol.AsBoolean(),
+                    Language = response.MetalinkLanguage,
+                    Location = response.MetalinkLocation,
+                    Os = response.MetalinkOs,
+                    PreferredProtocol = response.MetalinkPreferredProtocol.AsEnum<ProtocolOption>(ProtocolOption.Http),
+                    Version = response.MetalinkVersion
+                },
+                MinSplitSize = response.MinSplitSize.AsLong(),
+                NoFileAllocationLimit = response.NoFileAllocationLimit.AsLong(),
+                NoNetrc = response.NoNetrc.AsBoolean(),
+                NoProxy = response.NoProxy.AsEnumerable(),
+                Out = response.Out,
+                ParameterizedUri = response.ParameterizedUri.AsBoolean(),
+                Pause = response.Pause.AsBoolean(),
+                PieceLength = response.PieceLength.AsLong(),
+                ProxyMethod = response.ProxyMethod.AsEnum<ProxyMethodOption>(ProxyMethodOption.Get),
+                RealtimeChunkChecksum = response.RealtimeChunkChecksum.AsBoolean(),
+                Referer = response.Referer,
+                RemoteTime = response.RemoteTime.AsBoolean(),
+                RemoveControlFile = response.RemoveControlFile.AsBoolean(),
+                RetryWait = response.RetryWait.AsInt(),
+                ReuseUri = response.ReuseUri.AsBoolean(),
+                RpcSaveUploadMetadata = response.RpcSaveUploadMetadata.AsBoolean(),
+                SeedRatio = response.SeedRatio.AsDouble(),
+                SeedTime = response.SeedTime.AsInt(),
+                SelectFile = response.SelectFile,
+                Split = response.Split.AsInt(),
+                StreamPieceSelector = response.StreamPieceSelector,
+                Timeout = response.Timeout.AsInt(),
+                UriSelector = response.UriSelector.AsEnum<URISelectorOption>(URISelectorOption.Adaptive),
+                UseHead = response.UseHead.AsBoolean(),
+                UserAgent = response.UserAgent
             };
         }
 
@@ -271,7 +404,7 @@ namespace Pagansoft.Aria2.Options
         /// You can use this option multiple times. 
         /// Using this option, you can specify the output filenames of BitTorrent downloads.
         /// </summary>
-        public IEnumerable<IDictionary<int, string>> IndexOut { get; set; }
+        public IEnumerable<KeyValuePair<int, string>> IndexOut { get; set; }
 
         /// <summary>
         /// lose connection if download speed is lower than or 

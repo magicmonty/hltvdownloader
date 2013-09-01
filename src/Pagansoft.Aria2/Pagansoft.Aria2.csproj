@@ -67,12 +67,15 @@
     <Compile Include="Core\StatusInfo.cs" />
     <Compile Include="Options\AriaOptions.cs" />
     <Compile Include="Aria2.cs" />
+    <Compile Include="Options\CheckSumOption.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Options\" />
     <Folder Include="Options\Enums\" />
     <Folder Include="Core\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj">

@@ -58,7 +58,6 @@
     <Compile Include="Options\IHttpOptions.cs" />
     <Compile Include="Options\IHttpsOptions.cs" />
     <Compile Include="Options\ICheckSumOption.cs" />
-    <Compile Include="Options\Enums\CheckSumOption.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />

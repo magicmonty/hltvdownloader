@@ -80,7 +80,7 @@ namespace Pagansoft.Aria2
                         IEnumerable<string> addUris, 
                         int position);
 
-        IAriaOptions GetOption(string gid);
+        IDictionary<string, string> GetOption(string gid);
 
         bool ChangeOption(string gid, IAriaOptions options);
 

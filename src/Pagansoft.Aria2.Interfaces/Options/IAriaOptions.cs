@@ -264,7 +264,7 @@ namespace Pagansoft.Aria2.Options
         /// You can use this option multiple times. 
         /// Using this option, you can specify the output filenames of BitTorrent downloads.
         /// </summary>
-        IEnumerable<IDictionary<int, string>> IndexOut{ get; set; }
+        IEnumerable<KeyValuePair<int, string>> IndexOut{ get; set; }
 
         /// <summary>
         /// lose connection if download speed is lower than or 

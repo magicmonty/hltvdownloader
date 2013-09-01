@@ -20,6 +20,10 @@ namespace PaganSoft.HLTVDownloader
              * var stat = aria2.GetGlobalStat();
              * aria2.Remove("e97e37");
              */
+            var aria2 = new Aria2();
+            Console.Out.WriteLine(aria2);
+            var options = aria2.GetGlobalOption();
+            Console.Out.WriteLine(options.MaxConnectionPerServer);
         }
     }
 }

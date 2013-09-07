@@ -101,14 +101,14 @@ namespace Pagansoft.Aria2
             return proxy.AddUri(uris.Select(u => u.ToString()).ToArray());
         }
 
-        public GID AddUri(IEnumerable<Uri> uris, IAriaOptions options)
+        public GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options)
         {
-            return proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), XmlRpc.Options.From(options));
+            return proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), options);
         }
 
-        public GID AddUri(IEnumerable<Uri> uris, IAriaOptions options, int position)
+        public GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options, int position)
         {
-            return proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), XmlRpc.Options.From(options), position);
+            return proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), options, position);
         }
 
         public GID AddTorrent(byte[] torrent)
@@ -121,14 +121,14 @@ namespace Pagansoft.Aria2
             return proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray());
         }
 
-        public GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IAriaOptions options)
+        public GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options)
         {
-            return proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), XmlRpc.Options.From(options));
+            return proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), options);
         }
 
-        public GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IAriaOptions options, int position)
+        public GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options, int position)
         {
-            return proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), XmlRpc.Options.From(options), position);
+            return proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), options, position);
         }
 
         public GID AddMetalink(byte[] metalink)
@@ -136,14 +136,14 @@ namespace Pagansoft.Aria2
             return proxy.AddMetalink(metalink);
         }
 
-        public GID AddMetalink(byte[] metalink, IAriaOptions options)
+        public GID AddMetalink(byte[] metalink, IDictionary<string, string> options)
         {
-            return proxy.AddMetalink(metalink, XmlRpc.Options.From(options));
+            return proxy.AddMetalink(metalink, options);
         }
 
-        public GID AddMetalink(byte[] metalink, IAriaOptions options, int position)
+        public GID AddMetalink(byte[] metalink, IDictionary<string, string> options, int position)
         {
-            return proxy.AddMetalink(metalink, XmlRpc.Options.From(options), position);
+            return proxy.AddMetalink(metalink, options, position);
         }
 
         public GID Remove(string gid)
@@ -278,9 +278,9 @@ namespace Pagansoft.Aria2
             return proxy.GetOption(gid);
         }
 
-        public bool ChangeOption(string gid, IAriaOptions options)
+        public bool ChangeOption(string gid, IDictionary<string, string> options)
         {
-            return proxy.ChangeOption(gid, XmlRpc.Options.From(options)) == "OK";
+            return proxy.ChangeOption(gid, options) == "OK";
         }
 
         public IAriaOptions GetGlobalOption()

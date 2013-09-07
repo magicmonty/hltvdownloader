@@ -11,10 +11,10 @@ namespace Pagansoft.Aria2.XmlRpc
         string AddUri(string[] uris);
 
         [XmlRpcMethod("aria2.addUri")]
-        string AddUri(string[] uris, Options options);
+        string AddUri(string[] uris, IDictionary<string, string> options);
 
         [XmlRpcMethod("aria2.addUri")]
-        string AddUri(string[] uris, Options options, int position);
+        string AddUri(string[] uris, IDictionary<string, string> options, int position);
 
         [XmlRpcMethod("aria2.addTorrent")]
         string AddTorrent(byte[] torrent);
@@ -23,19 +23,19 @@ namespace Pagansoft.Aria2.XmlRpc
         string AddTorrent(byte[] torrent, string[] uris);
 
         [XmlRpcMethod("aria2.addTorrent")]
-        string AddTorrent(byte[] torrent, string[] uris, Options options);
+        string AddTorrent(byte[] torrent, string[] uris, IDictionary<string, string> options);
 
         [XmlRpcMethod("aria2.addTorrent")]
-        string AddTorrent(byte[] torrent, string[] uris, Options options, int position);
+        string AddTorrent(byte[] torrent, string[] uris, IDictionary<string, string> options, int position);
 
         [XmlRpcMethod("aria2.addMetalink")]
         string AddMetalink(byte[] metalink);
 
         [XmlRpcMethod("aria2.addMetalink")]
-        string AddMetalink(byte[] metalink, Options options);
+        string AddMetalink(byte[] metalink, IDictionary<string, string> options);
 
         [XmlRpcMethod("aria2.addMetalink")]
-        string AddMetalink(byte[] metalink, Options options, int position);
+        string AddMetalink(byte[] metalink, IDictionary<string, string> options, int position);
 
         [XmlRpcMethod("aria2.remove")]
         string Remove(string gid);
@@ -110,7 +110,7 @@ namespace Pagansoft.Aria2.XmlRpc
         IDictionary<string, string> GetOption(string gid);
 
         [XmlRpcMethod("aria2.changeOption")]
-        string ChangeOption(string gid, Options options);
+        string ChangeOption(string gid, IDictionary<string, string> options);
 
         [XmlRpcMethod("aria2.getGlobalOption")]
         Options GetGlobalOption();

@@ -13,23 +13,23 @@ namespace Pagansoft.Aria2
 
         GID AddUri(IEnumerable<Uri> uris);
 
-        GID AddUri(IEnumerable<Uri> uris, IAriaOptions options);
+        GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options);
 
-        GID AddUri(IEnumerable<Uri> uris, IAriaOptions options, int position);
+        GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options, int position);
 
         GID AddTorrent(byte[] torrent);
 
         GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris);
 
-        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IAriaOptions options);
+        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options);
 
-        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IAriaOptions options, int position);
+        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options, int position);
 
         GID AddMetalink(byte[] metalink);
 
-        GID AddMetalink(byte[] metalink, IAriaOptions options);
+        GID AddMetalink(byte[] metalink, IDictionary<string, string> options);
 
-        GID AddMetalink(byte[] metalink, IAriaOptions options, int position);
+        GID AddMetalink(byte[] metalink, IDictionary<string, string> options, int position);
 
         GID Remove(string gid);
 
@@ -86,7 +86,7 @@ namespace Pagansoft.Aria2
 
         IDictionary<string, string> GetOption(string gid);
 
-        bool ChangeOption(string gid, IAriaOptions options);
+        bool ChangeOption(string gid, IDictionary<string, string> options);
 
         IAriaOptions GetGlobalOption();
 

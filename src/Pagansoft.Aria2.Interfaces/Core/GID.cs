@@ -1,10 +1,16 @@
+using System.Text.RegularExpressions;
+using System;
+
 namespace Pagansoft.Aria2.Core
 {
     public class GID
     {
         public GID(string value)
         {
-            _value = value;
+            if (string.IsNullOrEmpty(value) || !Regex.IsMatch(value, "^[0-9a-fA-F]{1,16}$"))
+                throw new ArgumentException("GID must be a hex string of max 16 chars!");
+
+            _value = value.PadLeft(16, '0');
         }
 
         public string Value { get { return _value; } }
@@ -15,6 +21,11 @@ namespace Pagansoft.Aria2.Core
         {
             var other = obj as GID;
             if ((object)null != (object)other) {
+                return Value == other.Value;
+            }
+
+            if (obj is string) {
+                other = new GID((string)obj);
                 return Value == other.Value;
             }
 

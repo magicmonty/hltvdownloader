@@ -2,24 +2,93 @@ using Pagansoft.Aria2.XmlRpc;
 using Pagansoft.Aria2;
 using System;
 using System.Threading;
+using System.Linq;
+using Pagansoft.Homeload.Core;
 
 namespace PaganSoft.HLTVDownloader
 {
     class MainClass
     {
+        private static Bootstrapper _bootstrapper;
+
+        public MainClass()
+        {
+            _bootstrapper = new Bootstrapper();
+        }
+
         public static void Main(string[] args)
         {
-            /* 
-             * 1. Prüfen ob Aria läuft
-             * 2. Wenn nicht, dann Aria starten
-             */
-            var aria = new Aria2();
+            _bootstrapper.Initialize();
+           
+            if (args.Any(a => a == "--completed"))
+            {
+                HandleCompleted(args);
+                return;
+            }
+
+            if (args.Any(a => a == "--error"))
+            {
+                HandleError(args);
+                return;
+            }
+
+            var aria = _bootstrapper.GetExport<IAria2>();
 
             if (!aria.Start())
                 return;
 
             Console.Out.WriteLine("Aria2 is up and running");
-            aria.ForceShutdown();
+            /*
+             * 1. Send Request to Homeload with &proctonew=true (only on first request)
+             * 2. SetProcessing <LISTID>
+             * 3. Save all LinkIds with current ListId 
+             * 4. Send All URLs from LinkList to Aria with explicit GID
+             * 
+             * 5. Repeat From 1 every <INTERVAL> minutes
+             */
+        }
+
+        static void HandleCompleted(string[] args)
+        {
+            var ariaArgs = args.SkipWhile(a => a != "--completed")
+                               .Skip(1)
+                               .ToList();
+            if (ariaArgs.Count == 3)
+            {
+                var hltv = _bootstrapper.GetExport<IHltvApi>();
+                var storage = _bootstrapper.GetExport<ILinkIdModel>();
+
+                var linkId = args[0];
+                var listId = storage.GetListIdByLinkId(linkId);
+
+                var task = hltv.SetState(listId, linkId, LinkState.Finished);
+                task.Wait();
+
+                if (task.Result)
+                    storage.RemoveLinkId(linkId);
+            }
+        }
+
+        static void HandleError(string[] args)
+        {
+            var ariaArgs = args.SkipWhile(a => a != "--error")
+                               .Skip(1)
+                               .ToList();
+
+            if (ariaArgs.Count == 3)
+            {
+                var hltv = _bootstrapper.GetExport<IHltvApi>();
+                var storage = _bootstrapper.GetExport<ILinkIdModel>();
+
+                var linkId = args[0];
+                var listId = storage.GetListIdByLinkId(linkId);
+
+                var task = hltv.SetError(listId, linkId);
+                task.Wait();
+
+                if (task.Result)
+                    storage.RemoveLinkId(linkId);
+            }
         }
     }
 }

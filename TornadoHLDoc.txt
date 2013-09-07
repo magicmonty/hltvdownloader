@@ -1,0 +1,99 @@
+Client sendet regelmäßig die Anfragen (Requests) an den Server mit einem Intervall mindestens 10 Minuten, um Links abzuholen:
+http://www.homeloadtv.com/api/?do=getlinks&uid=HL-userId or OTR-e-mail&password=OTR-userPassword(md5)&limit=30&proctonew=true&onlyhh=true&upload=true&clientid=random number
+
+Limit bedeutet die Anzahl der Links, die gesandt werden sollen. Der Parameter &proctonew=true wird nur einmalig anfangs einer Download Session geschickt. Kann aber auch geschickt werden, wenn der Client keine Links zum Downloaden hat. Dabei werden alle Links aus dem Bereich "Aktiv" in den Bereich "Neu" verschoben. Der Parameter &onlyhh=true bedeutet, dass die Downloadlinks von OTR-Servern nur innerhalb von Happy Hours an den Client geschickt werden. Der Parameter &upload=true bedeutet, dass der User erlaubt hat, seine Dateien zu uploaden. clientid=random number ist die Id des Client. Die beiden letzten Parameter sind neu.
+
+Response darauf sieht wie folgend aus:
+INTERVAL=15;NUMBER_OF_LINKS=30;LIST=4704;LINKCOUNT=756;HHSTART=2;HHEND=6;
+link;linkId;
+link;linkId;
+............
+link;linkId;
+&upload=true&path=local path&id=file id&
+link;linkId;
+
+INTERVAL - nächste Anfrage soll Client in 15 Minuten senden
+NUMBER_OF_LINKS - die Anzahl von gelieferten Links
+LIST - die List-Id
+LINKCOUNT - die Anzahl der Links auf dem Server, die zum Download bereit stehen
+HHSTART - Anfang von happy hour (Deutsche Zeit, nur Stunden 0-23)
+HHEND - Ende von happy hour (Deutsche Zeit, nur Stunden 0-23)
+Die 30 (NUMBER_OF_LINKS) Links sowie deren Ids werden nach dem Header aufgelistet: (link;linkId;)
+
+Server Error-Meldungen:
+USER_NOT_FOUND - 	User Id nicht gefunden
+WRONG_PASSWORD -	Passwort ist falsch
+NO_NEW_LINKS -		Keine neuen Links auf dem Server
+DB_ERROR -			Datenbank-Fehler (bzw. Server-Fehler) 
+
+Nach dem Emfang einer Linklist sendet Client sofort eine Rückmeldung an den Server mit der List-Id:
+http://www.homeloadtv.com/api/?do=setstate&uid=HL-usedId or OTR-e-mail&list=listId&state=processing
+
+Alle Links aus der Linklist werden in Bereich "Aktiv" verschoben. Der Download beginnt.
+
+Nach dem Download jeder Datei sendet Client eine Nachricht mit einer Fehler- oder Erfolgsmeldung an den Server, damit die Links auf dem Server in einen entsprechenden Bereich verschoben werden. Anderenfalls wären die Links immer im Bereich "Aktiv" geblieben.
+
+http://www.homeloadtv.com/api/?do=setstate&uid=HL-userId or OTR-e-mail&state=finished&filesize=fileSize&id=linkId&error=errorCode&speed=download speed (KBit/s))&gmt=YmdHis&file=fileName(base64)
+
+Dabei werden Informationen wie Dateiname, Dateigröße, Download-Geschwindigkeit, Link-Id und ggf. Fehler-Kürzel mitgesandt. Wenn Fehler-Kürzel leer ist, landet der Link z.B. in den Bereich "Beendet", anderenfalls in den Bereich "Beschädigt". Der Parameter "state" kann einen der drei Werte haben: &state=[processing,new,finished]. Am Ende von Happy Hours wird Download von OTR-Servern abgebrochen, wenn diese Option beim Client aktiviert ist; Dabei werden Parameter &state=new&error=endHH an den Server geschickt.
+
+----------------------------------------------------------------------------------------------------
+Falls die Rückmeldungen über die einzelnen Dateien den Server nicht erreichen, werden diese gespeichert. Beim nächsten Abholen von Links wird immer überprüft, ob die nicht empfangenen Meldungen vorhanden sind. Falls ja werden diese via POST-HTTP an den Server geschickt. Nur wenn der Server sie bekommt, wird der Download starten. Die Anfrage sieht wie folgend aus:
+http://www.homeloadtv.com/api/?do=setgroupstate
+Die einzelnen Meldungen werden in einem String gesammelt (Content der POST-Nachricht) in der Form:
+&url1=base64(rückmeldung)&url2=base64(rückmeldung)...&urln=base64(rückmeldung), wobei n ist die Anzahl der nicht empangenen Rückmeldungen.
+----------------------------------------------------------------------------------------------------
+Errors-Kürzel:
+
+brokenonopen
+brokenonopenex
+brokenonopenbyuser
+openerrorHTTPCode (z.B. openerror403)
+brokenonopendiskfile
+endHH
+outsideHH
+temp
+tempbyuser
+renamed
+double
+doublelink
+queueerror
+streaming (wenn streaming-download nicht unterstützt ist)
+urlincorrect
+idempty
+noaccesstodlfolder
+slow
+...
+[B]temp[/B] - Wenn ein Download abgebrochen wird, bleibt im Download-Verzeichnis eine Datei mit dem Präfix tmp. im Namen übrig. Bekommt der Client diesen Link wieder, wird der Download dieser Datei fortgesetzt. Wird ein Download durch Benutzer abgebrochen, heißt Fehlermeldung - tempbyuser.
+[B]renamed[/B] - Das Programm überprüft Dateien nach dem Download. Beispiel: Client versucht eine Datei zu laden und erhält lediglich eine gif- oder html-Datei mit einem Text über den Link (die Datei). Das Programm hängt an den Dateinamen die korrekte Endung (in diesem Falle .html oder .gif) an.
+[B]slow[/B] - Der Download hängt. Der Client erhält innerhalb eines gewissen Zeitraums kein Byte mehr. 
+[B]brokenonopen[/B] - Der Download wir beim Öffnen eines Links abgebrochen.
+[B]brokenonopenex[/B] - Der Download wir beim Versuch einen Link zu öffnen mit einer Ausnahme abgebrochen.
+[B]double[/B] - Die Datei mit dem gleichen Namen existiert schon im Download-Verzeichnis.
+[B]openerrorHTTPCode[/B] (z.B. openerror403) - HTTP-Code (http://de.wikipedia.org/wiki/HTTP-Statuscode), welchen der Client beim Öffnen eines Links erhält.
+----------------------------------------------------------------------------------------------------
+Absenden der Dateiliste zum Upload:
+
+http://www.homeloadtv.com/api/?do=setuploadfilelist&uid=HL-userId or OTR-e-mail&password=OTR-userPassword(md5)&clientid=random hex. number 32 
+POST
+&url1=base64(&path=relative (or absolute) path&size=file size&hash=&)
+&url2=base64(&path=relative (or absolute) path&size=file size&hash=&)
+...
+&urln=base64(&path=relative (or absolute) path&size=file size&hash=&)
+
+Momentan wird nur ein Ordner freigegeben, sonst sollen die absoluten Pfade mitgeschickt werden. Hash ist die MD5 Hashsumme einer freigegebenen Datei. Momentan wird die Liste erst dann geschickt, wenn eine Datei hoch geladen wird. Diese Liste wird an den Server beim Start des Homeload abgeschicht und jedes Mal, wenn der Client den Server wegen der Download-Fileliste kontaktiert, falls die Änderungen an der Dateistruktur des freigegebenen Ordners vorgenommen wurden.
+----------------------------------------------------------------------------------------------------
+Nur zur Kenntnis, diese Funktionalität wurde abgeschaltet.
+Es gibt auch eine Möglichkeit, die Links eines Freundes herunterzuladen, wenn er das erlaubt.
+
+In diesem Falle wird die Anfrage ohne Passwort aber mit Angabe der Id des Freunds geschickt:
+http://www.homeloadtv.com/api/?do=getlinks&uid=HL-friendId or friend-OTR-e-mail&password=&limit=30&onlyhh=true
+Dazu kommt noch eine mögliche Server Error-Meldung:
+NOT_ALLOWED -		Freund erlaubt keinen Download von seinen Links
+
+Nach dem Emfang einer Linklist sendet Client sofort eine Rückmeldung an den Server mit der List-Id, dies Mal aber mit Angabe der Id des Freunds:
+http://www.homeloadtv.com/api/?do=setstate&uid=HL-friendId or friend-OTR-e-mail&list=listId&state=processing
+
+Nach dem Download jeder Datei sendet Client eine Nachricht mit einer Fehler- oder Erfolgsmeldung an den Server, diesmal aber mit Angabe der Id des Freunds.
+http://www.homeloadtv.com/api/?do=setstate&uid=HL-friendId or friend-OTR-e-mail&state=finished&filesize=fileSize&id=linkId&error=errorCode&speed=download speed (KBit/s)&gmt=YmdHis&file=fileName(base64)
+----------------------------------------------------------------------------------------------------

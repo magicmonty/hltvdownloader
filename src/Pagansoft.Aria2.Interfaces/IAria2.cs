@@ -7,6 +7,10 @@ namespace Pagansoft.Aria2
 {
     public interface IAria2
     {
+        bool IsRunning { get; }
+
+        bool Start();
+
         GID AddUri(IEnumerable<Uri> uris);
 
         GID AddUri(IEnumerable<Uri> uris, IAriaOptions options);

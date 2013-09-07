@@ -5,18 +5,97 @@ using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
+using System.Text;
+using System.IO;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Pagansoft.Aria2
 {
     public class Aria2 : IAria2
     {
         private IAria2c proxy;
+        private const string ProcessName = "aria2c";
 
         public Aria2()
         {
             proxy = XmlRpcProxyGen.Create<IAria2c>();
         }
-        #region IAria2 implementation
+
+        public bool IsRunning {
+            get
+            {
+                return Process.GetProcessesByName(ProcessName).Any();
+            }
+        }
+
+        public bool Start()
+        {
+            if (IsRunning)
+                return true;
+
+            try {
+                var psInfo = new ProcessStartInfo();
+                
+                psInfo.FileName = FindExePath(ProcessName);
+                psInfo.CreateNoWindow = false;
+                
+                var arguments = new List<string>();
+                
+                arguments.Add("--enable-rpc");
+                arguments.Add("--rpc-listen-all");
+                arguments.Add("--retry-wait=30");
+                arguments.Add("--pause");
+                arguments.Add("--dir=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"));
+                arguments.Add("--check-integrity=true"); // Check integrity
+                arguments.Add("--split=1"); // use only one connection per file
+                arguments.Add("--max-concurrent-downloads=10");
+                arguments.Add("--max-connection-per-server=10");
+                
+                psInfo.Arguments = string.Join(" ", arguments);
+                
+                Task.Factory.StartNew(() =>
+                {
+                    var process = Process.Start(psInfo);
+                    process.WaitForExit();
+                });
+
+                Thread.Sleep(200);
+
+                return IsRunning;
+            }
+            catch (FileNotFoundException) {
+                Console.Out.WriteLine("Could not find aria2c in PATH");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Expands environment variables and, if unqualified, locates the exe in the working directory
+        /// or the evironment's path.
+        /// </summary>
+        /// <param name="exe">The name of the executable file</param>
+        /// <returns>The fully-qualified path to the file</returns>
+        /// <exception cref="System.IO.FileNotFoundException">Raised when the exe was not found</exception>
+        public static string FindExePath(string exe)
+        {
+            exe = Environment.ExpandEnvironmentVariables(exe);
+            var pathVar = Environment.GetEnvironmentVariable("PATH") ?? "";
+
+            if (!File.Exists(exe)) {
+                if (Path.GetDirectoryName(exe) == String.Empty) {
+                    foreach (string test in (pathVar.Split(Path.PathSeparator))) {
+                        string path = test.Trim();
+                        if (!String.IsNullOrEmpty(path) && File.Exists(path = Path.Combine(path, exe)))
+                            return Path.GetFullPath(path);
+                    }
+                }
+                throw new FileNotFoundException(new FileNotFoundException().Message, exe);
+            }
+            return Path.GetFullPath(exe);
+        }
+
         public GID AddUri(IEnumerable<Uri> uris)
         {
             return proxy.AddUri(uris.Select(u => u.ToString()).ToArray());
@@ -136,7 +215,7 @@ namespace Pagansoft.Aria2
 
         public IEnumerable<IFileInfo> GetFiles(string gid)
         {
-            return proxy.GetFiles(gid).Select(FileInfo.From);
+            return proxy.GetFiles(gid).Select(Pagansoft.Aria2.Core.FileInfo.From);
         }
 
         public IEnumerable<IPeerInfo> GetPeers(string gid)
@@ -248,7 +327,6 @@ namespace Pagansoft.Aria2
         {
             return proxy.ForceShutdown() == "OK";
         }
-        #endregion
     }
 }
 

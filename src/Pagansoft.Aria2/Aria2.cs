@@ -1,18 +1,19 @@
 using System;
-using Pagansoft.Aria2.XmlRpc;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using CookComputing.XmlRpc;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
-using System.Threading;
+using Pagansoft.Aria2.XmlRpc;
 
 namespace Pagansoft.Aria2
 {
+    [Export(typeof(IAria2))]
     public class Aria2 : IAria2
     {
         private IAria2c proxy;
@@ -36,15 +37,23 @@ namespace Pagansoft.Aria2
                 return true;
 
             try {
+
                 var psInfo = new ProcessStartInfo();
                 
                 psInfo.FileName = FindExePath(ProcessName);
                 psInfo.CreateNoWindow = false;
                 
                 var arguments = new List<string>();
-                
+
+                var sessionFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ".hltv", "aria2.session.gz");
+                var ownPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HLTVDownloader.exe");
+
+                if (File.Exists(sessionFile))
+                    arguments.Add("--input-file" + sessionFile);
+
                 arguments.Add("--enable-rpc");
                 arguments.Add("--rpc-listen-all");
+                arguments.Add("--rpc-listen-port=6800");
                 arguments.Add("--retry-wait=30");
                 arguments.Add("--pause");
                 arguments.Add("--dir=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"));
@@ -52,7 +61,10 @@ namespace Pagansoft.Aria2
                 arguments.Add("--split=1"); // use only one connection per file
                 arguments.Add("--max-concurrent-downloads=10");
                 arguments.Add("--max-connection-per-server=10");
-                
+                arguments.Add("--save-session=" + sessionFile);
+                arguments.Add(@"--on-download-complete=""" + ownPath + @" --completed""");
+                arguments.Add(@"--on-download-error=""" + ownPath + @" --error""");
+
                 psInfo.Arguments = string.Join(" ", arguments);
                 
                 Task.Factory.StartNew(() =>

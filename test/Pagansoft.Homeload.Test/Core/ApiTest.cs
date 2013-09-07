@@ -12,16 +12,22 @@ http://81.95.11.6/download/1811986/1/7875449/805df047b6ed2dd2cfe1cea7a6da49ed/de
 http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de/Unser_Sandmaennchen_13.08.30_18-54_mdr_6_TVOON_DE.mpg.avi;11274936;";
         private const string GetLinksUrl = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99";
         private const string GetLinksUrlProcToNew = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&proctonew=true";
-        private const string SetStateUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&list=listId&state=finished";
+        private const string SetStateUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&list=listId&state=finished&error=";
+        private const string SetErrorUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&list=listId&state=finished&error=brokenonopen";
         private const string SetProcessingUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&list=listId&state=processing";
         private Api _sut;
         private Mock<IHLTCHttpService> _httpService;
+        private Mock<IConfiguration> _configuration;
 
         [SetUp]
         public void SetUp()
         {
             _httpService = new Mock<IHLTCHttpService>();
-            _sut = new Api(_httpService.Object, new UrlBuilder("user", "password"));
+            _configuration = new Mock<IConfiguration>();
+            _configuration.Setup(c => c.HltvUserName).Returns("user");
+            _configuration.Setup(c => c.HltvPassword).Returns("password");
+
+            _sut = new Api(_httpService.Object, new UrlBuilder(_configuration.Object));
         }
 
         [Test]
@@ -80,6 +86,22 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                         .Verifiable();
 
             var task = _sut.SetState("linkId", "listId", LinkState.Finished);
+
+            task.Wait();
+
+            var actual = task.Result;
+            _httpService.Verify();
+            Assert.That(actual, Is.True);
+        }
+
+        [Test]
+        public void ShouldExecuteSetErrorInHttpServiceIfSetErrorIsTriggered()
+        {
+            _httpService.Setup(h => h.SendGetRequest(SetErrorUrl))
+                .Returns("OK")
+                    .Verifiable();
+
+            var task = _sut.SetError("linkId", "listId");
 
             task.Wait();
 

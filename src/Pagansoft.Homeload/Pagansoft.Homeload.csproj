@@ -44,6 +44,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +56,15 @@
     <Compile Include="Core\LinkState.cs" />
     <Compile Include="Core\HltcHttpService.cs" />
     <Compile Include="Core\UrlBuilder.cs" />
+    <Compile Include="Core\IUrlBuilder.cs" />
+    <Compile Include="Core\IHltvApi.cs" />
+    <Compile Include="Core\IConfiguration.cs" />
+    <Compile Include="Core\Configuration.cs" />
+    <Compile Include="Core\IStorage.cs" />
+    <Compile Include="Core\ILinkIdModel.cs" />
+    <Compile Include="Core\LinkIdModel.cs" />
+    <Compile Include="Core\IConfigurationManager.cs" />
+    <Compile Include="Core\ConfigurationManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

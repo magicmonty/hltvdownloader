@@ -1,15 +1,17 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
+using System.ComponentModel.Composition;
 
 namespace Pagansoft.Homeload.Core
 {
-    public class Api
+    [Export(typeof(IHltvApi))]
+    public class Api : IHltvApi
     {
         private IHLTCHttpService _httpservice;
-        private UrlBuilder _urlBuilder;
+        private IUrlBuilder _urlBuilder;
 
-        public Api(IHLTCHttpService httpservice, UrlBuilder urlBuilder)
+        [ImportingConstructor]
+        public Api(IHLTCHttpService httpservice, IUrlBuilder urlBuilder)
         {
             _httpservice = httpservice;
             _urlBuilder = urlBuilder;
@@ -43,6 +45,15 @@ namespace Pagansoft.Homeload.Core
                 linkId, 
                 listId, 
                 Enum.GetName(typeof(LinkState), state).ToLower());
+
+            return SendAsyncRequest(url);
+        }
+
+        public Task<bool> SetError(string linkId, string listId)
+        {
+            var url = _urlBuilder.BuildSetErrorUrl(
+                linkId, 
+                listId);
 
             return SendAsyncRequest(url);
         }

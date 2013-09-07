@@ -1,20 +1,23 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.ComponentModel.Composition;
 
 namespace Pagansoft.Homeload.Core
 {
-    public class UrlBuilder
+    [Export(typeof(IUrlBuilder))]
+    public class UrlBuilder : IUrlBuilder
     {
         private const string BaseUrl = "http://www.homeloadtv.com/api/?do={0}&uid={1}&password={2}";
         private string _username;
         private string _password;
 
-        public UrlBuilder(string username, string password)
+        [ImportingConstructor]
+        public UrlBuilder(IConfiguration configuration)
         {
-            _username = username;
+            _username = configuration.HltvUserName;
             var md5 = MD5.Create();
-            _password = BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(password)))
+            _password = BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(configuration.HltvPassword)))
                                     .Replace("-", "")
                                     .Trim()
                                     .ToUpper();
@@ -40,8 +43,17 @@ namespace Pagansoft.Homeload.Core
 
         public string BuildSetStateUrl(string linkId, string listId, string state)
         {
-            return string.Format(BaseUrl, "setstate", _username, _password) 
+            var result = string.Format(BaseUrl, "setstate", _username, _password) 
                 + string.Format("&id={0}&list={1}&state={2}", linkId, listId, state);
+            if (state == "finished")
+                result += "&error=";
+
+            return result;
+        }
+
+        public string BuildSetErrorUrl(string linkId, string listId)
+        {
+            return BuildSetStateUrl(linkId, listId, "finished") + "brokenonopen";
         }
     }
 }

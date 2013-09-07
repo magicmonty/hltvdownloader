@@ -1,15 +1,27 @@
 using NUnit.Framework;
+using Moq;
 
 namespace Pagansoft.Homeload.Core
 {
     [TestFixture]
     public class UrlBuilderTest
     {
+        private Mock<IConfiguration> _configuration;
+        private UrlBuilder _sut;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _configuration = new Mock<IConfiguration>();
+            _configuration.Setup(c => c.HltvUserName).Returns("user");
+            _configuration.Setup(c => c.HltvPassword).Returns("password");
+
+            _sut = new UrlBuilder(_configuration.Object);
+        }
+
         [Test]
         public void ShouldBuildCorrectGetLinksUrl()
         {
-            var _sut = new UrlBuilder("user", "password");
-
             Assert.That(
                 _sut.BuildGetLinksUrl(), 
                 Is.EqualTo("http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99"));
@@ -18,8 +30,6 @@ namespace Pagansoft.Homeload.Core
         [Test]
         public void ShouldBuildCorrectGetLinksUrlWithProcessingToNew()
         {
-            var _sut = new UrlBuilder("user", "password");
-
             Assert.That(
                 _sut.BuildGetLinksUrl(processingToNew: true), 
                 Is.EqualTo("http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&proctonew=true"));
@@ -28,8 +38,6 @@ namespace Pagansoft.Homeload.Core
         [Test]
         public void ShouldBuildCorrectSetProcessingUrl()
         {
-            var _sut = new UrlBuilder("user", "password");
-
             Assert.That(
                 _sut.BuildSetProcessingUrl("12345"), 
                 Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&list=12345&state=processing"));
@@ -38,11 +46,17 @@ namespace Pagansoft.Homeload.Core
         [Test]
         public void ShouldBuildCorrectSetStateUrl()
         {
-            var _sut = new UrlBuilder("user", "password");
-
             Assert.That(
                 _sut.BuildSetStateUrl("54321", "12345", "finished"), 
-                Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&list=12345&state=finished"));
+                Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&list=12345&state=finished&error="));
+        }
+
+        [Test]
+        public void ShouldBuildCorrectSetErrorUrl()
+        {
+            Assert.That(
+                _sut.BuildSetErrorUrl("54321", "12345"), 
+                Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&list=12345&state=finished&error=brokenonopen"));
         }
     }
 }

@@ -53,5 +53,7 @@
     <Compile Include="Core\LinkListTest.cs" />
     <Compile Include="Core\ApiTest.cs" />
     <Compile Include="Core\UrlBuilderTest.cs" />
+    <Compile Include="Core\LinkIdModelTest.cs" />
+    <Compile Include="Core\ConfigurationTest.cs" />
   </ItemGroup>
 </Project>

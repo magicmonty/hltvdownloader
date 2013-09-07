@@ -11,15 +11,26 @@ namespace PaganSoft.HLTVDownloader
     {
         private static Bootstrapper _bootstrapper;
 
-        public MainClass()
-        {
-            _bootstrapper = new Bootstrapper();
-        }
-
         public static void Main(string[] args)
         {
+            _bootstrapper = new Bootstrapper();
             _bootstrapper.Initialize();
            
+            var config = _bootstrapper.GetExport<IConfiguration>();
+            if (string.IsNullOrEmpty(config.HltvUserName) || string.IsNullOrEmpty(config.HltvPassword))
+            {
+                Console.Write("Enter your HLTV username: ");
+                var user = Console.ReadLine().Trim();
+                Console.Write("Enter your HLTV password: ");
+                var password = Console.ReadLine().Trim();
+
+                config.SaveUserNameAndPassword(user, password);
+
+                Console.Write("Please restart the application");
+
+                return;
+            }
+
             if (args.Any(a => a == "--completed"))
             {
                 HandleCompleted(args);

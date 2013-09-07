@@ -15,27 +15,55 @@ namespace Pagansoft.Homeload.Core
             _configurationManager = configurationManager;
         }
 
-        public string HltvUserName {
+        public string HltvUserName
+        {
             get
             {
-                return _configurationManager.AppSettings["username"];
+                var userNameSetting = _configurationManager.AppSettings["username"];
+                if (userNameSetting == null)
+                    return string.Empty;
+
+                return _configurationManager.AppSettings["username"].Value;
             }
         }
 
-        public string HltvPassword {
+        public string HltvPassword
+        {
             get
             {
-                return _configurationManager.AppSettings["password"];
+                var userNameSetting = _configurationManager.AppSettings["password"];
+                if (userNameSetting == null)
+                    return string.Empty;
+
+                return _configurationManager.AppSettings["password"].Value;
             }
         }
 
-        public string ConfigurationDirectory {
+        public string ConfigurationDirectory
+        {
             get
             {
                 return Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                     ".hltc");
             }
+        }
+
+        public void SaveUserNameAndPassword(string user, string password)
+        {
+            var setting = _configurationManager.AppSettings["username"];
+            if (setting != null)
+                _configurationManager.AppSettings["username"].Value = user;
+            else
+                _configurationManager.AppSettings.Add("username", user);
+
+            setting = _configurationManager.AppSettings["password"];
+            if (setting != null)
+                _configurationManager.AppSettings["password"].Value = user;
+            else
+                _configurationManager.AppSettings.Add("password", password);
+
+            _configurationManager.Save();
         }
     }
 }

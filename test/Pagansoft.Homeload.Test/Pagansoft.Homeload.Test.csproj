@@ -37,6 +37,7 @@
     <Reference Include="Moq">
       <HintPath>..\..\libs\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using Moq;
 using NUnit.Framework;
+using System.Configuration;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -12,9 +13,9 @@ namespace Pagansoft.Homeload.Core
         [SetUp]
         public void SetUp()
         {
-            var appsettings = new NameValueCollection();
-            appsettings.Set("username", "user");
-            appsettings.Set("password", "pass");
+            var appsettings = new KeyValueConfigurationCollection();
+            appsettings.Add("username", "user");
+            appsettings.Add("password", "pass");
 
             var configurationManager = new Mock<IConfigurationManager>();
             configurationManager.Setup(c => c.AppSettings)

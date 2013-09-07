@@ -10,7 +10,7 @@ namespace PaganSoft.HLTVDownloader
 
         public void Initialize()
         {
-            var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly().CodeBase);
+            var catalog = new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory);
             var cb = new CompositionBatch();
             _iocContainer = new CompositionContainer(catalog);
             _iocContainer.Compose(cb);

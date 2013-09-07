@@ -22,7 +22,14 @@ namespace Pagansoft.Homeload.Core
 
         public string BuildGetLinksUrl()
         {
-            return string.Format(BaseUrl, "getlinks", _username, _password);
+            return BuildGetLinksUrl(processingToNew: false);
+        }
+
+        public string BuildGetLinksUrl(bool processingToNew)
+        {
+            var procToNew = processingToNew ? "&proctonew=true" : string.Empty;
+
+            return string.Format(BaseUrl, "getlinks", _username, _password) + procToNew;
         }
 
         public string BuildSetProcessingUrl(string listId)

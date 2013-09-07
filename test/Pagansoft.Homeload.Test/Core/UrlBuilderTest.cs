@@ -16,6 +16,16 @@ namespace Pagansoft.Homeload.Core
         }
 
         [Test]
+        public void ShouldBuildCorrectGetLinksUrlWithProcessingToNew()
+        {
+            var _sut = new UrlBuilder("user", "password");
+
+            Assert.That(
+                _sut.BuildGetLinksUrl(processingToNew: true), 
+                Is.EqualTo("http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&proctonew=true"));
+        }
+
+        [Test]
         public void ShouldBuildCorrectSetProcessingUrl()
         {
             var _sut = new UrlBuilder("user", "password");

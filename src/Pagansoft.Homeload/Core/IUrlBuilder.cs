@@ -13,8 +13,8 @@ namespace Pagansoft.Homeload.Core
 
         string BuildSetProcessingUrl(string listId);
 
-        string BuildSetStateUrl(string linkId, string listId, string state);
+        string BuildSetStateUrl(string linkId, string state);
 
-        string BuildSetErrorUrl(string linkId, string listId);
+        string BuildSetErrorUrl(string linkId);
     }
 }

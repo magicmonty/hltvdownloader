@@ -12,8 +12,8 @@ http://81.95.11.6/download/1811986/1/7875449/805df047b6ed2dd2cfe1cea7a6da49ed/de
 http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de/Unser_Sandmaennchen_13.08.30_18-54_mdr_6_TVOON_DE.mpg.avi;11274936;";
         private const string GetLinksUrl = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99";
         private const string GetLinksUrlProcToNew = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&proctonew=true";
-        private const string SetStateUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&list=listId&state=finished&error=";
-        private const string SetErrorUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&list=listId&state=finished&error=brokenonopen";
+        private const string SetStateUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&state=finished&error=";
+        private const string SetErrorUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&state=finished&error=brokenonopen";
         private const string SetProcessingUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&list=listId&state=processing";
         private Api _sut;
         private Mock<IHLTCHttpService> _httpService;
@@ -85,7 +85,7 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                         .Returns("OK")
                         .Verifiable();
 
-            var task = _sut.SetState("linkId", "listId", LinkState.Finished);
+            var task = _sut.SetState("linkId", LinkState.Finished);
 
             task.Wait();
 
@@ -101,7 +101,7 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                 .Returns("OK")
                     .Verifiable();
 
-            var task = _sut.SetError("linkId", "listId");
+            var task = _sut.SetError("linkId");
 
             task.Wait();
 

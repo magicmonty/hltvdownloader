@@ -39,21 +39,18 @@ namespace Pagansoft.Homeload.Core
             return SendAsyncRequest(url);
         }
 
-        public Task<bool> SetState(string linkId, string listId, LinkState state)
+        public Task<bool> SetState(string linkId, LinkState state)
         {
             var url = _urlBuilder.BuildSetStateUrl(
                 linkId, 
-                listId, 
                 Enum.GetName(typeof(LinkState), state).ToLower());
 
             return SendAsyncRequest(url);
         }
 
-        public Task<bool> SetError(string linkId, string listId)
+        public Task<bool> SetError(string linkId)
         {
-            var url = _urlBuilder.BuildSetErrorUrl(
-                linkId, 
-                listId);
+            var url = _urlBuilder.BuildSetErrorUrl(linkId);
 
             return SendAsyncRequest(url);
         }

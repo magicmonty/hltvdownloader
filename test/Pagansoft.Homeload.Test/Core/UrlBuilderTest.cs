@@ -47,16 +47,16 @@ namespace Pagansoft.Homeload.Core
         public void ShouldBuildCorrectSetStateUrl()
         {
             Assert.That(
-                _sut.BuildSetStateUrl("54321", "12345", "finished"), 
-                Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&list=12345&state=finished&error="));
+                _sut.BuildSetStateUrl("54321", "finished"), 
+                Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&state=finished&error="));
         }
 
         [Test]
         public void ShouldBuildCorrectSetErrorUrl()
         {
             Assert.That(
-                _sut.BuildSetErrorUrl("54321", "12345"), 
-                Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&list=12345&state=finished&error=brokenonopen"));
+                _sut.BuildSetErrorUrl("54321"), 
+                Is.EqualTo("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&state=finished&error=brokenonopen"));
         }
     }
 }

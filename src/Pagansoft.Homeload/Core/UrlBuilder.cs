@@ -41,19 +41,19 @@ namespace Pagansoft.Homeload.Core
                 + string.Format("&list={0}&state=processing", listId);
         }
 
-        public string BuildSetStateUrl(string linkId, string listId, string state)
+        public string BuildSetStateUrl(string linkId, string state)
         {
             var result = string.Format(BaseUrl, "setstate", _username, _password) 
-                + string.Format("&id={0}&list={1}&state={2}", linkId, listId, state);
+                + string.Format("&id={0}&state={1}", linkId, state);
             if (state == "finished")
                 result += "&error=";
 
             return result;
         }
 
-        public string BuildSetErrorUrl(string linkId, string listId)
+        public string BuildSetErrorUrl(string linkId)
         {
-            return BuildSetStateUrl(linkId, listId, "finished") + "brokenonopen";
+            return BuildSetStateUrl(linkId, "finished") + "brokenonopen";
         }
     }
 }

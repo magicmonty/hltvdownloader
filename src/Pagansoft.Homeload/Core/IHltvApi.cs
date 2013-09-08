@@ -12,8 +12,8 @@ namespace Pagansoft.Homeload.Core
 
         Task<bool> SetProcessing(string listId);
 
-        Task<bool> SetState(string linkId, string listId, LinkState state);
+        Task<bool> SetState(string linkId, LinkState state);
 
-        Task<bool> SetError(string linkId, string listId);
+        Task<bool> SetError(string linkId);
     }
 }

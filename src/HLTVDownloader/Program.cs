@@ -58,8 +58,8 @@ namespace PaganSoft.HLTVDownloader
             task.Wait();
             var links = task.Result;
 
-            // var ptask = hltv.SetProcessing(links.Id);
-            // ptask.Wait();
+            var ptask = hltv.SetProcessing(links.Id);
+            ptask.Wait();
 
             var linkIdModel = _bootstrapper.GetExport<ILinkIdModel>();
             foreach (var linkId in links)
@@ -93,7 +93,7 @@ namespace PaganSoft.HLTVDownloader
                 var listId = storage.GetListIdByGid(gid);
                 var linkId = storage.GetLinkIdByGid(gid);
 
-                var task = hltv.SetState(listId, linkId, LinkState.Finished);
+                var task = hltv.SetState(linkId, LinkState.Finished);
                 task.Wait();
 
                 if (task.Result)
@@ -116,7 +116,7 @@ namespace PaganSoft.HLTVDownloader
                 var listId = storage.GetListIdByGid(gid);
                 var linkId = storage.GetLinkIdByGid(gid);
 
-                var task = hltv.SetError(listId, linkId);
+                var task = hltv.SetError(linkId);
                 task.Wait();
 
                 if (task.Result)

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using System.Linq;
+using Pagansoft.Aria2.Core;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -8,17 +10,19 @@ namespace Pagansoft.Homeload.Core
     public class LinkIdModelTest
     {
         private LinkIdModel _sut;
-        private IDictionary<string, IEnumerable<string>> _linkIds;
+        private List<LinkIdPersistenceModel> _linkIds;
+        private static readonly LinkIdPersistenceModel link1 = new LinkIdPersistenceModel("ABC", "1234", "http://test.de", "1");
+        private static readonly LinkIdPersistenceModel link2 = new LinkIdPersistenceModel("DEF", "5678", "http://example.com", "2");
 
         [SetUp]
         public void SetUp()
         {
-            _linkIds = new Dictionary<string, IEnumerable<string>>();
+            _linkIds = new List<LinkIdPersistenceModel>();
 
             var storage = new Mock<IStorage>();
             storage.Setup(s => s.LoadLinks()).Returns(_linkIds);
-            storage.Setup(s => s.SaveLinks(It.IsAny<IDictionary<string, IEnumerable<string>>>()))
-                   .Callback((IDictionary<string, IEnumerable<string>> list) => _linkIds = list);
+            storage.Setup(s => s.SaveLinks(It.IsAny<IEnumerable<LinkIdPersistenceModel>>()))
+                   .Callback((IEnumerable<LinkIdPersistenceModel> list) => _linkIds = list.ToList());
 
             _sut = new LinkIdModel(storage.Object);
         }
@@ -26,63 +30,40 @@ namespace Pagansoft.Homeload.Core
         [Test]
         public void ShouldReturnEmtpyStringOnGetListIdByLinkIdIfListIsNotFound()
         {
-            Assert.That(_sut.GetListIdByLinkId("1234"), Is.EqualTo(string.Empty));
+            Assert.That(_sut.GetListIdByGid(new GID("3")), Is.EqualTo(string.Empty));
         }
 
         [Test]
         public void ShouldReturnCorrectListIdOnGetListIdByLinkIdIfListIsFound()
         {
-            _linkIds.Add("ABC", new [] { "1234" });
-            _linkIds.Add("DEF", new [] { "567" });
-            Assert.That(_sut.GetListIdByLinkId("1234"), Is.EqualTo("ABC"));
+            _linkIds.Add(link1);
+            _linkIds.Add(link2);
+            Assert.That(_sut.GetListIdByGid("1"), Is.EqualTo("ABC"));
+            Assert.That(_sut.GetLinkIdByGid("1"), Is.EqualTo("1234"));
+            Assert.That(_sut.GetListIdByGid("2"), Is.EqualTo("DEF"));
+            Assert.That(_sut.GetLinkIdByGid("2"), Is.EqualTo("5678"));
         }
 
         [Test]
         public void ShouldAddLinkIdToListIfListAlreadyExists()
         {
-            _linkIds.Add("ABC", new [] { "1234" });
-            _sut.SaveLinkId("5678", "ABC");
-            CollectionAssert.AreEquivalent(new[] { "1234", "5678" }, _linkIds["ABC"]);
-        }
-
-        [Test]
-        public void ShouldNotAddLinkIdToListIfLinkInListAlreadyExists()
-        {
-            _linkIds.Add("ABC", new [] { "1234" });
-            _sut.SaveLinkId("1234", "ABC");
-            CollectionAssert.AreEquivalent(new[] { "1234" }, _linkIds["ABC"]);
-        }
-
-        [Test]
-        public void ShouldAddListWithLinkIdToListDoesNotExist()
-        {
-            _sut.SaveLinkId("1234", "ABC");
-            CollectionAssert.AreEquivalent(new[] { "1234" }, _linkIds["ABC"]);
-        }
-
-        [Test]
-        public void ShouldRemoveLinkFromListWithIfItExists()
-        {
-            _linkIds.Add("ABC", new [] { "1234", "5678" });
-            _sut.RemoveLinkId("1234");
-            CollectionAssert.AreEquivalent(new[] { "5678" }, _linkIds["ABC"]);
-        }
-
-        [Test]
-        public void ShouldRemoveListOnRemoveOfLastLinkInList()
-        {
-            _linkIds.Add("ABC", new [] { "1234" });
-            _sut.RemoveLinkId("1234");
-            Assert.That(_linkIds.Count, Is.EqualTo(0));
+            _linkIds.Add(link1);
+            _sut.SaveLinkId(link2.LinkId, link2.ListId, link2.Url, link2.Gid);
+            Assert.That(_linkIds.Count, Is.EqualTo(2));
+            var secondLink = _linkIds.ElementAt(1);
+            Assert.That(secondLink.Gid, Is.EqualTo(link2.Gid));
+            Assert.That(secondLink.LinkId, Is.EqualTo(link2.LinkId));
+            Assert.That(secondLink.ListId, Is.EqualTo(link2.ListId));
+            Assert.That(secondLink.Url, Is.EqualTo(link2.Url));
         }
 
         [Test]
         public void ShouldRemoveNothingIfLinkIsNotInList()
         {
-            _linkIds.Add("ABC", new [] { "1234" });
-            _sut.RemoveLinkId("5678");
+            _linkIds.Add(link1);
+            _sut.RemoveLinkId(link2.Gid);
             Assert.That(_linkIds.Count, Is.EqualTo(1));
-            CollectionAssert.AreEquivalent(new[] { "1234" }, _linkIds["ABC"]);
+            CollectionAssert.AreEquivalent(new[] { link1 }, _linkIds);
         }
     }
 }

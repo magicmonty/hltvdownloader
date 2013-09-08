@@ -1,9 +1,7 @@
-using System;
-using System.ComponentModel.Composition;
-using System.IO;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
+using Pagansoft.Aria2.Core;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -13,65 +11,74 @@ namespace Pagansoft.Homeload.Core
         private IStorage _storage;
         private object _lock;
 
+        [ImportingConstructor]
         public LinkIdModel(IStorage storage)
         {
             _storage = storage;
             _lock = new object();
         }
 
-        private IDictionary<string, IEnumerable<string>> Load()
+        private IEnumerable<LinkIdPersistenceModel> Load()
         {
-            lock (_lock) {
+            lock (_lock)
+            {
                 return _storage.LoadLinks();
             }
         }
 
-        private void Save(IDictionary<string, IEnumerable<string>> list)
+        private void Save(IEnumerable<LinkIdPersistenceModel> list)
         {
-            lock (_lock) {
+            lock (_lock)
+            {
                 _storage.SaveLinks(list);
             }
         }
 
-        public string GetListIdByLinkId(string linkId)
+        public string GetListIdByGid(GID gid)
         {
-            var list = Load();
-            foreach (var key in list.Keys) {
-                var links = list[key];
-                if (links.Any(l => l == linkId))
-                    return key;
-            }
+            var item = Load().FirstOrDefault(e => e.Gid == gid);
+
+            if (!string.IsNullOrEmpty(item.ListId))
+                return item.ListId;
 
             return string.Empty;
         }
 
-        public void SaveLinkId(string linkId, string listId)
+        public string GetLinkIdByGid(GID gid)
+        {
+            var item = Load().FirstOrDefault(e => e.Gid == gid);
+
+            if (!string.IsNullOrEmpty(item.LinkId))
+                return item.LinkId;
+
+            return string.Empty;
+        }
+
+        public void SaveLinkId(string linkId, string listId, string url, GID gid)
         {
             var list = Load();
 
-            if (list.ContainsKey(listId)) {
-                list[listId] = list[listId].Union(new [] { linkId });
-            }
-            else
-                list.Add(listId, new [] { linkId });
+            list = list.Except(Enumerable.Where(list, e => e.ListId == listId || e.Gid == gid))
+                       .Concat(new[] { new LinkIdPersistenceModel(listId, linkId, url, gid) });
 
             Save(list);
         }
 
-        public void RemoveLinkId(string linkId)
+        public void RemoveLinkId(GID gid)
         {
             var list = Load();
-            var listId = GetListIdByLinkId(linkId);
-            if (!string.IsNullOrEmpty(listId)) {
-                var links = list[listId].Except(new [] { linkId });
 
-                if (!links.Any())
-                    list.Remove(listId);
-                else
-                    list[listId] = links;
+            Save(list.Except(Enumerable.Where(list, e => e.Gid == gid)));
+        }
 
-                Save(list);
-            }
+        public object GetListIdByGid(string gid)
+        {
+            return GetListIdByGid(new GID(gid));
+        }
+
+        public object GetLinkIdByGid(string gid)
+        {
+            return GetLinkIdByGid(new GID(gid));
         }
     }
 }

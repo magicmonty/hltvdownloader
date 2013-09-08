@@ -1,12 +1,16 @@
+using Pagansoft.Aria2.Core;
+
 namespace Pagansoft.Homeload.Core
 {
     public interface ILinkIdModel
     {
-        string GetListIdByLinkId(string linkId);
+        string GetListIdByGid(GID gid);
 
-        void SaveLinkId(string linkId, string listId);
+        string GetLinkIdByGid(GID gid);
 
-        void RemoveLinkId(string linkId);
+        void SaveLinkId(string linkId, string listId, string url, GID gid);
+
+        void RemoveLinkId(GID gid);
     }
 }
 

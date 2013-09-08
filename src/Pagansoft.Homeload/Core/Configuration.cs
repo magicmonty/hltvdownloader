@@ -43,9 +43,14 @@ namespace Pagansoft.Homeload.Core
         {
             get
             {
-                return Path.Combine(
+                var result = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                     ".hltc");
+
+                if (!Directory.Exists(result))
+                    Directory.CreateDirectory(result);
+
+                return result;
             }
         }
 

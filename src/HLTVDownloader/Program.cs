@@ -4,6 +4,9 @@ using System;
 using System.Threading;
 using System.Linq;
 using Pagansoft.Homeload.Core;
+using System.Collections.Generic;
+using Pagansoft.Aria2.Core;
+using CookComputing.XmlRpc;
 
 namespace PaganSoft.HLTVDownloader
 {
@@ -49,6 +52,23 @@ namespace PaganSoft.HLTVDownloader
                 return;
 
             Console.Out.WriteLine("Aria2 is up and running");
+
+            var hltv = _bootstrapper.GetExport<IHltvApi>();
+            var task = hltv.GetLinks(true);
+            task.Wait();
+            var links = task.Result;
+
+            // var ptask = hltv.SetProcessing(links.Id);
+            // ptask.Wait();
+
+            var linkIdModel = _bootstrapper.GetExport<ILinkIdModel>();
+            foreach (var linkId in links)
+            {
+                var gid = aria.AddUri(new [] { new Uri(linkId.Url) });
+
+                linkIdModel.SaveLinkId(linkId.Id, links.Id, linkId.Url, gid.Value);
+            }
+
             /*
              * 1. Send Request to Homeload with &proctonew=true (only on first request)
              * 2. SetProcessing <LISTID>
@@ -69,14 +89,15 @@ namespace PaganSoft.HLTVDownloader
                 var hltv = _bootstrapper.GetExport<IHltvApi>();
                 var storage = _bootstrapper.GetExport<ILinkIdModel>();
 
-                var linkId = args[0];
-                var listId = storage.GetListIdByLinkId(linkId);
+                var gid = args[0];
+                var listId = storage.GetListIdByGid(gid);
+                var linkId = storage.GetLinkIdByGid(gid);
 
                 var task = hltv.SetState(listId, linkId, LinkState.Finished);
                 task.Wait();
 
                 if (task.Result)
-                    storage.RemoveLinkId(linkId);
+                    storage.RemoveLinkId(gid);
             }
         }
 
@@ -91,14 +112,15 @@ namespace PaganSoft.HLTVDownloader
                 var hltv = _bootstrapper.GetExport<IHltvApi>();
                 var storage = _bootstrapper.GetExport<ILinkIdModel>();
 
-                var linkId = args[0];
-                var listId = storage.GetListIdByLinkId(linkId);
+                var gid = args[0];
+                var listId = storage.GetListIdByGid(gid);
+                var linkId = storage.GetLinkIdByGid(gid);
 
                 var task = hltv.SetError(listId, linkId);
                 task.Wait();
 
                 if (task.Result)
-                    storage.RemoveLinkId(linkId);
+                    storage.RemoveLinkId(gid);
             }
         }
     }

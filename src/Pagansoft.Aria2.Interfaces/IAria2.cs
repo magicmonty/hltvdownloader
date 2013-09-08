@@ -2,6 +2,7 @@ using System;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 using System.Collections.Generic;
+using CookComputing.XmlRpc;
 
 namespace Pagansoft.Aria2
 {
@@ -13,7 +14,7 @@ namespace Pagansoft.Aria2
 
         GID AddUri(IEnumerable<Uri> uris);
 
-        GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options);
+        GID AddUri(IEnumerable<Uri> uris, XmlRpcStruct options);
 
         GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options, int position);
 

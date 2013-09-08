@@ -44,8 +44,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,9 +67,17 @@
     <Compile Include="Core\LinkIdModel.cs" />
     <Compile Include="Core\IConfigurationManager.cs" />
     <Compile Include="Core\ConfigurationManager.cs" />
+    <Compile Include="Core\XmlStorage.cs" />
+    <Compile Include="Core\LinkIdPersistenceModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Core\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj">
+      <Project>{1B6E9A56-71A9-4580-8243-7B498B39DF56}</Project>
+      <Name>Pagansoft.Aria2.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

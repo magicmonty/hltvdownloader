@@ -83,5 +83,9 @@
       <Name>Pagansoft.Aria2.Interfaces</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Pagansoft.Homeload\Pagansoft.Homeload.csproj">
+      <Project>{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}</Project>
+      <Name>Pagansoft.Homeload</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

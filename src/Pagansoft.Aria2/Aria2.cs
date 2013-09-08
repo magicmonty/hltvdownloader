@@ -10,6 +10,7 @@ using CookComputing.XmlRpc;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 using Pagansoft.Aria2.XmlRpc;
+using Pagansoft.Homeload.Core;
 
 namespace Pagansoft.Aria2
 {
@@ -18,13 +19,17 @@ namespace Pagansoft.Aria2
     {
         private IAria2c proxy;
         private const string ProcessName = "aria2c";
+        private IConfiguration _configuration;
 
-        public Aria2()
+        [ImportingConstructor]
+        public Aria2(IConfiguration configuration)
         {
             proxy = XmlRpcProxyGen.Create<IAria2c>();
+            _configuration = configuration;
         }
 
-        public bool IsRunning {
+        public bool IsRunning
+        {
             get
             {
                 return Process.GetProcessesByName(ProcessName).Any();
@@ -36,7 +41,8 @@ namespace Pagansoft.Aria2
             if (IsRunning)
                 return true;
 
-            try {
+            try
+            {
 
                 var psInfo = new ProcessStartInfo();
                 
@@ -45,7 +51,7 @@ namespace Pagansoft.Aria2
                 
                 var arguments = new List<string>();
 
-                var sessionFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ".hltv", "aria2.session.gz");
+                var sessionFile = Path.Combine(_configuration.ConfigurationDirectory, "session.aria");
                 var ownPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HLTVDownloader.exe");
 
                 if (File.Exists(sessionFile))
@@ -77,7 +83,8 @@ namespace Pagansoft.Aria2
 
                 return IsRunning;
             }
-            catch (FileNotFoundException) {
+            catch (FileNotFoundException)
+            {
                 Console.Out.WriteLine("Could not find aria2c in PATH");
                 return false;
             }
@@ -95,9 +102,12 @@ namespace Pagansoft.Aria2
             exe = Environment.ExpandEnvironmentVariables(exe);
             var pathVar = Environment.GetEnvironmentVariable("PATH") ?? "";
 
-            if (!File.Exists(exe)) {
-                if (Path.GetDirectoryName(exe) == String.Empty) {
-                    foreach (string test in (pathVar.Split(Path.PathSeparator))) {
+            if (!File.Exists(exe))
+            {
+                if (Path.GetDirectoryName(exe) == String.Empty)
+                {
+                    foreach (string test in (pathVar.Split(Path.PathSeparator)))
+                    {
                         string path = test.Trim();
                         if (!String.IsNullOrEmpty(path) && File.Exists(path = Path.Combine(path, exe)))
                             return Path.GetFullPath(path);
@@ -113,7 +123,7 @@ namespace Pagansoft.Aria2
             return proxy.AddUri(uris.Select(u => u.ToString()).ToArray());
         }
 
-        public GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options)
+        public GID AddUri(IEnumerable<Uri> uris, XmlRpcStruct options)
         {
             return proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), options);
         }

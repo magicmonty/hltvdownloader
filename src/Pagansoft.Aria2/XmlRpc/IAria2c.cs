@@ -11,7 +11,7 @@ namespace Pagansoft.Aria2.XmlRpc
         string AddUri(string[] uris);
 
         [XmlRpcMethod("aria2.addUri")]
-        string AddUri(string[] uris, IDictionary<string, string> options);
+        string AddUri(string[] uris, XmlRpcStruct options);
 
         [XmlRpcMethod("aria2.addUri")]
         string AddUri(string[] uris, IDictionary<string, string> options, int position);

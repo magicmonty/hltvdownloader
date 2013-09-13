@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2", "src\Paga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2.Test", "test\Pagansoft.Aria2.Test\Pagansoft.Aria2.Test.csproj", "{EBDFC58B-4347-4C46-AF7F-9600918EA12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Aria2.Interfaces", "src\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj", "{1B6E9A56-71A9-4580-8243-7B498B39DF56}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Homeload.Test", "test\Pagansoft.Homeload.Test\Pagansoft.Homeload.Test.csproj", "{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Homeload", "src\Pagansoft.Homeload\Pagansoft.Homeload.csproj", "{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}"
@@ -30,10 +28,6 @@ Global
 		{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}.Debug|x86.Build.0 = Debug|Any CPU
 		{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}.Release|x86.ActiveCfg = Release|Any CPU
 		{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}.Release|x86.Build.0 = Release|Any CPU
-		{1B6E9A56-71A9-4580-8243-7B498B39DF56}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1B6E9A56-71A9-4580-8243-7B498B39DF56}.Debug|x86.Build.0 = Debug|Any CPU
-		{1B6E9A56-71A9-4580-8243-7B498B39DF56}.Release|x86.ActiveCfg = Release|Any CPU
-		{1B6E9A56-71A9-4580-8243-7B498B39DF56}.Release|x86.Build.0 = Release|Any CPU
 		{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}.Debug|x86.Build.0 = Debug|Any CPU
 		{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}.Release|x86.ActiveCfg = Release|Any CPU

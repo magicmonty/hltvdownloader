@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
-using Pagansoft.Aria2.Core;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -30,7 +29,7 @@ namespace Pagansoft.Homeload.Core
         [Test]
         public void ShouldReturnEmtpyStringOnGetListIdByLinkIdIfListIsNotFound()
         {
-            Assert.That(_sut.GetListIdByGid(new GID("3")), Is.EqualTo(string.Empty));
+            Assert.That(_sut.GetListIdByGid("3"), Is.EqualTo(string.Empty));
         }
 
         [Test]
@@ -62,6 +61,15 @@ namespace Pagansoft.Homeload.Core
         {
             _linkIds.Add(link1);
             _sut.RemoveLinkId(link2.Gid);
+            Assert.That(_linkIds.Count, Is.EqualTo(1));
+            CollectionAssert.AreEquivalent(new[] { link1 }, _linkIds);
+        }
+
+        [Test]
+        public void ShouldNotAddLinkIfLinkIsAlreadyInList()
+        {
+            _linkIds.Add(link1);
+            _sut.SaveLinkId(link1.LinkId, link1.ListId, link1.Url, link1.Gid);
             Assert.That(_linkIds.Count, Is.EqualTo(1));
             CollectionAssert.AreEquivalent(new[] { link1 }, _linkIds);
         }

@@ -1,0 +1,2 @@
+#!/bin/sh
+mono ./HLTVDownloader.exe --error $1 $2 $3

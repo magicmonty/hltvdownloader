@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -58,7 +59,9 @@ namespace Pagansoft.Homeload.Core
         private Task<bool> SendAsyncRequest(string url)
         {
             var task = Task.Factory.StartNew<string>(() => _httpservice.SendGetRequest(url))
-                .ContinueWith<bool>(request => request.Result == "OK");
+                .ContinueWith<bool>(request => {
+                return request.Result.Trim() == "OK";
+            });
 
             return task;
         }

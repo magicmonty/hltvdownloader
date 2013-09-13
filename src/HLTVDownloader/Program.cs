@@ -1,12 +1,9 @@
-using Pagansoft.Aria2.XmlRpc;
-using Pagansoft.Aria2;
 using System;
-using System.Threading;
-using System.Linq;
-using Pagansoft.Homeload.Core;
 using System.Collections.Generic;
+using System.Linq;
+using Pagansoft.Aria2;
 using Pagansoft.Aria2.Core;
-using CookComputing.XmlRpc;
+using Pagansoft.Homeload.Core;
 
 namespace PaganSoft.HLTVDownloader
 {
@@ -89,8 +86,7 @@ namespace PaganSoft.HLTVDownloader
                 var hltv = _bootstrapper.GetExport<IHltvApi>();
                 var storage = _bootstrapper.GetExport<ILinkIdModel>();
 
-                var gid = args[0];
-                var listId = storage.GetListIdByGid(gid);
+                var gid = ariaArgs[0];
                 var linkId = storage.GetLinkIdByGid(gid);
 
                 var task = hltv.SetState(linkId, LinkState.Finished);
@@ -112,8 +108,7 @@ namespace PaganSoft.HLTVDownloader
                 var hltv = _bootstrapper.GetExport<IHltvApi>();
                 var storage = _bootstrapper.GetExport<ILinkIdModel>();
 
-                var gid = args[0];
-                var listId = storage.GetListIdByGid(gid);
+                var gid = ariaArgs[0];
                 var linkId = storage.GetLinkIdByGid(gid);
 
                 var task = hltv.SetError(linkId);

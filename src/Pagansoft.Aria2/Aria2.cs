@@ -52,7 +52,7 @@ namespace Pagansoft.Aria2
                 var arguments = new List<string>();
 
                 var sessionFile = Path.Combine(_configuration.ConfigurationDirectory, "session.aria");
-                var ownPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HLTVDownloader.exe");
+                var ownPath = AppDomain.CurrentDomain.BaseDirectory;
 
                 if (File.Exists(sessionFile))
                     arguments.Add("--input-file" + sessionFile);
@@ -68,8 +68,8 @@ namespace Pagansoft.Aria2
                 arguments.Add("--max-concurrent-downloads=10");
                 arguments.Add("--max-connection-per-server=10");
                 arguments.Add("--save-session=" + sessionFile);
-                arguments.Add(@"--on-download-complete=""" + ownPath + @" --completed""");
-                arguments.Add(@"--on-download-error=""" + ownPath + @" --error""");
+                arguments.Add(@"--on-download-complete=" + Path.Combine(ownPath, "hltvcomplete"));
+                arguments.Add(@"--on-download-error=" + Path.Combine(ownPath, "hltverror"));
 
                 psInfo.Arguments = string.Join(" ", arguments);
                 

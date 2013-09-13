@@ -79,10 +79,10 @@ namespace Pagansoft.Homeload.Core
             links.ToList()
                  .ForEach(item => {
                 root.Add(new XElement("link", 
-                                          new XAttribute("linkId", item.LinkId),
-                                          new XAttribute("listId", item.ListId),
-                                          new XAttribute("gid", item.Gid.Value),
-                                          item.Url));
+                                      new XAttribute("linkId", item.LinkId),
+                                      new XAttribute("listId", item.ListId),
+                                      new XAttribute("gid", item.Gid),
+                                      item.Url));
             });
 
             doc.Add(root);

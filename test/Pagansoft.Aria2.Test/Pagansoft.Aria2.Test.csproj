@@ -40,10 +40,6 @@
       <Project>{981868A9-275A-4139-8DC7-13CEFCC13BAA}</Project>
       <Name>Pagansoft.Aria2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj">
-      <Project>{1B6E9A56-71A9-4580-8243-7B498B39DF56}</Project>
-      <Name>Pagansoft.Aria2.Interfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />

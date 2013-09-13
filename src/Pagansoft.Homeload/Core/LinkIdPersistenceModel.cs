@@ -1,6 +1,3 @@
-using Pagansoft.Aria2.Core;
-using System.Configuration;
-
 namespace Pagansoft.Homeload.Core
 {
     public struct LinkIdPersistenceModel
@@ -13,9 +10,9 @@ namespace Pagansoft.Homeload.Core
             _url = url;
         }
 
-        public GID Gid { get { return _gid; } }
+        public string Gid { get { return _gid; } }
 
-        private GID _gid;
+        private string _gid;
 
         public string ListId { get { return _listId; } }
 

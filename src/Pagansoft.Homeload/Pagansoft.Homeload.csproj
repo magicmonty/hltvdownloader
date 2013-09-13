@@ -74,10 +74,4 @@
   <ItemGroup>
     <Folder Include="Core\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Pagansoft.Aria2.Interfaces\Pagansoft.Aria2.Interfaces.csproj">
-      <Project>{1B6E9A56-71A9-4580-8243-7B498B39DF56}</Project>
-      <Name>Pagansoft.Aria2.Interfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

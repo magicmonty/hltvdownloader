@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using Pagansoft.Aria2.Core;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -34,7 +33,7 @@ namespace Pagansoft.Homeload.Core
             }
         }
 
-        public string GetListIdByGid(GID gid)
+        public string GetListIdByGid(string gid)
         {
             var item = Load().FirstOrDefault(e => e.Gid == gid);
 
@@ -44,7 +43,7 @@ namespace Pagansoft.Homeload.Core
             return string.Empty;
         }
 
-        public string GetLinkIdByGid(GID gid)
+        public string GetLinkIdByGid(string gid)
         {
             var item = Load().FirstOrDefault(e => e.Gid == gid);
 
@@ -54,31 +53,19 @@ namespace Pagansoft.Homeload.Core
             return string.Empty;
         }
 
-        public void SaveLinkId(string linkId, string listId, string url, GID gid)
+        public void SaveLinkId(string linkId, string listId, string url, string gid)
         {
-            var list = Load();
+            var list = Load().ToList();
 
-            list = list.Except(Enumerable.Where(list, e => e.ListId == listId || e.Gid == gid))
-                       .Concat(new[] { new LinkIdPersistenceModel(listId, linkId, url, gid) });
-
-            Save(list);
+            Save(list.Except(list.Where(e => e.Gid == gid))
+                     .Concat(new[] { new LinkIdPersistenceModel(listId, linkId, url, gid) }));
         }
 
-        public void RemoveLinkId(GID gid)
+        public void RemoveLinkId(string gid)
         {
             var list = Load();
 
             Save(list.Except(Enumerable.Where(list, e => e.Gid == gid)));
-        }
-
-        public object GetListIdByGid(string gid)
-        {
-            return GetListIdByGid(new GID(gid));
-        }
-
-        public object GetLinkIdByGid(string gid)
-        {
-            return GetLinkIdByGid(new GID(gid));
         }
     }
 }

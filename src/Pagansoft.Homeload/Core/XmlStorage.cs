@@ -10,8 +10,8 @@ namespace Pagansoft.Homeload.Core
     [Export(typeof(IStorage))]
     public class XmlStorage : IStorage
     {
-        private IConfiguration _configuration;
-        private string _fileName;
+        IConfiguration _configuration;
+        string _fileName;
 
         [ImportingConstructor]
         public XmlStorage(IConfiguration configuration)

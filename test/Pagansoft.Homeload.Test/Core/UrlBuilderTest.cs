@@ -1,13 +1,13 @@
-using NUnit.Framework;
 using Moq;
+using NUnit.Framework;
 
 namespace Pagansoft.Homeload.Core
 {
     [TestFixture]
     public class UrlBuilderTest
     {
-        private Mock<IConfiguration> _configuration;
-        private UrlBuilder _sut;
+        Mock<IConfiguration> _configuration;
+        UrlBuilder _sut;
 
         [SetUp]
         public void SetUp()

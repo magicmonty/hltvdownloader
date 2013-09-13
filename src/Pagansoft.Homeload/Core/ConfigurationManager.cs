@@ -6,7 +6,7 @@ namespace Pagansoft.Homeload.Core
     [Export(typeof(IConfigurationManager))]
     public class ConfigurationManager : IConfigurationManager
     {
-        private Conf.Configuration _configuration;
+        Conf.Configuration _configuration;
 
         public ConfigurationManager()
         {

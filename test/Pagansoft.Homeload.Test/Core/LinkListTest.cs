@@ -1,13 +1,13 @@
 using System;
-using NUnit.Framework;
 using System.Linq;
+using NUnit.Framework;
 
 namespace Pagansoft.Homeload.Core
 {
     [TestFixture]
     public class LinkListTest
     {
-        private LinkList _sut;
+        LinkList _sut;
 
         [SetUp]
         public void SetUp()

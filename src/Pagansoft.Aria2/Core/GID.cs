@@ -1,5 +1,5 @@
-using System.Text.RegularExpressions;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Pagansoft.Aria2.Core
 {
@@ -15,16 +15,18 @@ namespace Pagansoft.Aria2.Core
 
         public string Value { get { return _value; } }
 
-        private readonly string _value;
+        readonly string _value;
 
         public override bool Equals(object obj)
         {
             var other = obj as GID;
-            if ((object)null != (object)other) {
+            if ((object)null != (object)other)
+            {
                 return Value == other.Value;
             }
 
-            if (obj is string) {
+            if (obj is string)
+            {
                 other = new GID((string)obj);
                 return Value == other.Value;
             }

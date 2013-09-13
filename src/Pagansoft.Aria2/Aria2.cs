@@ -7,19 +7,19 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CookComputing.XmlRpc;
+using Pagansoft.Homeload.Core;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 using Pagansoft.Aria2.XmlRpc;
-using Pagansoft.Homeload.Core;
 
 namespace Pagansoft.Aria2
 {
     [Export(typeof(IAria2))]
     public class Aria2 : IAria2
     {
-        private IAria2c proxy;
-        private const string ProcessName = "aria2c";
-        private IConfiguration _configuration;
+        IAria2c proxy;
+        const string ProcessName = "aria2c";
+        IConfiguration _configuration;
 
         [ImportingConstructor]
         public Aria2(IConfiguration configuration)
@@ -65,19 +65,22 @@ namespace Pagansoft.Aria2
                 arguments.Add("--dir=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"));
                 arguments.Add("--check-integrity=true"); // Check integrity
                 arguments.Add("--split=1"); // use only one connection per file
-                arguments.Add("--max-concurrent-downloads=10");
-                arguments.Add("--max-connection-per-server=10");
+                arguments.Add("--max-concurrent-downloads=5");
+                arguments.Add("--max-connection-per-server=5");
                 arguments.Add("--save-session=" + sessionFile);
                 arguments.Add(@"--on-download-complete=" + Path.Combine(ownPath, "hltvcomplete"));
                 arguments.Add(@"--on-download-error=" + Path.Combine(ownPath, "hltverror"));
 
                 psInfo.Arguments = string.Join(" ", arguments);
                 
-                Task.Factory.StartNew(() =>
+                var task = Task.Factory.StartNew(() =>
                 {
                     var process = Process.Start(psInfo);
                     process.WaitForExit();
                 });
+
+                if (task.IsFaulted)
+                    return false;
 
                 Thread.Sleep(200);
 

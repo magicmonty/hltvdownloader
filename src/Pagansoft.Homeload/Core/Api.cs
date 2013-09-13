@@ -1,15 +1,14 @@
 using System;
-using System.Threading.Tasks;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Pagansoft.Homeload.Core
 {
     [Export(typeof(IHltvApi))]
     public class Api : IHltvApi
     {
-        private IHLTCHttpService _httpservice;
-        private IUrlBuilder _urlBuilder;
+        IHLTCHttpService _httpservice;
+        IUrlBuilder _urlBuilder;
 
         [ImportingConstructor]
         public Api(IHLTCHttpService httpservice, IUrlBuilder urlBuilder)
@@ -56,7 +55,7 @@ namespace Pagansoft.Homeload.Core
             return SendAsyncRequest(url);
         }
 
-        private Task<bool> SendAsyncRequest(string url)
+        Task<bool> SendAsyncRequest(string url)
         {
             var task = Task.Factory.StartNew<string>(() => _httpservice.SendGetRequest(url))
                 .ContinueWith<bool>(request => {

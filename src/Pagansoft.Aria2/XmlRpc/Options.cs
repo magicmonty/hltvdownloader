@@ -1,6 +1,6 @@
+using System;
 using CookComputing.XmlRpc;
 using Pagansoft.Aria2.Options;
-using System;
 using Pagansoft.Aria2.Options.Enums;
 
 namespace Pagansoft.Aria2.XmlRpc

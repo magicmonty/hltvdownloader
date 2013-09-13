@@ -1,67 +1,67 @@
-using NUnit.Framework;
 using System;
+using NUnit.Framework;
 
 namespace Pagansoft.Aria2.Core
 {
     [TestFixture]
     public class GIDTest
     {
-        private GID _sut;
-        private const string TestGID1 = "0123456789ABCDEF";
-        private const string TestGID2 = "FEDCBA9876543210";
+        GID _sut;
+        const string TestGID1 = "0123456789ABCDEF";
+        const string TestGID2 = "FEDCBA9876543210";
 
         [SetUp]
         public void SetUp()
         {
-            _sut = new Core.GID(TestGID1);
+            _sut = new GID(TestGID1);
         }
 
         [Test]
         public void ShouldBeEqualIfValueIsEqual()
         {
-            var other = new Core.GID(TestGID1);
+            var other = new GID(TestGID1);
             Assert.That(_sut.Equals(other), Is.True);
         }
 
         [Test]
         public void ShouldBeNotEqualIfValueIsNotEqual()
         {
-            var other = new Core.GID(TestGID2);
+            var other = new GID(TestGID2);
             Assert.That(_sut.Equals(other), Is.False);
         }
 
         [Test]
         public void ShouldBeNotEqualIfValueIsNull()
         {
-            Core.GID other = null;
+            GID other = null;
             Assert.That(_sut.Equals(other), Is.False);
         }
 
         [Test]
         public void ShouldBeSameIfValueIsEqual()
         {
-            var other = new Core.GID(TestGID1);
+            var other = new GID(TestGID1);
             Assert.That(_sut == other, Is.True);
         }
 
         [Test]
         public void ShouldNotBeSameIfValueIsNotEqual()
         {
-            var other = new Core.GID(TestGID2);
+            var other = new GID(TestGID2);
             Assert.That(_sut != other, Is.True);
         }
 
         [Test]
         public void ShouldNotBeSameIfValueIsNull()
         {
-            Core.GID other = null;
+            GID other = null;
             Assert.That(_sut != other, Is.True);
         }
 
         [Test]
         public void ShouldNotBeSameIfBothValuesAreNull()
         {
-            Core.GID other = null;
+            GID other = null;
             _sut = null;
             Assert.That(_sut != other, Is.True);
         }
@@ -69,14 +69,14 @@ namespace Pagansoft.Aria2.Core
         [Test]
         public void ShouldBeSameIfValueIsMatchingString()
         {
-            Core.GID other = TestGID1;
+            GID other = TestGID1;
             Assert.That(_sut == other, Is.True);
         }
 
         [Test]
         public void ShouldNotBeSameIfValueIsNonMatchingString()
         {
-            Core.GID other = TestGID2;
+            GID other = TestGID2;
             Assert.That(_sut != other, Is.True);
         }
 

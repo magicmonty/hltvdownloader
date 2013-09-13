@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Pagansoft.Aria2.XmlRpc;
 using System.Linq;
+using Pagansoft.Aria2.XmlRpc;
 
 namespace Pagansoft.Aria2.Core
 {

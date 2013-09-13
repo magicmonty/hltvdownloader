@@ -14,10 +14,11 @@ namespace Pagansoft.Homeload.Core
             var response = request.GetResponse().GetResponseStream();
 
             var result = new StringBuilder();
-            StreamReader objReader = new StreamReader(response);
+            var objReader = new StreamReader(response);
             string line = string.Empty;
             int i = 0;
-            while (line != null) {
+            while (line != null)
+            {
                 i++;
                 line = objReader.ReadLine();
                 if (line != null)

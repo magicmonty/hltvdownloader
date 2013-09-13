@@ -9,7 +9,7 @@ namespace PaganSoft.HLTVDownloader
 {
     class MainClass
     {
-        private static Bootstrapper _bootstrapper;
+        static Bootstrapper _bootstrapper;
 
         public static void Main(string[] args)
         {

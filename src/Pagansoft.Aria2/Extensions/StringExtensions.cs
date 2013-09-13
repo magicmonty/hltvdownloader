@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pagansoft.Aria2.Extensions
 {
@@ -59,10 +59,12 @@ namespace Pagansoft.Aria2.Extensions
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
 
-            try {
+            try
+            {
                 return (T)Enum.Parse(typeof(T), value);
             }
-            catch {
+            catch
+            {
             }
 
             return defaultValue;

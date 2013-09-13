@@ -1,16 +1,16 @@
 using System;
+using System.ComponentModel.Composition;
 using System.Security.Cryptography;
 using System.Text;
-using System.ComponentModel.Composition;
 
 namespace Pagansoft.Homeload.Core
 {
     [Export(typeof(IUrlBuilder))]
     public class UrlBuilder : IUrlBuilder
     {
-        private const string BaseUrl = "http://www.homeloadtv.com/api/?do={0}&uid={1}&password={2}";
-        private string _username;
-        private string _password;
+        const string BaseUrl = "http://www.homeloadtv.com/api/?do={0}&uid={1}&password={2}";
+        string _username;
+        string _password;
 
         [ImportingConstructor]
         public UrlBuilder(IConfiguration configuration)

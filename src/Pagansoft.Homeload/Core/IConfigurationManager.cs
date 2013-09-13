@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Specialized;
 using System.Configuration;
 
 namespace Pagansoft.Homeload.Core

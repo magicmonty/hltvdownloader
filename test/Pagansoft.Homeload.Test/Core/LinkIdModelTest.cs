@@ -1,17 +1,17 @@
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
-using System.Linq;
 
 namespace Pagansoft.Homeload.Core
 {
     [TestFixture]
     public class LinkIdModelTest
     {
-        private LinkIdModel _sut;
-        private List<LinkIdPersistenceModel> _linkIds;
-        private static readonly LinkIdPersistenceModel link1 = new LinkIdPersistenceModel("ABC", "1234", "http://test.de", "1");
-        private static readonly LinkIdPersistenceModel link2 = new LinkIdPersistenceModel("DEF", "5678", "http://example.com", "2");
+        LinkIdModel _sut;
+        List<LinkIdPersistenceModel> _linkIds;
+        static readonly LinkIdPersistenceModel link1 = new LinkIdPersistenceModel("ABC", "1234", "http://test.de", "1");
+        static readonly LinkIdPersistenceModel link2 = new LinkIdPersistenceModel("DEF", "5678", "http://example.com", "2");
 
         [SetUp]
         public void SetUp()

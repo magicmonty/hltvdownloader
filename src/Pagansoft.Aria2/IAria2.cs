@@ -1,8 +1,8 @@
 using System;
-using Pagansoft.Aria2.Core;
-using Pagansoft.Aria2.Options;
 using System.Collections.Generic;
 using CookComputing.XmlRpc;
+using Pagansoft.Aria2.Core;
+using Pagansoft.Aria2.Options;
 
 namespace Pagansoft.Aria2
 {

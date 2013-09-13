@@ -1,14 +1,14 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Pagansoft.Homeload.Core
 {
     public class LinkList : IEnumerable<LinkListItem>
     {
-        private List<LinkListItem> _items;
+        List<LinkListItem> _items;
 
         public LinkList()
         {

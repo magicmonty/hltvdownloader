@@ -7,8 +7,8 @@ namespace Pagansoft.Homeload.Core
     [Export(typeof(ILinkIdModel))]
     public class LinkIdModel : ILinkIdModel
     {
-        private IStorage _storage;
-        private object _lock;
+        IStorage _storage;
+        object _lock;
 
         [ImportingConstructor]
         public LinkIdModel(IStorage storage)
@@ -17,7 +17,7 @@ namespace Pagansoft.Homeload.Core
             _lock = new object();
         }
 
-        private IEnumerable<LinkIdPersistenceModel> Load()
+        IEnumerable<LinkIdPersistenceModel> Load()
         {
             lock (_lock)
             {
@@ -25,7 +25,7 @@ namespace Pagansoft.Homeload.Core
             }
         }
 
-        private void Save(IEnumerable<LinkIdPersistenceModel> list)
+        void Save(IEnumerable<LinkIdPersistenceModel> list)
         {
             lock (_lock)
             {

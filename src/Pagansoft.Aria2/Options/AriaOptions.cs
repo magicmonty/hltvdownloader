@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using Pagansoft.Aria2.Options.Enums;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Pagansoft.Aria2.Extensions;
+using Pagansoft.Aria2.Options.Enums;
 
 namespace Pagansoft.Aria2.Options
 {
@@ -16,14 +16,17 @@ namespace Pagansoft.Aria2.Options
             var indexOut = (response.IndexOut ?? string.Empty).Split(',').Select(i => 
             {
                 var s = i.Split('=');
-                try {
-                    if (s.Length == 2) {
+                try
+                {
+                    if (s.Length == 2)
+                    {
                         var key = int.Parse(s[0]);
                         var value = s[1];
                         return new KeyValuePair<int, string>(key, value);
                     }
                 }
-                catch {
+                catch
+                {
                 }
 
                 return new KeyValuePair<int, string>(-1, string.Empty);

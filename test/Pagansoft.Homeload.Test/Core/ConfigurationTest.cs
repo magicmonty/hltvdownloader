@@ -1,14 +1,13 @@
-using System.Collections.Specialized;
+using System.Configuration;
 using Moq;
 using NUnit.Framework;
-using System.Configuration;
 
 namespace Pagansoft.Homeload.Core
 {
     [TestFixture]
     public class ConfigurationTest
     {
-        private Configuration _sut;
+        Configuration _sut;
 
         [SetUp]
         public void SetUp()

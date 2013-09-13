@@ -17,11 +17,19 @@ namespace Pagansoft.Homeload.Core
             _lock = new object();
         }
 
+        public int LinkCount
+        {
+            get
+            {
+                return Load().Count();
+            }
+        }
+
         IEnumerable<LinkIdPersistenceModel> Load()
         {
             lock (_lock)
             {
-                return _storage.LoadLinks();
+                return _storage.LoadLinks() ?? Enumerable.Empty<LinkIdPersistenceModel>();
             }
         }
 
@@ -37,7 +45,7 @@ namespace Pagansoft.Homeload.Core
         {
             var item = Load().FirstOrDefault(e => e.Gid == gid);
 
-            if (!string.IsNullOrEmpty(item.ListId))
+            if (item != null && !string.IsNullOrEmpty(item.ListId))
                 return item.ListId;
 
             return string.Empty;
@@ -47,7 +55,7 @@ namespace Pagansoft.Homeload.Core
         {
             var item = Load().FirstOrDefault(e => e.Gid == gid);
 
-            if (!string.IsNullOrEmpty(item.LinkId))
+            if (item != null && !string.IsNullOrEmpty(item.LinkId))
                 return item.LinkId;
 
             return string.Empty;

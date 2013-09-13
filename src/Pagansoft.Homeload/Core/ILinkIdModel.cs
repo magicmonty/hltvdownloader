@@ -9,6 +9,8 @@ namespace Pagansoft.Homeload.Core
         void SaveLinkId(string linkId, string listId, string url, string gid);
 
         void RemoveLinkId(string gid);
+
+        int LinkCount { get; }
     }
 }
 

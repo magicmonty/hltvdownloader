@@ -94,6 +94,8 @@ namespace PaganSoft.HLTVDownloader
 
                 if (task.Result)
                     storage.RemoveLinkId(gid);
+
+                ShutdownAriaIfNoLinksLeft(storage);
             }
         }
 
@@ -116,6 +118,19 @@ namespace PaganSoft.HLTVDownloader
 
                 if (task.Result)
                     storage.RemoveLinkId(gid);
+
+                ShutdownAriaIfNoLinksLeft(storage);
+            }
+        }
+
+        static void ShutdownAriaIfNoLinksLeft(ILinkIdModel storage)
+        {
+            var aria = _bootstrapper.GetExport<IAria2>();
+            aria.PurgeDownloadResult();
+
+            if (storage.LinkCount == 0)
+            {
+                aria.Shutdown();
             }
         }
     }

@@ -65,6 +65,8 @@ namespace Pagansoft.Aria2
                 arguments.Add("--dir=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"));
                 arguments.Add("--check-integrity=true"); // Check integrity
                 arguments.Add("--split=1"); // use only one connection per file
+                arguments.Add("--loglevel=notice");
+                arguments.Add("--log=" + Path.Combine(_configuration.ConfigurationDirectory, "aria2.log"));
                 arguments.Add("--max-concurrent-downloads=5");
                 arguments.Add("--max-connection-per-server=5");
                 arguments.Add("--save-session=" + sessionFile);

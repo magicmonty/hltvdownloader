@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -29,11 +30,15 @@ namespace Pagansoft.Homeload.Core
         }
 
         [Test]
-        [TestCase("USER_NOT_FOUND")]
-        [TestCase("WRONG_PASSWORD")]
-        [TestCase("DB_ERROR")]
-        [TestCase("NOT_ALLOWED")]
-        [TestCase("NO_NEW_LINKS")]
+        public void ShouldReturnEmptyListWithErrorOnParseIfValueContainsError()
+        {
+            ShouldReturnEmptyListWithErrorOnParseIfValueContainsError("USER_NOT_FOUND");
+            ShouldReturnEmptyListWithErrorOnParseIfValueContainsError("WRONG_PASSWORD");
+            ShouldReturnEmptyListWithErrorOnParseIfValueContainsError("DB_ERROR");
+            ShouldReturnEmptyListWithErrorOnParseIfValueContainsError("NOT_ALLOWED");
+            ShouldReturnEmptyListWithErrorOnParseIfValueContainsError("NO_NEW_LINKS");
+        }
+
         public void ShouldReturnEmptyListWithErrorOnParseIfValueContainsError(string response)
         {
             var actual = LinkList.Parse(response);

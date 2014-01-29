@@ -4,15 +4,50 @@ using System.Linq;
 using Pagansoft.Aria2;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Homeload.Core;
+using NLog;
+using System.ComponentModel.Design;
 
 namespace PaganSoft.HLTVDownloader
 {
     class MainClass
     {
         static Bootstrapper _bootstrapper;
+        static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        static readonly Growl _growl = new Growl();
+
+        static void LogDebug(string message)
+        {
+            if (_logger != null)
+            {
+                try
+                {
+                    _logger.Debug(message);
+                }
+                // Analysis disable once EmptyGeneralCatchClause
+                catch
+                {
+                }
+            }
+        }
+
+        static void LogError<T>(T message)
+        {
+            if (_logger != null)
+            {
+                try
+                {
+                    _logger.Error(message);
+                }
+                // Analysis disable once EmptyGeneralCatchClause
+                catch
+                {
+                }
+            }
+        }
 
         public static void Main(string[] args)
         {
+            LogDebug("Starting application");
             _bootstrapper = new Bootstrapper();
             _bootstrapper.Initialize();
            
@@ -33,12 +68,14 @@ namespace PaganSoft.HLTVDownloader
 
             if (args.Any(a => a == "--completed"))
             {
+                LogDebug("Handling completed event " + string.Join(" ", args));
                 HandleCompleted(args);
                 return;
             }
 
             if (args.Any(a => a == "--error"))
             {
+                LogDebug("Handling error event " + string.Join(" ", args));
                 HandleError(args);
                 return;
             }
@@ -46,7 +83,10 @@ namespace PaganSoft.HLTVDownloader
             var aria = _bootstrapper.GetExport<IAria2>();
 
             if (!aria.Start())
+            {
+                LogDebug("Could not start aria");
                 return;
+            }
 
             Console.Out.WriteLine("Aria2 is up and running");
 
@@ -87,13 +127,43 @@ namespace PaganSoft.HLTVDownloader
                 var storage = _bootstrapper.GetExport<ILinkIdModel>();
 
                 var gid = ariaArgs[0];
+                var path = ariaArgs[2];
                 var linkId = storage.GetLinkIdByGid(gid);
+                var aria = _bootstrapper.GetExport<IAria2>();
 
-                var task = hltv.SetState(linkId, LinkState.Finished);
-                task.Wait();
+                if (!string.IsNullOrEmpty(path))
+                    _growl.Notify(path);
 
-                if (task.Result)
-                    storage.RemoveLinkId(gid);
+                if (!string.IsNullOrEmpty(linkId))
+                {
+                    var task = hltv.SetState(linkId, LinkState.Finished);
+                    task.Wait();
+                    
+                    if (task.Result)
+                    {
+                        storage.RemoveLinkId(gid);
+                        try
+                        {
+                            aria.RemoveDownloadResult(gid);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError(ex);
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        aria.RemoveDownloadResult(gid);
+                        LogDebug("Removed gid #" + gid);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex);
+                    }
+                }
 
                 ShutdownAriaIfNoLinksLeft(storage);
             }
@@ -126,9 +196,11 @@ namespace PaganSoft.HLTVDownloader
         static void ShutdownAriaIfNoLinksLeft(ILinkIdModel storage)
         {
             var aria = _bootstrapper.GetExport<IAria2>();
-            aria.PurgeDownloadResult();
+            var status = aria.GetGlobalStat();
 
-            if (storage.LinkCount == 0)
+            var linksInAria = status.NumActive + status.NumStopped + status.NumWaiting;
+
+            if (linksInAria == 0 && storage.LinkCount == 0)
             {
                 aria.Shutdown();
             }

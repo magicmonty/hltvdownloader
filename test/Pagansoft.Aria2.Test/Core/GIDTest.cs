@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Pagansoft.Aria2.Core
 {

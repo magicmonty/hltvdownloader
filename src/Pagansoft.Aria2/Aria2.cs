@@ -55,7 +55,7 @@ namespace Pagansoft.Aria2
                 var ownPath = AppDomain.CurrentDomain.BaseDirectory;
 
                 if (File.Exists(sessionFile))
-                    arguments.Add("--input-file" + sessionFile);
+                    arguments.Add("--input-file=" + sessionFile);
 
                 arguments.Add("--enable-rpc");
                 arguments.Add("--rpc-listen-all");
@@ -65,10 +65,13 @@ namespace Pagansoft.Aria2
                 arguments.Add("--dir=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"));
                 arguments.Add("--check-integrity=true"); // Check integrity
                 arguments.Add("--split=1"); // use only one connection per file
-                arguments.Add("--loglevel=notice");
-                arguments.Add("--log=" + Path.Combine(_configuration.ConfigurationDirectory, "aria2.log"));
                 arguments.Add("--max-concurrent-downloads=5");
                 arguments.Add("--max-connection-per-server=5");
+                arguments.Add("--log-level=notice");
+                arguments.Add("--show-console-readout=false");
+                arguments.Add("--no-conf=true");
+                arguments.Add("--quiet");
+                arguments.Add("--log=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".hltc", "aria.log"));
                 arguments.Add("--save-session=" + sessionFile);
                 arguments.Add(@"--on-download-complete=" + Path.Combine(ownPath, "hltvcomplete"));
                 arguments.Add(@"--on-download-error=" + Path.Combine(ownPath, "hltverror"));

@@ -1,6 +1,7 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Pagansoft.Homeload.Core
 {

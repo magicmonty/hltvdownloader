@@ -1,7 +1,9 @@
 language: c
 
 install:
-        - sudo apt-get install mono-devel mono-gmcs nunit-console
+        - sudo add-apt-repository ppa:ermshiperete/monodevelop-beta
+        - sudo apt-get update
+        - sudo apt-get install mono-devel mono-gmcs nunit-console monodevelop-current
 
 script:
         - xbuild build.xml

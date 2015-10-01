@@ -1,4 +1,5 @@
-using CookComputing.XmlRpc;
+using XmlRpcLight.Attributes;
+using XmlRpcLight.Enums;
 
 namespace Pagansoft.Aria2.XmlRpc
 {

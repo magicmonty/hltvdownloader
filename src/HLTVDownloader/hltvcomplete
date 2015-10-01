@@ -12,4 +12,5 @@ cd "`dirname "${SCRIPT_PATH}"`" > /dev/null
 SCRIPT_PATH="`pwd`";
 popd  > /dev/null
 
-mono $SCRIPT_PATH/HLTVDownloader.exe --completed $1 $2 $3
+MONO=/Library/Frameworks/Mono.framework/Versions/Current/bin/mono
+$MONO $SCRIPT_PATH/HLTVDownloader.exe --completed $1 $2 $3

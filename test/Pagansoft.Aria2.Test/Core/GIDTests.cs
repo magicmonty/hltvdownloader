@@ -1,141 +1,162 @@
 using System;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using Xunit;
+using Shouldly;
 
 namespace Pagansoft.Aria2.Core
 {
-    [TestFixture]
-    public class GIDTest
+    public class GIDTests
     {
         GID _sut;
         const string TestGID1 = "0123456789ABCDEF";
         const string TestGID2 = "FEDCBA9876543210";
 
-        [SetUp]
         public void SetUp()
         {
             _sut = new GID(TestGID1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeEqualIfValueIsEqual()
         {
+            SetUp();
             var other = new GID(TestGID1);
-            Assert.That(_sut.Equals(other), Is.True);
+            _sut.Equals(other).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeNotEqualIfValueIsNotEqual()
         {
+            SetUp();
             var other = new GID(TestGID2);
-            Assert.That(_sut.Equals(other), Is.False);
+            _sut.Equals(other).ShouldBeFalse();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeNotEqualIfValueIsNull()
         {
+            SetUp();
             GID other = null;
-            Assert.That(_sut.Equals(other), Is.False);
+            _sut.Equals(other).ShouldBeFalse();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeSameIfValueIsEqual()
         {
+            SetUp();
             var other = new GID(TestGID1);
-            Assert.That(_sut == other, Is.True);
+            (_sut == other).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotBeSameIfValueIsNotEqual()
         {
+            SetUp();
             var other = new GID(TestGID2);
-            Assert.That(_sut != other, Is.True);
+            (_sut != other).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotBeSameIfValueIsNull()
         {
+            SetUp();
             GID other = null;
-            Assert.That(_sut != other, Is.True);
+            (_sut != other).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotBeSameIfBothValuesAreNull()
         {
+            SetUp();
             GID other = null;
             _sut = null;
-            Assert.That(_sut != other, Is.True);
+            (_sut != other).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeSameIfValueIsMatchingString()
         {
+            SetUp();
             GID other = TestGID1;
-            Assert.That(_sut == other, Is.True);
+            (_sut == other).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotBeSameIfValueIsNonMatchingString()
         {
+            SetUp();
             GID other = TestGID2;
-            Assert.That(_sut != other, Is.True);
+            (_sut != other).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeSameIfValueIsRealString()
         {
+            SetUp();
             string other = TestGID1;
-            Assert.That(_sut == other, Is.True);
+            (_sut == other).ShouldBeTrue();
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ShouldThrowExceptionIfGidIsNotHex()
         {
-            new GID("TEST");
+            SetUp();
+            Should.Throw<ArgumentException>(
+                () => new GID("TEST"));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ShouldThrowExceptionIfGidIsLongerThan16Chars()
         {
-            new GID(TestGID1 + "12345");
+            SetUp();
+            Should.Throw<ArgumentException>(
+                () => new GID(TestGID1 + "12345"));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ShouldThrowExceptionIfGidIsEmpty()
         {
-            new GID(string.Empty);
+            SetUp();
+            Should.Throw<ArgumentException>(
+                () => new GID(string.Empty));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ShouldThrowExceptionIfGidIsNull()
         {
-            new GID(null);
+            SetUp();
+            Should.Throw<ArgumentException>(
+                () => new GID(null));
         }
 
-        [Test, ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ShouldThrowExceptionIfGidIsWhitespace()
         {
-            new GID(" ");
+            SetUp();
+            Should.Throw<ArgumentException>(
+                () => new GID(" "));
         }
 
-        [Test]
+        [Fact]
         public void ShouldReturnValuePaddedTo16CharsIfGidIsShorterThan16Chars()
         {
+            SetUp();
             var sut = new GID("1");
-            Assert.That("0000000000000001", Is.EqualTo(sut.Value));
+            "0000000000000001".ShouldBe(sut.Value);
         }
 
-        [Test]
+        [Fact]
         public void PaddedAndUnpaddedGidsShouldBeEquivalent()
         {
-            Assert.That("1" == new GID("1"), Is.True);
-            Assert.That(new GID("1") == "1", Is.True);
+            SetUp();
+            ("1" == new GID("1")).ShouldBeTrue();
+            (new GID("1") == "1").ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void PaddedAndUnpaddedGidsShouldBeEqual()
         {
-            Assert.That("1", Is.EqualTo(new GID("1")));
+            SetUp();
+            "1".ShouldBe(new GID("1"));
         }
     }
 }

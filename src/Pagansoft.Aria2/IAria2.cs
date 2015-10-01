@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using CookComputing.XmlRpc;
+using XmlRpcLight.DataTypes;
+using XmlRpcLight.Attributes;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 

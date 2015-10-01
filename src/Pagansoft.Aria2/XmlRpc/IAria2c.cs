@@ -1,11 +1,12 @@
-using System;
 using System.Collections.Generic;
-using CookComputing.XmlRpc;
+using XmlRpcLight.DataTypes;
+using XmlRpcLight.Enums;
+using XmlRpcLight.Attributes;
 
 namespace Pagansoft.Aria2.XmlRpc
 {
     [XmlRpcUrl("http://localhost:6800/rpc")]
-    public interface IAria2c : IXmlRpcProxy
+    public interface IAria2c 
     {
         [XmlRpcMethod("aria2.addUri")]
         string AddUri(string[] uris);

@@ -4,10 +4,10 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputPath>..\bin\$(Configuration)</OutputPath>
-    <ProjectGuid>{49435FE2-1B8E-416A-9ADC-5C76F8A95FF9}</ProjectGuid>
+    <ProjectGuid>{EBDFC58B-4347-4C46-AF7F-9600918EA12E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Pagansoft.Homeload</RootNamespace>
-    <AssemblyName>Pagansoft.Homeload.Test</AssemblyName>
+    <RootNamespace>Pagansoft.Aria2</RootNamespace>
+    <AssemblyName>Pagansoft.Aria2.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
@@ -21,7 +21,7 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,50 +29,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Pagansoft.Homeload\Pagansoft.Homeload.csproj">
-      <Project>{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}</Project>
-      <Name>Pagansoft.Homeload</Name>
+    <ProjectReference Include="..\..\src\Pagansoft.Aria2\Pagansoft.Aria2.csproj">
+      <Project>{981868A9-275A-4139-8DC7-13CEFCC13BAA}</Project>
+      <Name>Pagansoft.Aria2</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\ApiTests.cs" />
-    <Compile Include="Core\ConfigurationTests.cs" />
-    <Compile Include="Core\LinkIdModelTests.cs" />
-    <Compile Include="Core\LinkListItemTests.cs" />
-    <Compile Include="Core\LinkListTests.cs" />
-    <Compile Include="Core\UrlBuilderTests.cs" />
+    <Compile Include="Core\GIDTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />
   </ItemGroup>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
-      <ItemGroup>
-        <Reference Include="Telerik.JustMock">
-          <HintPath>..\..\packages\JustMock\lib\Net35\Telerik.JustMock.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v5.0')">
-      <ItemGroup>
-        <Reference Include="Telerik.JustMock.Silverlight">
-          <HintPath>..\..\packages\JustMock\lib\SL4\Telerik.JustMock.Silverlight.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>

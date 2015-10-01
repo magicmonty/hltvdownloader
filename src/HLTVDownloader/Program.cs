@@ -5,7 +5,6 @@ using Pagansoft.Aria2;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Homeload.Core;
 using NLog;
-using System.ComponentModel.Design;
 
 namespace PaganSoft.HLTVDownloader
 {

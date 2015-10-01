@@ -1,5 +1,6 @@
 using System;
-using CookComputing.XmlRpc;
+using XmlRpcLight.Attributes;
+using XmlRpcLight.Enums;
 using Pagansoft.Aria2.Options;
 using Pagansoft.Aria2.Options.Enums;
 

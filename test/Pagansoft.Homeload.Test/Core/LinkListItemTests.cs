@@ -1,12 +1,13 @@
 using System;
-using Xunit;
+using NUnit.Framework;
 using Shouldly;
 
 namespace Pagansoft.Homeload.Core
 {
+    [TestFixture]
     public class LinkListItemTests
     {
-        [Fact]
+        [Test]
         public void ShouldInitializeCorrectly()
         {
             var item = new LinkListItem(url: "http://www.google.de", id: "12345");
@@ -14,49 +15,49 @@ namespace Pagansoft.Homeload.Core
             item.Id.ShouldBe("12345");
         }
 
-        [Fact]
+        [Test]
         public void ShouldThrowExceptionIfUrlIsNull()
         {
             Should.Throw<ArgumentException>(() => 
                 new LinkListItem(url: null, id: "12345"));
         }
 
-        [Fact]
+        [Test]
         public void ShouldThrowExceptionIfUrlIsEmpty()
         {
             Should.Throw<ArgumentException>(() => 
                 new LinkListItem(url: string.Empty, id: "12345"));
         }
 
-        [Fact]
+        [Test]
         public void ShouldThrowExceptionIfUrlIsOnlyWhiteSpaces()
         {
             Should.Throw<ArgumentException>(() => 
                 new LinkListItem(url: "  ", id: "12345"));
         }
 
-        [Fact]
+        [Test]
         public void ShouldThrowExceptionIfIdIsNull()
         {
             Should.Throw<ArgumentException>(() => 
                 new LinkListItem(url: "http://www.google.de", id: null));
         }
 
-        [Fact]
+        [Test]
         public void ShouldThrowExceptionIfIdIsEmpty()
         {
             Should.Throw<ArgumentException>(() => 
                 new LinkListItem(url: "http://www.google.de", id: string.Empty));
         }
 
-        [Fact]
+        [Test]
         public void ShouldThrowExceptionIfIdIsOnlyWhiteSpaces()
         {
             Should.Throw<ArgumentException>(() => 
                 new LinkListItem(url: "http://www.google.de", id: "  "));
         }
 
-        [Fact]
+        [Test]
         public void ShouldParseCorrectly()
         {
             var actual = LinkListItem.Parse("http://81.95.11.6/download/de/Sandmaennchen.avi;11272262;");
@@ -64,7 +65,7 @@ namespace Pagansoft.Homeload.Core
             actual.Url.ShouldBe("http://81.95.11.6/download/de/Sandmaennchen.avi");
         }
 
-        [Fact]
+        [Test]
         public void ShouldReturnNullOnParseError()
         {
             var actual = LinkListItem.Parse("http://81.95.11.6/download/de/Sandmaennchen.avi");

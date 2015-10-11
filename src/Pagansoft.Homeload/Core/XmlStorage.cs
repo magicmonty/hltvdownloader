@@ -10,8 +10,8 @@ namespace Pagansoft.Homeload.Core
     [Export(typeof(IStorage))]
     public class XmlStorage : IStorage
     {
-        IConfiguration _configuration;
-        string _fileName;
+        private IConfiguration _configuration;
+        private readonly string _fileName;
 
         [ImportingConstructor]
         public XmlStorage(IConfiguration configuration)
@@ -60,6 +60,7 @@ namespace Pagansoft.Homeload.Core
             }
             catch
             {
+                /* intentionally left blank */
             }
 
             return result;
@@ -77,13 +78,14 @@ namespace Pagansoft.Homeload.Core
             var root = new XElement("links");
 
             links.ToList()
-                 .ForEach(item => {
-                root.Add(new XElement("link", 
-                                      new XAttribute("linkId", item.LinkId),
-                                      new XAttribute("listId", item.ListId),
-                                      new XAttribute("gid", item.Gid),
-                                      item.Url));
-            });
+                 .ForEach(item => 
+                    root.Add(
+                        new XElement(
+                            "link", 
+                            new XAttribute("linkId", item.LinkId), 
+                            new XAttribute("listId", item.ListId), 
+                            new XAttribute("gid", item.Gid), 
+                            item.Url)));
 
             doc.Add(root);
             doc.Save(_fileName);

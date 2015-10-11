@@ -17,52 +17,46 @@ namespace Pagansoft.Homeload.Core
             _urlBuilder = urlBuilder;
         }
 
-        public Task<LinkList> GetLinks()
+        public async Task<LinkList> GetLinks()
         {
-            return GetLinks(initial: false);
+            return await GetLinks(initial: false);
         }
 
-        public Task<LinkList> GetLinks(bool initial)
+        public async Task<LinkList> GetLinks(bool initial)
         {
             var url = _urlBuilder.BuildGetLinksUrl(initial);
 
-            var task = Task.Factory.StartNew<string>(() => _httpservice.SendGetRequest(url))
-                                   .ContinueWith<LinkList>(request => LinkList.Parse(request.Result));
+            var request = await _httpservice.SendGetRequest(url);
 
-            return task;
+            return LinkList.Parse(request);
         }
 
-        public Task<bool> SetProcessing(string listId)
+        public async Task<bool> SetProcessing(string listId)
         {
             var url = _urlBuilder.BuildSetProcessingUrl(listId);
 
-            return SendAsyncRequest(url);
+            return await SendAsyncRequest(url);
         }
 
-        public Task<bool> SetState(string linkId, LinkState state)
+        public async Task<bool> SetState(string linkId, LinkState state)
         {
             var url = _urlBuilder.BuildSetStateUrl(
                 linkId, 
                 Enum.GetName(typeof(LinkState), state).ToLower());
 
-            return SendAsyncRequest(url);
+            return await SendAsyncRequest(url);
         }
 
-        public Task<bool> SetError(string linkId)
+        public async Task<bool> SetError(string linkId)
         {
             var url = _urlBuilder.BuildSetErrorUrl(linkId);
-
-            return SendAsyncRequest(url);
+            return await SendAsyncRequest(url);
         }
 
-        Task<bool> SendAsyncRequest(string url)
+        async Task<bool> SendAsyncRequest(string url)
         {
-            var task = Task.Factory.StartNew<string>(() => _httpservice.SendGetRequest(url))
-                .ContinueWith<bool>(request => {
-                return request.Result.Trim() == "OK";
-            });
-
-            return task;
+            var request = await _httpservice.SendGetRequest(url);
+            return request.Trim() == "OK";
         }
     }
 }

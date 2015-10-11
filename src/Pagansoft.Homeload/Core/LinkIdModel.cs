@@ -71,9 +71,9 @@ namespace Pagansoft.Homeload.Core
 
         public void RemoveLinkId(string gid)
         {
-            var list = Load();
+            var list = Load().ToList();
 
-            Save(list.Except(Enumerable.Where(list, e => e.Gid == gid)));
+            Save(list.Except(list.Where(e => e.Gid == gid)));
         }
     }
 }

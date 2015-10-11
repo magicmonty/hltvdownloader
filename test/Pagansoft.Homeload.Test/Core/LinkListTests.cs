@@ -1,13 +1,13 @@
-using System;
 using System.Linq;
-using Xunit;
+using NUnit.Framework;
 using Shouldly;
 
 namespace Pagansoft.Homeload.Core
 {
+    [TestFixture]
     public class LinkListTests
     {
-        [Fact]
+        [Test]
         public void ShouldBeInitializedCorrectly()
         {
             var actual = new LinkList();
@@ -22,7 +22,7 @@ namespace Pagansoft.Homeload.Core
                 () => actual.Interval.ShouldBe(0, "Interval"));
         }
 
-        [Fact]
+        [Test]
         public void ShouldReturnEmptyListWithErrorOnParseIfValueContainsError()
         {
             ShouldReturnEmptyListWithErrorOnParseIfValueContainsError("USER_NOT_FOUND");
@@ -40,7 +40,7 @@ namespace Pagansoft.Homeload.Core
             actual.Error.ShouldBe(response);
         }
 
-        [Fact]
+        [Test]
         public void ShouldParseCorrectly()
         {
             const string response = @"INTERVAL=60;NUMBER_OF_LINKS=1;LIST=3828;LINKCOUNT=2;HHSTART=0;HHEND=8;
@@ -65,7 +65,7 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
             link2.Id.ShouldBe("11274936", "Link2 ID");
         }
 
-        [Fact]
+        [Test]
         public void ShouldParseEmptyListCorrectly()
         {
             const string response = @"INTERVAL=60;NUMBER_OF_LINKS=0;LIST=0;LINKCOUNT=0;HHSTART=0;HHEND=8;";

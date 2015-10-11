@@ -18,6 +18,7 @@ namespace Pagansoft.Homeload.Core
             HappyHourEnd = null;
             Error = string.Empty;
         }
+
         #region IEnumerable implementation
         public IEnumerator<LinkListItem> GetEnumerator()
         {
@@ -29,6 +30,7 @@ namespace Pagansoft.Homeload.Core
             return _items.GetEnumerator();
         }
         #endregion
+
         public int LinkCount { get { return _items.Count; } }
 
         public string Id { get; private set; }

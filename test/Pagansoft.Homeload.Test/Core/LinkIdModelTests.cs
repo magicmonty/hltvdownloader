@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
-using Telerik.JustMock;
-using Telerik.JustMock.Helpers;
+using NUnit.Framework;
 using Shouldly;
+using Moq;
 
 namespace Pagansoft.Homeload.Core
 {
+    [TestFixture]
     public class LinkIdModelTests
     {
         LinkIdModel _sut;
@@ -14,29 +14,28 @@ namespace Pagansoft.Homeload.Core
         static readonly LinkIdPersistenceModel link1 = new LinkIdPersistenceModel("ABC", "1234", "http://test.de", "1");
         static readonly LinkIdPersistenceModel link2 = new LinkIdPersistenceModel("DEF", "5678", "http://example.com", "2");
 
-        public void CreateSut()
+        [SetUp]
+        public void Setup()
         {
             _linkIds = new List<LinkIdPersistenceModel>();
 
-            var storage = Mock.Create<IStorage>();
-            storage.Arrange(s => s.LoadLinks()).Returns(_linkIds);
-            storage.Arrange(s => s.SaveLinks(Arg.IsAny<IEnumerable<LinkIdPersistenceModel>>()))
-                .DoInstead((IEnumerable<LinkIdPersistenceModel> list) => _linkIds = list.ToList());
+            var storage = new Mock<IStorage>();
+            storage.Setup(s => s.LoadLinks()).Returns(_linkIds);
+            storage.Setup(s => s.SaveLinks(It.IsAny<IEnumerable<LinkIdPersistenceModel>>()))
+                .Callback((IEnumerable<LinkIdPersistenceModel> list) => _linkIds = list.ToList());
 
-            _sut = new LinkIdModel(storage);
+            _sut = new LinkIdModel(storage.Object);
         }
 
-        [Fact]
+        [Test]
         public void ShouldReturnEmtpyStringOnGetListIdByLinkIdIfListIsNotFound()
         {
-            CreateSut();
             _sut.GetListIdByGid("3").ShouldBeEmpty();
         }
 
-        [Fact]
+        [Test]
         public void ShouldReturnCorrectListIdOnGetListIdByLinkIdIfListIsFound()
         {
-            CreateSut();
             _linkIds.Add(link1);
             _linkIds.Add(link2);
             _sut.GetListIdByGid("1").ShouldBe("ABC");
@@ -45,7 +44,7 @@ namespace Pagansoft.Homeload.Core
             _sut.GetLinkIdByGid("2").ShouldBe("5678");
         }
 
-        [Fact]
+        [Test]
         public void ShouldAddLinkIdToListIfListAlreadyExists()
         {
             _linkIds.Add(link1);
@@ -58,7 +57,7 @@ namespace Pagansoft.Homeload.Core
             secondLink.Url.ShouldBe(link2.Url);
         }
 
-        [Fact]
+        [Test]
         public void ShouldRemoveNothingIfLinkIsNotInList()
         {
             _linkIds.Add(link1);
@@ -66,7 +65,7 @@ namespace Pagansoft.Homeload.Core
             _linkIds.ShouldBe(new[] { link1 });
         }
 
-        [Fact]
+        [Test]
         public void ShouldNotAddLinkIfLinkIsAlreadyInList()
         {
             _linkIds.Add(link1);

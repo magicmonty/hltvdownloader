@@ -1,11 +1,11 @@
 using System.Linq;
-using Xunit;
-using Telerik.JustMock;
-using Telerik.JustMock.Helpers;
+using NUnit.Framework;
 using Shouldly;
+using Moq;
 
 namespace Pagansoft.Homeload.Core
 {
+    [TestFixture]
     public class ApiTests
     {
         const string LinkListResponse = @"INTERVAL=60;NUMBER_OF_LINKS=1;LIST=3828;LINKCOUNT=2;HHSTART=0;HHEND=8;
@@ -17,32 +17,30 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
         const string SetErrorUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&state=finished&error=brokenonopen";
         const string SetProcessingUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&list=listId&state=processing";
         Api _sut;
-        IHLTCHttpService _httpService;
-        IConfiguration _configuration;
+        Mock<IHLTCHttpService> _httpService;
+        Mock<IConfiguration> _configuration;
 
         private void CreateSut()
         {
-            _httpService = Mock.Create<IHLTCHttpService>();
-            _configuration = Mock.Create<IConfiguration>();
-            _configuration.Arrange(c => c.HltvUserName).Returns("user");
-            _configuration.Arrange(c => c.HltvPassword).Returns("password");
+            _httpService = new Mock<IHLTCHttpService>();
+            _configuration = new Mock<IConfiguration>();
+            _configuration.Setup(c => c.HltvUserName).Returns("user");
+            _configuration.Setup(c => c.HltvPassword).Returns("password");
 
-            _sut = new Api(_httpService, new UrlBuilder(_configuration));
+            _sut = new Api(_httpService.Object, new UrlBuilder(_configuration.Object));
         }
 
-        [Fact]
-        public void ShouldReturnLinkListOnSuccessfulGetInitialLinks()
+        [Test]
+        public async void ShouldReturnLinkListOnSuccessfulGetInitialLinks()
         {
             CreateSut();
-            _httpService.Arrange(h => h.SendGetRequest(GetLinksUrlProcToNew))
-                        .Returns(LinkListResponse)
-                        .OccursOnce();
+            _httpService
+                .Setup(h => h.SendGetRequest(GetLinksUrlProcToNew))
+                .ReturnsAsync(LinkListResponse);
 
-            var task = _sut.GetLinks(initial: true);
-            task.Wait();
-            var actual = task.Result;
+            var actual = await _sut.GetLinks(initial: true);
 
-            _httpService.Assert();
+            _httpService.Verify();
 
             VerifyLinkList(actual);
         }
@@ -68,78 +66,67 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                 () => link2.Id.ShouldBe("11274936", "Link2 ID"));
         }
 
-        [Fact]
-        public void ShouldReturnLinkListOnSuccessfulGetLinks()
+        [Test]
+        public async void ShouldReturnLinkListOnSuccessfulGetLinks()
         {
             CreateSut();
 
             _httpService
-                .Arrange(h => h.SendGetRequest(GetLinksUrl))
-                .Returns(LinkListResponse)
-                .OccursOnce();
+                .Setup(h => h.SendGetRequest(GetLinksUrl))
+                .ReturnsAsync(LinkListResponse);
 
-            var task = _sut.GetLinks();
-            task.Wait();
-            var actual = task.Result;
+            var actual = await _sut.GetLinks();
 
-            _httpService.Assert();
+            _httpService.Verify();
 
             VerifyLinkList(actual);
         }
 
-        [Fact]
-        public void ShouldExecuteSetStateInHttpServiceIfSetStateIsTriggered()
+        [Test]
+        public async void ShouldExecuteSetStateInHttpServiceIfSetStateIsTriggered()
         {
             CreateSut();
 
             _httpService
-                .Arrange(h => h.SendGetRequest(SetStateUrl))
-                .Returns("OK")
-                .OccursOnce();
+                .Setup(h => h.SendGetRequest(SetStateUrl))
+                .ReturnsAsync("OK");
 
-            var task = _sut.SetState("linkId", LinkState.Finished);
-
-            task.Wait();
-
-            var actual = task.Result;
-            _httpService.Assert();
+            var actual = await _sut.SetState("linkId", LinkState.Finished);
+           
+            _httpService.Verify();
+           
             actual.ShouldBeTrue();
         }
 
-        [Fact]
-        public void ShouldExecuteSetErrorInHttpServiceIfSetErrorIsTriggered()
+        [Test]
+        public async void ShouldExecuteSetErrorInHttpServiceIfSetErrorIsTriggered()
         {
             CreateSut();
 
             _httpService
-                .Arrange(h => h.SendGetRequest(SetErrorUrl))
-                .Returns("OK")
-                .OccursOnce();
+                .Setup(h => h.SendGetRequest(SetErrorUrl))
+                .ReturnsAsync("OK");
 
-            var task = _sut.SetError("linkId");
+            var actual = await _sut.SetError("linkId");
 
-            task.Wait();
+            _httpService.Verify();
 
-            var actual = task.Result;
-            _httpService.Assert();
             actual.ShouldBeTrue();
         }
 
-        [Fact]
-        public void ShouldExecuteSetProcessingInHttpServiceIfSetProcessingIsTriggered()
+        [Test]
+        public async void ShouldExecuteSetProcessingInHttpServiceIfSetProcessingIsTriggered()
         {
             CreateSut();
 
-            _httpService.Arrange(h => h.SendGetRequest(SetProcessingUrl))
-                    .Returns("OK")
-                .OccursOnce();
+            _httpService
+                .Setup(h => h.SendGetRequest(SetProcessingUrl))
+                .ReturnsAsync("OK");
 
-            var task = _sut.SetProcessing("listId");
+            var actual = await _sut.SetProcessing("listId");
 
-            task.Wait();
+            _httpService.Verify();
 
-            var actual = task.Result;
-            _httpService.Assert();
             actual.ShouldBeTrue();
         }
     }

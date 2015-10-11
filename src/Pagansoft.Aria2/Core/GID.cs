@@ -15,23 +15,27 @@ namespace Pagansoft.Aria2.Core
 
         public string Value { get { return _value; } }
 
-        readonly string _value;
+        private readonly string _value;
 
         public override bool Equals(object obj)
         {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (ReferenceEquals(null, obj))
+                return false;
+            
             var other = obj as GID;
-            if ((object)null != (object)other)
+            if (other == null)
             {
-                return Value == other.Value;
+                var str = obj as string;
+                if (str == null)
+                    return false;
+                
+                other = new GID(str);
             }
-
-            if (obj is string)
-            {
-                other = new GID((string)obj);
-                return Value == other.Value;
-            }
-
-            return false;
+            
+            return Value == other.Value;
         }
 
         public override int GetHashCode()
@@ -56,14 +60,12 @@ namespace Pagansoft.Aria2.Core
 
         public static bool operator ==(GID gid1, GID gid2)
         {
-            return (object)gid1 != (object)null && (object)gid2 != (object)null
-                && gid1.Value == gid2.Value;
+            return Equals(gid1, gid2);
         }
 
         public static bool operator !=(GID gid1, GID gid2)
         {
-            return (object)gid1 == (object)null || (object)gid2 == (object)null
-                || gid1.Value != gid2.Value;
+            return !(gid1 == gid2);
         }
     };
 }

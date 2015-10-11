@@ -46,6 +46,11 @@ namespace PaganSoft.HLTVDownloader
 
         public static void Main(string[] args)
         {
+            Run(args);
+        }
+
+        public async static void Run(string[] args)
+        {
             LogDebug("Starting application");
             _bootstrapper = new Bootstrapper();
             _bootstrapper.Initialize();
@@ -100,7 +105,7 @@ namespace PaganSoft.HLTVDownloader
             var linkIdModel = _bootstrapper.GetExport<ILinkIdModel>();
             foreach (var linkId in links)
             {
-                var gid = aria.AddUri(new [] { new Uri(linkId.Url) });
+                var gid = await aria.AddUri(new [] { new Uri(linkId.Url) });
 
                 linkIdModel.SaveLinkId(linkId.Id, links.Id, linkId.Url, gid.Value);
             }
@@ -137,6 +142,7 @@ namespace PaganSoft.HLTVDownloader
                 {
                     var task = hltv.SetState(linkId, LinkState.Finished);
                     task.Wait();
+                   
                     
                     if (task.Result)
                     {
@@ -192,10 +198,10 @@ namespace PaganSoft.HLTVDownloader
             }
         }
 
-        static void ShutdownAriaIfNoLinksLeft(ILinkIdModel storage)
+        private async static void ShutdownAriaIfNoLinksLeft(ILinkIdModel storage)
         {
             var aria = _bootstrapper.GetExport<IAria2>();
-            var status = aria.GetGlobalStat();
+            var status = await aria.GetGlobalStat();
 
             var linksInAria = status.NumActive + status.NumStopped + status.NumWaiting;
 

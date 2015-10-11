@@ -1,11 +1,9 @@
 source https://www.nuget.org/api/v2/
 
 nuget FAKE
-nuget ILRepack.Lib 2.0.5 framework: >= net45
-nuget ILRepack.MSBuild.Task 1.0.9 framework: >= net45
-nuget JustMock 2015.3.929.5 framework: >= net40
+nuget Moq
 nuget NLog 4.1.2 framework: >= net45
+nuget NUnit
+nuget NUnit.Runners
 nuget Shouldly 2.6.0 framework: >= net45
 nuget XmlRpcLight 1.0.0.0 framework: >= net45
-nuget xunit 2.1.0 framework: >= net45
-nuget xunit.runner.console

@@ -11,12 +11,12 @@ using Pagansoft.Homeload.Core;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 using Pagansoft.Aria2.XmlRpc;
-using XmlRpcLight;
+using System.CodeDom;
 
 namespace Pagansoft.Aria2
 {
     [Export(typeof(IAria2))]
-    public class Aria2 : XmlRpcService, IAria2
+    public class Aria2 : IAria2
     {
         private readonly IAria2c _proxy;
         const string ProcessName = "aria2c";
@@ -25,9 +25,8 @@ namespace Pagansoft.Aria2
         [ImportingConstructor]
         public Aria2(IConfiguration configuration)
         {
-            // proxy = XmlRpcProxyGen.Create<IAria2c>();
-            // proxy.Headers.Add("token: 12345");
             _configuration = configuration;
+            _proxy = new AriaClient();
         }
 
         public bool IsRunning
@@ -129,236 +128,252 @@ namespace Pagansoft.Aria2
             return Path.GetFullPath(exe);
         }
 
-        public GID AddUri(IEnumerable<Uri> uris)
+        public async Task<GID> AddUri(IEnumerable<Uri> uris)
         {
-            return _proxy.AddUri(uris.Select(u => u.ToString()).ToArray());
+            return await _proxy.AddUri(uris.Select(u => u.ToString()).ToArray());
         }
 
-        public GID AddUri(IEnumerable<Uri> uris, XmlRpcStruct options)
+        public async Task<GID> AddUri(IEnumerable<Uri> uris, XmlRpcStruct options)
         {
-            return _proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), options);
+            return await _proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), options);
         }
 
-        public GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options, int position)
+        public async Task<GID> AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options, int position)
         {
-            return _proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), options, position);
+            return await _proxy.AddUri(uris.Select(u => u.ToString()).ToArray(), options, position);
         }
 
-        public GID AddTorrent(byte[] torrent)
+        public async Task<GID> AddTorrent(byte[] torrent)
         {
-            return _proxy.AddTorrent(torrent);
+            return await _proxy.AddTorrent(torrent);
         }
 
-        public GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris)
+        public async Task<GID> AddTorrent(byte[] torrent, IEnumerable<Uri> uris)
         {
-            return _proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray());
+            return await _proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray());
         }
 
-        public GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options)
+        public async Task<GID> AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options)
         {
-            return _proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), options);
+            return await _proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), options);
         }
 
-        public GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options, int position)
+        public async Task<GID> AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options, int position)
         {
-            return _proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), options, position);
+            return await _proxy.AddTorrent(torrent, uris.Select(u => u.ToString()).ToArray(), options, position);
         }
 
-        public GID AddMetalink(byte[] metalink)
+        public async Task<GID> AddMetalink(byte[] metalink)
         {
-            return _proxy.AddMetalink(metalink);
+            return await _proxy.AddMetalink(metalink);
         }
 
-        public GID AddMetalink(byte[] metalink, IDictionary<string, string> options)
+        public async Task<GID> AddMetalink(byte[] metalink, IDictionary<string, string> options)
         {
-            return _proxy.AddMetalink(metalink, options);
+            return await _proxy.AddMetalink(metalink, options);
         }
 
-        public GID AddMetalink(byte[] metalink, IDictionary<string, string> options, int position)
+        public async Task<GID> AddMetalink(byte[] metalink, IDictionary<string, string> options, int position)
         {
-            return _proxy.AddMetalink(metalink, options, position);
+            return await _proxy.AddMetalink(metalink, options, position);
         }
 
-        public GID Remove(string gid)
+        public async Task<GID> Remove(string gid)
         {
-            return _proxy.Remove(gid);
+            return await _proxy.Remove(gid);
         }
 
-        public GID ForceRemove(string gid)
+        public async Task<GID> ForceRemove(string gid)
         {
-            return _proxy.ForceRemove(gid);
+            return await _proxy.ForceRemove(gid);
         }
 
-        public GID Pause(string gid)
+        public async Task<GID> Pause(string gid)
         {
-            return _proxy.Pause(gid);
+            return await _proxy.Pause(gid);
         }
 
-        public bool PauseAll()
+        public async Task<bool> PauseAll()
         {
+            var response = await _proxy.PauseAll();
             bool result;
-            if (bool.TryParse(_proxy.PauseAll(), out result))
-                return result;
-
-            return false;
+            return bool.TryParse(response, out result) && result;
         }
 
-        public GID ForcePause(string gid)
+        public async Task<GID> ForcePause(string gid)
         {
-            return _proxy.ForcePause(gid);
+            return await _proxy.ForcePause(gid);
         }
 
-        public bool ForcePauseAll()
+        public async Task<bool> ForcePauseAll()
         {
+            var response = await _proxy.ForcePauseAll();
             bool result;
-            if (bool.TryParse(_proxy.ForcePauseAll(), out result))
-                return result;
-
-            return false;
+            return bool.TryParse(response, out result) && result;
         }
 
-        public GID Unpause(string gid)
+        public async Task<GID> Unpause(string gid)
         {
-            return _proxy.Unpause(gid);
+            return await _proxy.Unpause(gid);
         }
 
-        public bool UnpauseAll()
+        public async Task<bool> UnpauseAll()
         {
+            var response = await _proxy.UnpauseAll();
             bool result;
-            if (bool.TryParse(_proxy.UnpauseAll(), out result))
-                return result;
-
-            return false;
+            return bool.TryParse(response, out result) && result;
         }
 
-        public IStatusInfo TellStatus(string gid)
+        public async Task<IStatusInfo> TellStatus(string gid)
         {
-            return StatusInfo.From(_proxy.TellStatus(gid));
+            var response = await _proxy.TellStatus(gid);
+            return StatusInfo.From(response);
         }
 
-        public IStatusInfo TellStatus(string gid, IEnumerable<string> keys)
+        public async Task<IStatusInfo> TellStatus(string gid, IEnumerable<string> keys)
         {
-            return StatusInfo.From(_proxy.TellStatus(gid, keys.ToArray()));
+            var response = await _proxy.TellStatus(gid, keys.ToArray());
+            return StatusInfo.From(response);
         }
 
-        public IEnumerable<IUriStatus> GetUris(string gid)
+        public async Task<IEnumerable<IUriStatus>> GetUris(string gid)
         {
-            return _proxy.GetUris(gid).Select(UriStatus.From);
+            var response = await _proxy.GetUris(gid);
+            return response.Select(UriStatus.From);
         }
 
-        public IEnumerable<IFileInfo> GetFiles(string gid)
+        public async Task<IEnumerable<IFileInfo>> GetFiles(string gid)
         {
-            return _proxy.GetFiles(gid).Select(Pagansoft.Aria2.Core.FileInfo.From);
+            var response = await _proxy.GetFiles(gid);
+            return response.Select(Pagansoft.Aria2.Core.FileInfo.From);
         }
 
-        public IEnumerable<IPeerInfo> GetPeers(string gid)
+        public async Task<IEnumerable<IPeerInfo>> GetPeers(string gid)
         {
-            return _proxy.GetPeers(gid).Select(PeerInfo.From);
+            var response = await _proxy.GetPeers(gid);
+            return response.Select(PeerInfo.From);
         }
 
-        public IEnumerable<IServersInfo> GetServers(string gid)
+        public async Task<IEnumerable<IServersInfo>> GetServers(string gid)
         {
-            return _proxy.GetServers(gid).Select(ServersInfo.From);
+            var response = await _proxy.GetServers(gid);
+            return response.Select(ServersInfo.From);
         }
 
-        public IEnumerable<IStatusInfo> TellActive()
+        public async Task<IEnumerable<IStatusInfo>> TellActive()
         {
-            return _proxy.TellActive().Select(StatusInfo.From);
+            var response = await _proxy.TellActive();
+            return response.Select(StatusInfo.From);
         }
 
-        public IEnumerable<IStatusInfo> TellActive(IEnumerable<string> keys)
+        public async Task<IEnumerable<IStatusInfo>> TellActive(IEnumerable<string> keys)
         {
-            return _proxy.TellActive(keys.ToArray()).Select(StatusInfo.From);
+            var response = await _proxy.TellActive(keys.ToArray());
+            return response.Select(StatusInfo.From);
         }
 
-        public IEnumerable<IStatusInfo> TellWaiting(int offset, int num)
+        public async Task<IEnumerable<IStatusInfo>> TellWaiting(int offset, int num)
         {
-            return _proxy.TellWaiting(offset, num).Select(StatusInfo.From);
+            var response = await _proxy.TellWaiting(offset, num);
+            return response.Select(StatusInfo.From);
         }
 
-        public IEnumerable<IStatusInfo> TellWaiting(int offset, int num, IEnumerable<string> keys)
+        public async Task<IEnumerable<IStatusInfo>> TellWaiting(int offset, int num, IEnumerable<string> keys)
         {
-            return _proxy.TellWaiting(offset, num, keys.ToArray()).Select(StatusInfo.From);
+            var response = await _proxy.TellWaiting(offset, num, keys.ToArray());
+            return response.Select(StatusInfo.From);
         }
 
-        public IEnumerable<IStatusInfo> TellStopped(int offset, int num)
+        public async Task<IEnumerable<IStatusInfo>> TellStopped(int offset, int num)
         {
-            return _proxy.TellStopped(offset, num).Select(StatusInfo.From);
+            var response = await _proxy.TellStopped(offset, num);
+            return response.Select(StatusInfo.From);
         }
 
-        public IEnumerable<IStatusInfo> TellStopped(int offset, int num, IEnumerable<string> keys)
+        public async Task<IEnumerable<IStatusInfo>> TellStopped(int offset, int num, IEnumerable<string> keys)
         {
-            return _proxy.TellStopped(offset, num, keys.ToArray()).Select(StatusInfo.From);
+            var response = await _proxy.TellStopped(offset, num, keys.ToArray());
+            return response.Select(StatusInfo.From);
         }
 
-        public int ChangePosition(string gid, int pos, string how)
+        public async Task<int> ChangePosition(string gid, int pos, string how)
         {
-            return _proxy.ChangePosition(gid, pos, how);
+            return await _proxy.ChangePosition(gid, pos, how);
         }
 
-        public IEnumerable<int> ChangeUri(string gid, int fileIndex, IEnumerable<string> delUris, IEnumerable<string> addUris)
+        public async Task<IEnumerable<int>> ChangeUri(string gid, int fileIndex, IEnumerable<string> delUris, IEnumerable<string> addUris)
         {
-            return _proxy.ChangeUri(gid, fileIndex, delUris.ToArray(), addUris.ToArray());
+            return await _proxy.ChangeUri(gid, fileIndex, delUris.ToArray(), addUris.ToArray());
         }
 
-        public int[] ChangeUri(string gid, int fileIndex, IEnumerable<string> delUris, IEnumerable<string> addUris, int position)
+        public async Task<int[]> ChangeUri(string gid, int fileIndex, IEnumerable<string> delUris, IEnumerable<string> addUris, int position)
         {
-            return _proxy.ChangeUri(gid, fileIndex, delUris.ToArray(), addUris.ToArray(), position);
+            return await _proxy.ChangeUri(gid, fileIndex, delUris.ToArray(), addUris.ToArray(), position);
         }
 
-        public IDictionary<string, string> GetOption(string gid)
+        public async Task<IDictionary<string, string>> GetOption(string gid)
         {
-            return _proxy.GetOption(gid);
+            return await _proxy.GetOption(gid);
         }
 
-        public bool ChangeOption(string gid, IDictionary<string, string> options)
+        public async Task<bool> ChangeOption(string gid, IDictionary<string, string> options)
         {
-            return _proxy.ChangeOption(gid, options) == "OK";
+            var response = await _proxy.ChangeOption(gid, options);
+            return response == "OK";
         }
 
-        public IAriaOptions GetGlobalOption()
+        public async Task<IAriaOptions> GetGlobalOption()
         {
-            return AriaOptions.From(_proxy.GetGlobalOption());
+            var response = await _proxy.GetGlobalOption();
+            return AriaOptions.From(response);
         }
 
-        public bool ChangeGlobalOption(IAriaOptions options)
+        public async Task<bool> ChangeGlobalOption(IAriaOptions options)
         {
-            return _proxy.ChangeGlobalOption(XmlRpc.Options.From(options)) == "OK";
+            var response = await _proxy.ChangeGlobalOption(XmlRpc.Options.From(options));
+            return response == "OK";
         }
 
-        public IGlobalStats GetGlobalStat()
+        public async Task<IGlobalStats> GetGlobalStat()
         {
-            return GlobalStats.From(_proxy.GetGlobalStat());
+            var response = await _proxy.GetGlobalStat();
+            return GlobalStats.From(response);
         }
 
-        public bool PurgeDownloadResult()
+        public async Task<bool> PurgeDownloadResult()
         {
-            return _proxy.PurgeDownloadResult() == "OK";
+            var response = await _proxy.PurgeDownloadResult();
+            return response == "OK";
         }
 
-        public bool RemoveDownloadResult(string gid)
+        public async Task<bool> RemoveDownloadResult(string gid)
         {
-            return _proxy.RemoveDownloadResult(gid) == "OK";
+            var response = await _proxy.RemoveDownloadResult(gid);
+            return response == "OK";
         }
 
-        public IVersionInfo GetVersion()
+        public async Task<IVersionInfo> GetVersion()
         {
-            return VersionInfo.From(_proxy.GetVersion());
+            var response = await _proxy.GetVersion();
+            return VersionInfo.From(response);
         }
 
-        public string GetSessionId()
+        public async Task<string> GetSessionId()
         {
-            return _proxy.GetSessionInfo().SessionId;
+            var response = await _proxy.GetSessionInfo();
+            return response.SessionId;
         }
 
-        public bool Shutdown()
+        public async Task<bool> Shutdown()
         {
-            return _proxy.Shutdown() == "OK";
+            var response = await _proxy.Shutdown();
+            return response == "OK";
         }
 
-        public bool ForceShutdown()
+        public async Task<bool> ForceShutdown()
         {
-            return _proxy.ForceShutdown() == "OK";
+            var response = await _proxy.ForceShutdown();
+            return response == "OK";
         }
     }
 }

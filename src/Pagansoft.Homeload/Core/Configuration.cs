@@ -20,10 +20,10 @@ namespace Pagansoft.Homeload.Core
             get
             {
                 var userNameSetting = _configurationManager.AppSettings["username"];
-                if (userNameSetting == null)
-                    return string.Empty;
+                return userNameSetting == null 
+                    ? string.Empty 
+                    : _configurationManager.AppSettings["username"].Value;
 
-                return _configurationManager.AppSettings["username"].Value;
             }
         }
 
@@ -32,10 +32,10 @@ namespace Pagansoft.Homeload.Core
             get
             {
                 var userNameSetting = _configurationManager.AppSettings["password"];
-                if (userNameSetting == null)
-                    return string.Empty;
+                return userNameSetting == null 
+                    ? string.Empty 
+                    : _configurationManager.AppSettings["password"].Value;
 
-                return _configurationManager.AppSettings["password"].Value;
             }
         }
 

@@ -4,6 +4,7 @@ using XmlRpcLight.DataTypes;
 using XmlRpcLight.Attributes;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
+using System.Threading.Tasks;
 
 namespace Pagansoft.Aria2
 {
@@ -13,100 +14,100 @@ namespace Pagansoft.Aria2
 
         bool Start();
 
-        GID AddUri(IEnumerable<Uri> uris);
+        Task<GID> AddUri(IEnumerable<Uri> uris);
 
-        GID AddUri(IEnumerable<Uri> uris, XmlRpcStruct options);
+        Task<GID> AddUri(IEnumerable<Uri> uris, XmlRpcStruct options);
 
-        GID AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options, int position);
+        Task<GID> AddUri(IEnumerable<Uri> uris, IDictionary<string, string> options, int position);
 
-        GID AddTorrent(byte[] torrent);
+        Task<GID> AddTorrent(byte[] torrent);
 
-        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris);
+        Task<GID> AddTorrent(byte[] torrent, IEnumerable<Uri> uris);
 
-        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options);
+        Task<GID> AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options);
 
-        GID AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options, int position);
+        Task<GID> AddTorrent(byte[] torrent, IEnumerable<Uri> uris, IDictionary<string, string> options, int position);
 
-        GID AddMetalink(byte[] metalink);
+        Task<GID> AddMetalink(byte[] metalink);
 
-        GID AddMetalink(byte[] metalink, IDictionary<string, string> options);
+        Task<GID> AddMetalink(byte[] metalink, IDictionary<string, string> options);
 
-        GID AddMetalink(byte[] metalink, IDictionary<string, string> options, int position);
+        Task<GID> AddMetalink(byte[] metalink, IDictionary<string, string> options, int position);
 
-        GID Remove(string gid);
+        Task<GID> Remove(string gid);
 
-        GID ForceRemove(string gid);
+        Task<GID> ForceRemove(string gid);
 
-        GID Pause(string gid);
+        Task<GID> Pause(string gid);
 
-        bool PauseAll();
+        Task<bool> PauseAll();
 
-        GID ForcePause(string gid);
+        Task<GID> ForcePause(string gid);
 
-        bool ForcePauseAll();
+        Task<bool> ForcePauseAll();
 
-        GID Unpause(string gid);
+        Task<GID> Unpause(string gid);
 
-        bool UnpauseAll();
+        Task<bool> UnpauseAll();
 
-        IStatusInfo TellStatus(string gid);
+        Task<IStatusInfo> TellStatus(string gid);
 
-        IStatusInfo TellStatus(string gid, IEnumerable<string> keys);
+        Task<IStatusInfo> TellStatus(string gid, IEnumerable<string> keys);
 
-        IEnumerable<IUriStatus> GetUris(string gid);
+        Task<IEnumerable<IUriStatus>> GetUris(string gid);
 
-        IEnumerable<IFileInfo> GetFiles(string gid);
+        Task<IEnumerable<IFileInfo>> GetFiles(string gid);
 
-        IEnumerable<IPeerInfo> GetPeers(string gid);
+        Task<IEnumerable<IPeerInfo>> GetPeers(string gid);
 
-        IEnumerable<IServersInfo> GetServers(string gid);
+        Task<IEnumerable<IServersInfo>> GetServers(string gid);
 
-        IEnumerable<IStatusInfo> TellActive();
+        Task<IEnumerable<IStatusInfo>> TellActive();
 
-        IEnumerable<IStatusInfo> TellActive(IEnumerable<string> keys);
+        Task<IEnumerable<IStatusInfo>> TellActive(IEnumerable<string> keys);
 
-        IEnumerable<IStatusInfo> TellWaiting(int offset, int num);
+        Task<IEnumerable<IStatusInfo>> TellWaiting(int offset, int num);
 
-        IEnumerable<IStatusInfo> TellWaiting(int offset, int num, IEnumerable<string> keys);
+        Task<IEnumerable<IStatusInfo>> TellWaiting(int offset, int num, IEnumerable<string> keys);
 
-        IEnumerable<IStatusInfo> TellStopped(int offset, int num);
+        Task<IEnumerable<IStatusInfo>> TellStopped(int offset, int num);
 
-        IEnumerable<IStatusInfo> TellStopped(int offset, int num, IEnumerable<string> keys);
+        Task<IEnumerable<IStatusInfo>> TellStopped(int offset, int num, IEnumerable<string> keys);
 
-        int ChangePosition(string gid, int pos, string how);
+        Task<int> ChangePosition(string gid, int pos, string how);
 
-        IEnumerable<int> ChangeUri(string gid, 
+        Task<IEnumerable<int>> ChangeUri(string gid, 
                                    int fileIndex, 
                                    IEnumerable<string> delUris, 
                                    IEnumerable<string> addUris);
 
-        int[] ChangeUri(string gid, 
+        Task<int[]> ChangeUri(string gid, 
                         int fileIndex, 
                         IEnumerable<string> delUris, 
                         IEnumerable<string> addUris, 
                         int position);
 
-        IDictionary<string, string> GetOption(string gid);
+        Task<IDictionary<string, string>> GetOption(string gid);
 
-        bool ChangeOption(string gid, IDictionary<string, string> options);
+        Task<bool> ChangeOption(string gid, IDictionary<string, string> options);
 
-        IAriaOptions GetGlobalOption();
+        Task<IAriaOptions> GetGlobalOption();
 
-        bool ChangeGlobalOption(IAriaOptions options);
+        Task<bool> ChangeGlobalOption(IAriaOptions options);
 
-        IGlobalStats GetGlobalStat();
+        Task<IGlobalStats> GetGlobalStat();
 
-        bool PurgeDownloadResult();
+        Task<bool> PurgeDownloadResult();
 
-        bool RemoveDownloadResult(string gid);
+        Task<bool> RemoveDownloadResult(string gid);
 
-        IVersionInfo GetVersion();
+        Task<IVersionInfo> GetVersion();
 
-        string GetSessionId();
+        Task<string> GetSessionId();
 
-        bool Shutdown();
+        Task<bool> Shutdown();
 
-        bool ForceShutdown();
+        Task<bool> ForceShutdown();
     }
 }
 

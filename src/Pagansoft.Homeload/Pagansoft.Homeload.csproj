@@ -56,6 +56,9 @@
     <Compile Include="Core\ConfigurationManager.cs" />
     <Compile Include="Core\XmlStorage.cs" />
     <Compile Include="Core\LinkIdPersistenceModel.cs" />
+    <Compile Include="..\HLTVDownloader\Properties\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

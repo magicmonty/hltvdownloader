@@ -92,6 +92,9 @@
     <Compile Include="IAria2.cs" />
     <Compile Include="Options\IMetaLinkOptions.cs" />
     <Compile Include="XmlRpc\AriaClient.cs" />
+    <Compile Include="..\HLTVDownloader\Properties\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

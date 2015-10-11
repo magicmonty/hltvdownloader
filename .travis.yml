@@ -1,9 +1,7 @@
-language: c
-
+language: csharp
+solution: HLTVDownloader.sln
 install:
-        - chmod a+x prebuild.sh
-        - sudo ./prebuild.sh
-
+    - "./update.sh"
 script:
-        - xbuild build.xml
-        - nunit-console ./test/bin/Debug/*.Test.dll
+    - "./fake"
+

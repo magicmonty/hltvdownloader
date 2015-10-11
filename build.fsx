@@ -32,18 +32,16 @@ Target "BuildRelease" (fun _ ->
 
 Target "BuildDebug" (fun _ ->
     !!"*.sln"
-    |> MSBuildDebug "" "Build" 
+    |> MSBuildDebug "" "Build"
     |> Log "DebugBuild-Output: "
 )
 
 Target "Test" (fun _ ->
     !!(testDir @@ "Pagansoft.*.Test.dll")
-      |> xUnit2(fun p ->
-          { p with ShadowCopy = true
-                   NoAppDomain = true
-                   HtmlOutputPath = Some (testDir @@ "TestResults.html")
-                   XmlOutputPath = Some (testDir @@ "TestResults.xml")
-                   ToolPath = "packages/xunit.runner.console/tools/xunit.console.exe"})
+      |> NUnit(fun p ->
+          { p with DisableShadowCopy = false
+                   OutputFile = testDir @@ "TestResults.xml"
+                   ToolPath = "packages/NUnit.Runners/tools"})
 )
 
 // Dependencies
@@ -51,6 +49,6 @@ Target "Test" (fun _ ->
   ==> "BuildDebug"
   ==> "Test"
   ==> "BuildRelease"
- 
+
 // start build
 RunTargetOrDefault "Test"

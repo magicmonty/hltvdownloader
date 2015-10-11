@@ -1,14 +1,14 @@
 # Homeload.tv Downloader
 
-[![Build Status](https://travis-ci.org/magicmonty/hltvdownloader.png)](https://travis-ci.org/magicmonty/hltvdownloader)
+[![Build Status](https://travis-ci.org/magicmonty/hltvdownloader.svg?branch=master)](https://travis-ci.org/magicmonty/hltvdownloader)
 
-This is an effort to build a downloader for [HomeloadTv.com](http://www.homeloadtv.com/) based on aria2. 
+This is an effort to build a downloader for [HomeloadTv.com](http://www.homeloadtv.com/) based on aria2.
 
 This project should eventually be able to run cross platform on Linux,Mac and Windows.
 
-This is a work in progress. 
+This is a work in progress.
 
-## Programming interface description to HomeloadTV.com                                                                  
+## Programming interface description to HomeloadTV.com
 
 ### Base-URL
 
@@ -22,7 +22,7 @@ This is a work in progress.
 #### Required
 <table>
 <tr><th>PARAM</th><th>VALUE</th><th>DESCRIPTION</th></tr>
-<tr><td>do</td><td>getlinks</td><td>get the links</td></tr>                              
+<tr><td>do</td><td>getlinks</td><td>get the links</td></tr>
 <tr><td>uid</td><td>%UID%</td><td>the mail adress or user id at homeloadtv.com</td></tr>
 <tr><td>password</td><td>%PASSWORD%</td><td>md5 hash of the homeloadtv.com password</td></tr>
 <tr><td>limit</td><td>%LIMIT%</td><td>limits the links to receive</td></tr>
@@ -35,7 +35,7 @@ This is a work in progress.
 <tr><td>protocnew</td><td>true</td><td>Should move links from "active" to "new"</td></tr>
 <tr><td>onlyhh</td><td>true</td><td>only receive links while it's happy hour</td></tr>
 </table>
-  
+
 ##### Example
 
     http://www.homeloadtv.com/api/?uid=123456&password=<md5hashofpassword>&limit=30&protocnew=true&do=getlinks
@@ -53,7 +53,7 @@ This is a work in progress.
 <tr><td>NOT_ALLOWED</td><td>only if you try to download from a friend and you're not allowded to do</td></tr>
 </table>
 
-##### Success (Pattern) 
+##### Success (Pattern)
 
 <table>
 <tr><th>VALUE</th><th>DESCRIPTION</th></tr>
@@ -66,8 +66,8 @@ This is a work in progress.
 <tr><td>HHEND=%HHEND%</td><td>Hour (0-23) when the HappyHour ends</td></tr>
 <tr><td>http://url/file;%LINK_ID%</td><td>download URL;ID of the link</td></tr>
 </table>
-          
-##### Example        
+
+##### Example
     INTERVAL=15;NUMBER_OF_LINKS=3;LIST=23;LINKCOUNT=137;HHSTART=0;HHEND=8;
     http://10.11.12.9/download/1111111/1/2222222/1234567345abcdefg1235/download1.mpg.avi.otrkey;987645;
     http://10.11.12.9/download/1111112/1/2223222/123abc112fg1bcefg1235/download2.mpg.avi.otrkey;234567;
@@ -77,7 +77,7 @@ This is a work in progress.
 
 ### Moving links on the server (PROCESSING)
 
-#### Required    
+#### Required
 
 <table>
 <tr><th>PARAM</th><th>VALUE</th><th>DESCRIPTION</th></tr>
@@ -86,7 +86,7 @@ This is a work in progress.
 <tr><td>list</td><td>%LIST_ID%</td><td>LIST_ID from the url list response</td></tr>
 <tr><td>state</td><td>processing</td><td>moves all the links of the list %LIST_ID% to "processing"</td></tr>
 </table>
-    
+
 ##### Example
     http://www.homeloadtv.com/api/?do=setstate&uid=123456&list=23&state=processing
 
@@ -95,13 +95,13 @@ This is a work in progress.
 <table>
 <tr><th>VALUE</th><th>DESCRIPTION</th></tr>
 <tr><td>OK</td><td>okay</td></tr>
-</table>      
+</table>
 
 ----
 
 ### Moving links on the server (FINISHED / NEW)
 
-#### Required    
+#### Required
 
 <table>
 <tr><th>PARAM</th><th>VALUE</th><th>DESCRIPTION</th></tr>
@@ -115,7 +115,7 @@ This is a work in progress.
 <tr><td>reason</td><td>sets the error-message to "reason"</td></tr>
 </table>
 
-#### Optional    
+#### Optional
 
 <table>
 <tr><th>PARAM</th><th>VALUE</th><th>DESCRIPTION</th></tr>
@@ -123,7 +123,7 @@ This is a work in progress.
 <tr><td>speed</td><td>integer</td><td>download speed in kilobit per second</td></tr>
 <tr><td>file</td><td>filename</td><td>base64 encoding of the filename -- sends the filename of the dowloaded link to the server. (Currently not used on the server)</td></tr>
 </table>
-      
+
 ##### EXAMPLE
     http://www.homeloadtv.com/api/?do=setstate&uid=123456&state=finished&filesize=9999&id=987645&error=test&speed=7182&file=justAfilename
 
@@ -132,7 +132,7 @@ This is a work in progress.
 <table>
 <tr><th>VALUE</th><th>DESCRIPTION</th></tr>
 <tr><td>OK</td><td>okay</td></tr>
-</table>    
+</table>
 
 ----
 

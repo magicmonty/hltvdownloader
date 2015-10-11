@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using NLog.Targets;
+using System.Threading.Tasks;
+using System.Runtime.Remoting.Messaging;
 
 namespace PaganSoft.HLTVDownloader
 {
@@ -19,19 +19,25 @@ namespace PaganSoft.HLTVDownloader
             _isRegistered = false;
         }
 
-        public void Notify(string message = "Download complete")
+        public async void Notify(string message = "Download complete")
         {
-            if (!_isRegistered)
-                registerToGrowl().ContinueWith(t =>
+            try
+            {
+                if (!_isRegistered) 
                 {
-                    notify(message);
+                    await RegisterToGrowl();
                     _isRegistered = true;
-                }, TaskContinuationOptions.NotOnFaulted).Wait(1000);
-            else
-                notify(message);
+                }
+                
+                await SendNotification(message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error notifying via Growl: {0}", e.Message);
+            }
         }
 
-        private Task sendToGrowl(IEnumerable<string> commands)
+        private static Task SendToGrowl(IEnumerable<string> commands, IEnumerable<KeyValuePair<string, byte[]>> binaryResources = null)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -46,7 +52,26 @@ namespace PaganSoft.HLTVDownloader
                     {
                         foreach (var line in commands)
                             socket.Send(Encoding.ASCII.GetBytes(line + "\r\n"));
+                        
+                        if (binaryResources != null)
+                        {
+                            foreach (var kvp in binaryResources)
+                            {
+                                if (kvp.Value.Length == 0)
+                                    continue;
+
+                                socket.Send(Encoding.ASCII.GetBytes(string.Format("Identifier: {0}\r\n", kvp.Key)));
+                                socket.Send(Encoding.ASCII.GetBytes(string.Format("Length: {0}\r\n", kvp.Value.Length)));
+                                socket.Send(Encoding.ASCII.GetBytes("\r\n"));
+                                socket.Send(kvp.Value);
+                                socket.Send(Encoding.ASCII.GetBytes("\r\n"));
+                            }
+                        }
                         socket.Send(Encoding.ASCII.GetBytes("\r\n"));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error sending message to Growl: {0}", e.Message);
                     }
                     finally
                     {
@@ -56,7 +81,7 @@ namespace PaganSoft.HLTVDownloader
             }, TaskCreationOptions.LongRunning);
         }
 
-        private Task registerToGrowl()
+        private static Task RegisterToGrowl()
         {
             var commands = new [] {
                 "GNTP/1.0 REGISTER NONE",
@@ -70,10 +95,10 @@ namespace PaganSoft.HLTVDownloader
                 "Notification-Enabled: True",
             };
 
-            return sendToGrowl(commands);
+            return SendToGrowl(commands);
         }
 
-        private Task notify(string message)
+        private static Task SendNotification(string message)
         {
             var commands = new [] {
                 "GNTP/1.0 NOTIFY NONE",
@@ -83,7 +108,7 @@ namespace PaganSoft.HLTVDownloader
                 "Notification-Text: " + message
             };
 
-            return sendToGrowl(commands);
+            return SendToGrowl(commands);
         }
     }
 }

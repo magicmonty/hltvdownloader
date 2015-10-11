@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
 
 namespace PaganSoft.HLTVDownloader
 {

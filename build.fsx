@@ -53,8 +53,8 @@ Target "Deploy" (fun _ ->
                                   SearchDirectories = [ releaseDir ]
                                   Libraries = [
                                     releaseDir @@ "NLog.dll"
-                                    releaseDir @@ "PaganSoft.Aria2.dll"
-                                    releaseDir @@ "PaganSoft.Homeload.dll"
+                                    releaseDir @@ "Pagansoft.Aria2.dll"
+                                    releaseDir @@ "Pagansoft.Homeload.dll"
                                     releaseDir @@ "XmlRpcLight.dll"
                                   ] })
         (deployDir @@ "HLTVDownloader.exe")

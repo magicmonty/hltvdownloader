@@ -46,9 +46,7 @@ namespace PaganSoft.HLTVDownloader
 
         public static void Main(string[] args)
         {
-            new Growl().Notify("TEST");
-            Console.ReadKey();
-            // Run(args);
+            Run(args);
         }
 
         public async static void Run(string[] args)

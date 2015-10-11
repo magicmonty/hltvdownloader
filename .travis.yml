@@ -1,7 +1,15 @@
 language: csharp
 solution: HLTVDownloader.sln
 install:
-    - "./update.sh"
+- "./update.sh"
 script:
-    - "./fake"
-
+- "./fake"
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: cthbIrz/hdhdgu647EM9u54U7i4iVjA+DWcy0/2TL+2PVK5R+KA2IKdHnPPKK8DpKinx8QA+Ts0RIOiycgZSZwUi9JW8GMK5xUSDUrwk9P4v8l5fcB0Esf0INP/jBDNU3N4SPnIk+U2oeoDCFDKzSZfCRmFPFwHNbW17UBK7jCM=
+  file: './deploy/HLTVDownloader.zip'
+  on:
+    repo: magicmonty/hltvdownloader
+    tags: true

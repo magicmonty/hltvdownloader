@@ -4,6 +4,6 @@
 [assembly: AssemblyCopyright("(c) 2015 by Martin Gondermann")]
 [assembly: AssemblyProduct("HLTVDownloader")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyInformationalVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]

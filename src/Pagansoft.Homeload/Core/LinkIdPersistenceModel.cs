@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Pagansoft.Homeload.Core
 {
     public class LinkIdPersistenceModel

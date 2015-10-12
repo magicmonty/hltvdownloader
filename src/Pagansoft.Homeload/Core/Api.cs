@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Pagansoft.Logging;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -9,6 +10,9 @@ namespace Pagansoft.Homeload.Core
     {
         IHLTCHttpService _httpservice;
         IUrlBuilder _urlBuilder;
+
+        [Import]
+        ILogger _logger;
 
         [ImportingConstructor]
         public Api(IHLTCHttpService httpservice, IUrlBuilder urlBuilder)
@@ -19,21 +23,30 @@ namespace Pagansoft.Homeload.Core
 
         public async Task<LinkList> GetLinks()
         {
-            return await GetLinks(initial: false);
+            var links = await GetLinks(initial: false);
+
+            return links;
         }
 
         public async Task<LinkList> GetLinks(bool initial)
         {
+            _logger.LogTrace(initial ? "Getting Links and resetting downloads to new..." : "Getting links...");
+
             var url = _urlBuilder.BuildGetLinksUrl(initial);
 
             var request = await _httpservice.SendGetRequest(url);
 
-            return LinkList.Parse(request);
+            var links = LinkList.Parse(request);
+
+            _logger.LogDebug("Got {0} links.", links.LinkCount);
+
+            return links;
         }
 
         public async Task<bool> SetProcessing(string listId)
         {
             var url = _urlBuilder.BuildSetProcessingUrl(listId);
+            _logger.LogTrace("setting {0} to processing...", listId);
 
             return await SendAsyncRequest(url);
         }
@@ -43,6 +56,8 @@ namespace Pagansoft.Homeload.Core
             var url = _urlBuilder.BuildSetStateUrl(
                 linkId, 
                 Enum.GetName(typeof(LinkState), state).ToLower());
+            
+            _logger.LogTrace("setting {0} to state {1}...", linkId, state);
 
             return await SendAsyncRequest(url);
         }
@@ -50,6 +65,7 @@ namespace Pagansoft.Homeload.Core
         public async Task<bool> SetError(string linkId)
         {
             var url = _urlBuilder.BuildSetErrorUrl(linkId);
+            _logger.LogTrace("setting {0} to error...", linkId);
             return await SendAsyncRequest(url);
         }
 

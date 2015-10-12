@@ -53,14 +53,15 @@ Target "Deploy" (fun _ ->
                                   SearchDirectories = [ releaseDir ]
                                   Libraries = [
                                     releaseDir @@ "NLog.dll"
-                                    releaseDir @@ "Pagansoft.Aria2.dll"
+                                    releaseDir @@ "Pagansoft.Logging.dll"
                                     releaseDir @@ "Pagansoft.Homeload.dll"
+                                    releaseDir @@ "Pagansoft.Aria2.dll"
                                     releaseDir @@ "XmlRpcLight.dll"
                                   ] })
         (deployDir @@ "HLTVDownloader.exe")
 
   DeleteFile (deployDir @@ "HLTVDownloader.exe.mdb")
-  [ "nlog.config"; "hltvcomplete"; "hltverror"; "hltvdownloader" ]
+  [ "hltvcomplete"; "hltverror"; "hltvdownloader" ]
     |> Seq.map (fun f -> releaseDir @@ f)
     |> Copy deployDir
 

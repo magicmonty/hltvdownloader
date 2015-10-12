@@ -51,7 +51,6 @@
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\IStorage.cs" />
     <Compile Include="Core\ILinkIdModel.cs" />
-    <Compile Include="Core\LinkIdModel.cs" />
     <Compile Include="Core\IConfigurationManager.cs" />
     <Compile Include="Core\ConfigurationManager.cs" />
     <Compile Include="Core\XmlStorage.cs" />
@@ -59,9 +58,16 @@
     <Compile Include="..\HLTVDownloader\Properties\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Core\LinkIdRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Core\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pagansoft.Logging\Pagansoft.Logging.csproj">
+      <Project>{A2382FEB-EEA7-48C9-9D99-423266DE768A}</Project>
+      <Name>Pagansoft.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

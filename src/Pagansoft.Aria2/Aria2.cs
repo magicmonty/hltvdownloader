@@ -11,7 +11,7 @@ using Pagansoft.Homeload.Core;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 using Pagansoft.Aria2.XmlRpc;
-using System.CodeDom;
+using Pagansoft.Logging;
 
 namespace Pagansoft.Aria2
 {
@@ -21,6 +21,9 @@ namespace Pagansoft.Aria2
         private readonly IAria2c _proxy;
         const string ProcessName = "aria2c";
         IConfiguration _configuration;
+
+        [Import]
+        private ILogger _logger;
 
         [ImportingConstructor]
         public Aria2(IConfiguration configuration)
@@ -39,12 +42,14 @@ namespace Pagansoft.Aria2
 
         public bool Start()
         {
-            if (IsRunning)
+            if (IsRunning) 
+            {
+                _logger.LogDebug("Aria is already running!");
                 return true;
+            }
 
             try
             {
-
                 var psInfo = new ProcessStartInfo();
                 
                 psInfo.FileName = FindExePath(ProcessName);
@@ -82,12 +87,16 @@ namespace Pagansoft.Aria2
                 
                 var task = Task.Factory.StartNew(() =>
                 {
+                    _logger.LogInfo("Starting aria2c");
                     var process = Process.Start(psInfo);
                     process.WaitForExit();
                 });
 
                 if (task.IsFaulted)
+                {
+                    _logger.LogError(task.Exception.Flatten(), "Could not start aria2c!");
                     return false;
+                }
 
                 Thread.Sleep(200);
 
@@ -95,7 +104,7 @@ namespace Pagansoft.Aria2
             }
             catch (FileNotFoundException)
             {
-                Console.Out.WriteLine("Could not find aria2c in PATH");
+                _logger.LogError("Could not find aria2c in PATH");
                 return false;
             }
         }

@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{1F3E1AAD-B733-4C3A-9551-6AF33EE1598D}"
@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.fsx = build.fsx
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pagansoft.Logging", "src\Pagansoft.Logging\Pagansoft.Logging.csproj", "{A2382FEB-EEA7-48C9-9D99-423266DE768A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -40,6 +42,10 @@ Global
 		{981868A9-275A-4139-8DC7-13CEFCC13BAA}.Debug|x86.Build.0 = Debug|Any CPU
 		{981868A9-275A-4139-8DC7-13CEFCC13BAA}.Release|x86.ActiveCfg = Release|Any CPU
 		{981868A9-275A-4139-8DC7-13CEFCC13BAA}.Release|x86.Build.0 = Release|Any CPU
+		{A2382FEB-EEA7-48C9-9D99-423266DE768A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A2382FEB-EEA7-48C9-9D99-423266DE768A}.Debug|x86.Build.0 = Debug|Any CPU
+		{A2382FEB-EEA7-48C9-9D99-423266DE768A}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2382FEB-EEA7-48C9-9D99-423266DE768A}.Release|x86.Build.0 = Release|Any CPU
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Debug|x86.ActiveCfg = Debug|x86
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Debug|x86.Build.0 = Debug|x86
 		{E1CA78F6-2C2E-4046-8EA9-7A3ADAF73610}.Release|x86.ActiveCfg = Release|x86
@@ -100,7 +106,7 @@ Global
 		$8.inheritsScope = application/xml
 		$8.scope = application/xml
 		$0.StandardHeader = $9
-		$9.Text = 
+		$9.Text =
 		$9.IncludeInNewFiles = True
 		$0.NameConventionPolicy = $10
 		$10.Rules = $11

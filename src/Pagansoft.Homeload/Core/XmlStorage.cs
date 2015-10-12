@@ -7,6 +7,20 @@ using System.Xml.Linq;
 
 namespace Pagansoft.Homeload.Core
 {
+    internal static class XmlHelpers
+    {
+        internal static string AttributeValue(this XElement element, XName attributeName)
+        {
+            if (element == null)
+                return string.Empty;
+            
+            return element
+                .Attributes(attributeName)
+                .Select(a => a.Value)
+                .FirstOrDefault() ?? string.Empty;
+        }
+    }
+
     [Export(typeof(IStorage))]
     public class XmlStorage : IStorage
     {
@@ -22,54 +36,38 @@ namespace Pagansoft.Homeload.Core
 
         public IEnumerable<LinkIdPersistenceModel> LoadLinks()
         {
-            var result = new List<LinkIdPersistenceModel>();
             if (!File.Exists(_fileName))
-                return result;
+                return Enumerable.Empty<LinkIdPersistenceModel>();
 
             try
             {
-                XDocument doc = XDocument.Load(_fileName);
+                var doc = XDocument.Load(_fileName);
 
                 var root = doc.Root;
                 if (root == null || root.Name != "links")
                 {
                     File.Delete(_fileName);
-                    return result;
+                    return Enumerable.Empty<LinkIdPersistenceModel>();
                 }
 
-                foreach (var link in root.Elements().Where(e => e.Name == "link"))
-                {
-                    var gid = GetAttributeValue(link, "gid");
-                    if (string.IsNullOrEmpty(gid))
-                        continue;
-
-                    var listId = GetAttributeValue(link, "listId");
-                    if (string.IsNullOrEmpty(listId))
-                        continue;
-                    
-                    var linkId = GetAttributeValue(link, "linkId");
-                    if (string.IsNullOrEmpty(linkId))
-                        continue;
-                    
-                    var url = link.Value;
-                    if (string.IsNullOrEmpty(url))
-                        continue;
-
-                    result.Add(new LinkIdPersistenceModel(listId, linkId, url, gid));
-                }
+                return root.Elements("link").Select(FromXml).ToList();
             }
             catch
             {
-                /* intentionally left blank */
+                return Enumerable.Empty<LinkIdPersistenceModel>();
             }
-
-            return result;
         }
 
-        public static string GetAttributeValue(XElement element, string name)
+        private static LinkIdPersistenceModel FromXml(XElement link)
         {
-            var attr = element.Attribute(name) ?? new XAttribute(name, "");
-            return attr.Value ?? string.Empty;
+            var gid = link.AttributeValue("gid");
+            var listId = link.AttributeValue("listId");
+            var linkId = link.AttributeValue("linkId");
+            var url = link.Value;
+
+            return new[] { gid, listId, linkId, url }.Any(string.IsNullOrEmpty) 
+                ? null 
+                : new LinkIdPersistenceModel(listId, linkId, url, gid);
         }
 
         public void SaveLinks(IEnumerable<LinkIdPersistenceModel> links)

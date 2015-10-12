@@ -9,7 +9,7 @@ namespace Pagansoft.Homeload.Core
     [TestFixture]
     public class LinkIdModelTests
     {
-        LinkIdModel _sut;
+        LinkIdRepository _sut;
         List<LinkIdPersistenceModel> _linkIds;
         static readonly LinkIdPersistenceModel link1 = new LinkIdPersistenceModel("ABC", "1234", "http://test.de", "1");
         static readonly LinkIdPersistenceModel link2 = new LinkIdPersistenceModel("DEF", "5678", "http://example.com", "2");
@@ -24,7 +24,7 @@ namespace Pagansoft.Homeload.Core
             storage.Setup(s => s.SaveLinks(It.IsAny<IEnumerable<LinkIdPersistenceModel>>()))
                 .Callback((IEnumerable<LinkIdPersistenceModel> list) => _linkIds = list.ToList());
 
-            _sut = new LinkIdModel(storage.Object);
+            _sut = new LinkIdRepository(storage.Object);
         }
 
         [Test]

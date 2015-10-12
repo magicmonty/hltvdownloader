@@ -23,11 +23,9 @@ namespace Pagansoft.Homeload.Core
         public static LinkListItem Parse(string response)
         {
             var parts = response.Split(';');
-            if (parts.Length >= 2) {
-                return new LinkListItem(parts[0], parts[1]);
-            }
-
-            return null;
+            return parts.Length >= 2 
+                ? new LinkListItem(parts[0], parts[1]) 
+                : null;
         }
     }
 }

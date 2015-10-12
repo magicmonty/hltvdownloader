@@ -37,6 +37,10 @@
       <Project>{981868A9-275A-4139-8DC7-13CEFCC13BAA}</Project>
       <Name>Pagansoft.Aria2</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Pagansoft.Logging\Pagansoft.Logging.csproj">
+      <Project>{A2382FEB-EEA7-48C9-9D99-423266DE768A}</Project>
+      <Name>Pagansoft.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />

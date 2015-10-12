@@ -1,9 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputPath>..\bin\$(Configuration)</OutputPath>
     <ProjectGuid>{981868A9-275A-4139-8DC7-13CEFCC13BAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Pagansoft.Aria2</RootNamespace>
@@ -12,6 +11,7 @@
     <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\bin\Debug</OutputPath>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,6 +21,7 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\bin\Release</OutputPath>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <ErrorReport>prompt</ErrorReport>
@@ -107,6 +108,10 @@
     <ProjectReference Include="..\Pagansoft.Homeload\Pagansoft.Homeload.csproj">
       <Project>{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}</Project>
       <Name>Pagansoft.Homeload</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pagansoft.Logging\Pagansoft.Logging.csproj">
+      <Project>{A2382FEB-EEA7-48C9-9D99-423266DE768A}</Project>
+      <Name>Pagansoft.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

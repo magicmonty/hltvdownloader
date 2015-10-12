@@ -1,8 +1,9 @@
 using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
+using System.ComponentModel.Composition;
 using Pagansoft.Homeload.Core;
 using Pagansoft.Aria2;
 using System;
+using NLog;
 
 namespace PaganSoft.HLTVDownloader
 {
@@ -10,21 +11,23 @@ namespace PaganSoft.HLTVDownloader
     {
         private CompositionContainer _iocContainer = null;
 
-        public void Initialize()
+        public void Initialize(string className)
         {
             var types = new [] {
                 typeof(Configuration),
                 typeof(Aria2),
                 typeof(Api),
-                typeof(LinkIdModel),
+                typeof(LinkIdRepository),
                 typeof(ConfigurationManager),
                 typeof(HltcHttpService),
                 typeof(UrlBuilder),
-                typeof(XmlStorage)
+                typeof(XmlStorage),
             };
             var catalog = new TypeCatalog(types);
 
             var cb = new CompositionBatch();
+            cb.AddExportedValue<Pagansoft.Logging.ILogger>(new NLogLogger(className));
+
             _iocContainer = new CompositionContainer(catalog);
             _iocContainer.Compose(cb);
         }

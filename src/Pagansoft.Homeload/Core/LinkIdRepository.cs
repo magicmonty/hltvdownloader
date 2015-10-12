@@ -4,26 +4,20 @@ using System.Linq;
 
 namespace Pagansoft.Homeload.Core
 {
-    [Export(typeof(ILinkIdModel))]
-    public class LinkIdModel : ILinkIdModel
+    [Export(typeof(ILinkIdRepository))]
+    public class LinkIdRepository : ILinkIdRepository
     {
-        IStorage _storage;
-        object _lock;
+        private readonly IStorage _storage;
+        private readonly object _lock;
 
         [ImportingConstructor]
-        public LinkIdModel(IStorage storage)
+        public LinkIdRepository(IStorage storage)
         {
             _storage = storage;
             _lock = new object();
         }
 
-        public int LinkCount
-        {
-            get
-            {
-                return Load().Count();
-            }
-        }
+        public int LinkCount { get { return Load().Count(); } }
 
         IEnumerable<LinkIdPersistenceModel> Load()
         {
@@ -53,7 +47,7 @@ namespace Pagansoft.Homeload.Core
 
         public string GetLinkIdByGid(string gid)
         {
-            var item = Load().FirstOrDefault(e => e.Gid == gid);
+            var item = Load().FirstOrDefault(e => e.Gid.Equals(gid));
 
             if (item != null && !string.IsNullOrEmpty(item.LinkId))
                 return item.LinkId;

@@ -19,8 +19,9 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Externalconsole>true</Externalconsole>
+    <Commandlineparameters>--completed c2614c58a0321890 1 /Users/martingondermann/Downloads/watch.1</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\bin\Release</OutputPath>
@@ -34,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -41,6 +43,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Growl.cs" />
     <Compile Include="Properties\GlobalAssemblyInfo.cs" />
+    <Compile Include="NLogLogger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -52,11 +55,14 @@
       <Project>{14FF18DC-0CB3-42DA-8324-D5CCCD1A2236}</Project>
       <Name>Pagansoft.Homeload</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Pagansoft.Logging\Pagansoft.Logging.csproj">
+      <Project>{A2382FEB-EEA7-48C9-9D99-423266DE768A}</Project>
+      <Name>Pagansoft.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="nlog.config">
       <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="paket.references" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 namespace Pagansoft.Homeload.Core
 {
-    public interface ILinkIdModel
+    public interface ILinkIdRepository
     {
         string GetListIdByGid(string gid);
 

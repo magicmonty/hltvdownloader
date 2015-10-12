@@ -1,5 +1,6 @@
 language: csharp
 solution: HLTVDownloader.sln
+sudo: false
 install:
 - "./update.sh"
 script:

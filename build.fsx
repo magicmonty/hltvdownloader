@@ -51,12 +51,9 @@ Target "Deploy" (fun _ ->
     |> ILMerge (fun p -> { p with ToolPath = "packages/ILRepack/tools/ILRepack.exe"
                                   TargetKind = Exe
                                   SearchDirectories = [ releaseDir ]
+                                  AllowWildcards = true
                                   Libraries = [
-                                    releaseDir @@ "NLog.dll"
-                                    releaseDir @@ "Pagansoft.Logging.dll"
-                                    releaseDir @@ "Pagansoft.Homeload.dll"
-                                    releaseDir @@ "Pagansoft.Aria2.dll"
-                                    releaseDir @@ "XmlRpcLight.dll"
+                                    releaseDir @@ "*.dll"
                                   ] })
         (deployDir @@ "HLTVDownloader.exe")
 

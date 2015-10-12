@@ -23,12 +23,12 @@ namespace PaganSoft.HLTVDownloader
 
             _logger.LogInfo("Starting application");
 
-            Run(args);
+            Run(args).Wait();
 
             _logger.LogInfo("Application run finished.");
         }
 
-        public static void Run(string[] args)
+        public static async Task Run(string[] args)
         {
             var config = _bootstrapper.GetExport<IConfiguration>();
             if (string.IsNullOrEmpty(config.HltvUserName) || string.IsNullOrEmpty(config.HltvPassword))
@@ -48,18 +48,18 @@ namespace PaganSoft.HLTVDownloader
             if (args.Any(a => a == "--completed"))
             {
                 _logger.LogInfo("Handling completed event " + string.Join(" ", args));
-                HandleCompleted(args);
+                await HandleCompleted(args);
                 return;
             }
 
             if (args.Any(a => a == "--error"))
             {
                 _logger.LogInfo("Handling error event " + string.Join(" ", args));
-                HandleError(args);
+                await HandleError(args);
                 return;
             }
 
-            HandleNormalStart();
+            await HandleNormalStart();
 
             /*
              * 1. Send Request to Homeload with &proctonew=true (only on first request)
@@ -71,7 +71,7 @@ namespace PaganSoft.HLTVDownloader
              */
         }
 
-        private static void HandleNormalStart()
+        private static async Task HandleNormalStart()
         {
             var aria = _bootstrapper.GetExport<IAria2>();
             if (!aria.Start())
@@ -84,27 +84,24 @@ namespace PaganSoft.HLTVDownloader
 
             var hltv = _bootstrapper.GetExport<IHltvApi>();
 
-            hltv.GetLinks(true)
-                .ContinueWith(t =>
-                {
-                    var links = t.Result;
-                    hltv.SetProcessing(links.Id).Wait();
-                    var linkIdModel = _bootstrapper.GetExport<ILinkIdRepository>();
-                    var tasks = new List<Task>();
+            var links = await hltv.GetLinks(true);
+            await hltv.SetProcessing(links.Id);
 
-                    foreach (var linkId in links)
-                    {
-                        tasks.Add(
-                            aria.AddUri(new[] { new Uri(linkId.Url) }) 
+            var linkIdModel = _bootstrapper.GetExport<ILinkIdRepository>();
+            var tasks = new List<Task>();
+
+            foreach (var linkId in links)
+            {
+                tasks.Add(
+                    aria.AddUri(new[] { new Uri(linkId.Url) }) 
                                 .ContinueWith(l => linkIdModel.SaveLinkId(linkId.Id, links.Id, linkId.Url, l.Result.Value)));
-                    }
+            }
                         
-                    Task.WhenAll(tasks).Wait();
-                })
-                .Wait();
+            await Task.WhenAll(tasks);
+            return;
         }
 
-        private static void HandleCompleted(string[] args)
+        private static async Task HandleCompleted(string[] args)
         {
             var ariaArgs = args.SkipWhile(a => a != "--completed")
                                .Skip(1)
@@ -124,34 +121,31 @@ namespace PaganSoft.HLTVDownloader
 
                 if (!string.IsNullOrEmpty(linkId))
                 {
-                    hltv.SetState(linkId, LinkState.Finished)
-                        .ContinueWith(t =>
+                    var result = await hltv.SetState(linkId, LinkState.Finished);
+
+                    if (result)
+                    {
+                        storage.RemoveLinkId(gid);
+                        try
                         {
-                            if (t.Result)
-                            {
-                                storage.RemoveLinkId(gid);
-                                try
-                                {
-                                    aria.RemoveDownloadResult(gid).Wait();
-                                }
-                                catch (Exception ex)
-                                {
-                                    _logger.LogError(ex, "Error removing download result!");
-                                }
-                            }
-                            else
-                            {
-                                _logger.Error("Error from server for setting link {0} to finished", linkId);
-                            }
-                        }).Wait();
+                            await aria.RemoveDownloadResult(gid);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Error removing download result!");
+                        }
+                    }
+                    else
+                    {
+                        _logger.Error("Error from server for setting link {0} to finished", linkId);
+                    }
                 }
                 else
                 {
                     try
                     {
-                        aria.RemoveDownloadResult(gid)
-                            .ContinueWith(_ => _logger.LogDebug("Removed gid #" + gid))
-                            .Wait();
+                        await aria.RemoveDownloadResult(gid);
+                        _logger.LogDebug("Removed gid #" + gid);
                     }
                     catch (Exception ex)
                     {
@@ -159,11 +153,11 @@ namespace PaganSoft.HLTVDownloader
                     }
                 }
 
-                ShutdownAriaIfNoLinksLeft(storage);
+                await ShutdownAriaIfNoLinksLeft(storage);
             }
         }
 
-        private static void HandleError(string[] args)
+        private static async Task HandleError(string[] args)
         {
             var ariaArgs = args.SkipWhile(a => a != "--error")
                                .Skip(1)
@@ -177,31 +171,30 @@ namespace PaganSoft.HLTVDownloader
                 var gid = ariaArgs[0];
                 var linkId = storage.GetLinkIdByGid(gid);
 
-                hltv.SetError(linkId)
-                    .ContinueWith(t => {
-                        if (t.Result)
-                            storage.RemoveLinkId(gid);
-                    })
-                    .Wait();
+                var result = await hltv.SetError(linkId);
 
-                ShutdownAriaIfNoLinksLeft(storage);
+                if (result)
+                    storage.RemoveLinkId(gid);
+
+                await ShutdownAriaIfNoLinksLeft(storage);
             }
+
+            return;
         }
 
-        private static void ShutdownAriaIfNoLinksLeft(ILinkIdRepository storage)
+        private static async Task ShutdownAriaIfNoLinksLeft(ILinkIdRepository storage)
         {
             var aria = _bootstrapper.GetExport<IAria2>();
-            var task = aria.GetGlobalStat();
-            task.Wait();
+            var status = await aria.GetGlobalStat();
 
-            var status = task.Result;
             var linksInAria = status.NumActive + status.NumStopped + status.NumWaiting;
 
             if (linksInAria == 0 && storage.LinkCount == 0)
             {
                 _logger.LogDebug("No links left in storage. Shutting aria down...");
-                aria.Shutdown().Wait();
+                await aria.Shutdown();
             }
+            return;
         }
             
     }

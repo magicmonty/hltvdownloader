@@ -57,7 +57,7 @@ namespace Pagansoft.Homeload.Core
         {
             _sut
                 .BuildSetErrorUrl("54321")
-                .ShouldBe("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&state=finished&error=brokenonopen");
+                .ShouldBe("http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=54321&state=error&error=brokenonopen");
         }
     }
 }

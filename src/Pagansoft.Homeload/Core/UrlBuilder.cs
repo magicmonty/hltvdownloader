@@ -45,7 +45,7 @@ namespace Pagansoft.Homeload.Core
         {
             var result = string.Format(BaseUrl, "setstate", _username, _password) 
                 + string.Format("&id={0}&state={1}", linkId, state);
-            if (state == "finished")
+            if (state == "finished" || state == "error")
                 result += "&error=";
 
             return result;

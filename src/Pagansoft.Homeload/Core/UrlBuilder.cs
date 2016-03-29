@@ -53,7 +53,7 @@ namespace Pagansoft.Homeload.Core
 
         public string BuildSetErrorUrl(string linkId)
         {
-            return BuildSetStateUrl(linkId, "finished") + "brokenonopen";
+            return BuildSetStateUrl(linkId, "error") + "brokenonopen";
         }
     }
 }

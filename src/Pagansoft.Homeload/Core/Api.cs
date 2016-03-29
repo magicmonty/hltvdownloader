@@ -23,9 +23,7 @@ namespace Pagansoft.Homeload.Core
 
         public async Task<LinkList> GetLinks()
         {
-            var links = await GetLinks(initial: false);
-
-            return links;
+            return await GetLinks(initial: false);
         }
 
         public async Task<LinkList> GetLinks(bool initial)
@@ -35,10 +33,9 @@ namespace Pagansoft.Homeload.Core
             var url = _urlBuilder.BuildGetLinksUrl(initial);
 
             var request = await _httpservice.SendGetRequest(url);
-
             var links = LinkList.Parse(request);
 
-            _logger.LogDebug("Got {0} links.", links.LinkCount);
+            _logger.LogDebug($"Got {links.LinkCount} links.");
 
             return links;
         }
@@ -46,7 +43,7 @@ namespace Pagansoft.Homeload.Core
         public async Task<bool> SetProcessing(string listId)
         {
             var url = _urlBuilder.BuildSetProcessingUrl(listId);
-            _logger.LogTrace("setting {0} to processing...", listId);
+            _logger.LogTrace($"setting {listId} to processing...");
 
             return await SendAsyncRequest(url);
         }
@@ -55,9 +52,10 @@ namespace Pagansoft.Homeload.Core
         {
             var url = _urlBuilder.BuildSetStateUrl(
                 linkId, 
-                Enum.GetName(typeof(LinkState), state).ToLower());
+                Enum.GetName(typeof(LinkState), 
+                state).ToLower());
             
-            _logger.LogTrace("setting {0} to state {1}...", linkId, state);
+            _logger.LogTrace($"setting {linkId} to state {state}...");
 
             return await SendAsyncRequest(url);
         }
@@ -65,7 +63,7 @@ namespace Pagansoft.Homeload.Core
         public async Task<bool> SetError(string linkId)
         {
             var url = _urlBuilder.BuildSetErrorUrl(linkId);
-            _logger.LogTrace("setting {0} to error...", linkId);
+            _logger.LogTrace($"setting {linkId} to error...");
             return await SendAsyncRequest(url);
         }
 

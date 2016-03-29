@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Threading;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -26,12 +27,39 @@ namespace Pagansoft.Homeload.Core
     {
         private IConfiguration _configuration;
         private readonly string _fileName;
+        private readonly string _lockFileName;
 
         [ImportingConstructor]
         public XmlStorage(IConfiguration configuration)
         {
             _configuration = configuration;
             _fileName = Path.Combine(_configuration.ConfigurationDirectory, "session.xml");
+            _lockFileName = _fileName + ".lock";
+        }
+
+        public void Lock()
+        {
+            try
+            {
+                while (File.Exists(_lockFileName))
+                    Thread.Yield();
+
+                File.Create(_lockFileName);
+            }
+            catch
+            {
+            }
+        }
+
+        public void Release()
+        {
+            if (File.Exists(_lockFileName)) {
+                try
+                {
+                    File.Delete(_lockFileName);
+                }
+                catch { }
+            }
         }
 
         public IEnumerable<LinkIdPersistenceModel> LoadLinks()

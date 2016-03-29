@@ -2,8 +2,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 using Pagansoft.Logging;
+using System.Threading.Tasks;
 
 namespace Pagansoft.Homeload.Core
 {
@@ -13,27 +13,30 @@ namespace Pagansoft.Homeload.Core
         [Import]
         private ILogger _logger;
 
-        public Task<string> SendGetRequest(string url)
+        public async Task<string> SendGetRequest(string url)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                _logger.LogTrace("Sending request to {0}", url);
+            _logger.LogTrace($"Sending request to {url}");
 
+            try 
+            {
                 var request = WebRequest.Create(url);
-                try {
-                    using (var response = request.GetResponse())
+                using (var response = (HttpWebResponse)await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse(null, null), request.EndGetResponse))
+                {
+                    if (response.ContentLength == 0)
+                        return response.StatusDescription;
+                    
+                    var responseStream = response.GetResponseStream();
+                    using (var reader = new StreamReader(responseStream))
                     {
-                        var responseStream = response.GetResponseStream();
-                        using (var reader = new StreamReader(responseStream))
-                        {
-                            return reader.ReadToEnd();
-                        }
+                        return reader.ReadToEnd();
                     }
-                } catch (Exception ex) {
-                    _logger.LogError(ex, "Error on SendGetRequest");
-                    return string.Empty;
                 }
-            }, TaskCreationOptions.LongRunning);
+            } 
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex, "Error on SendGetRequest");
+                return string.Empty;
+            }
         }
     }
 }

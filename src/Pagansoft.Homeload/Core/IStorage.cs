@@ -7,6 +7,10 @@ namespace Pagansoft.Homeload.Core
         IEnumerable<LinkIdPersistenceModel> LoadLinks();
 
         void SaveLinks(IEnumerable<LinkIdPersistenceModel> links);
+
+        void Lock();
+
+        void Release();
     }
 }
 

@@ -4,14 +4,13 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using XmlRpcLight.DataTypes;
-using Pagansoft.Homeload.Core;
 using Pagansoft.Aria2.Core;
 using Pagansoft.Aria2.Options;
 using Pagansoft.Aria2.XmlRpc;
+using Pagansoft.Homeload.Core;
 using Pagansoft.Logging;
+using XmlRpcLight.DataTypes;
 
 namespace Pagansoft.Aria2
 {
@@ -19,8 +18,8 @@ namespace Pagansoft.Aria2
     public class Aria2 : IAria2
     {
         private readonly IAria2c _proxy;
-        const string ProcessName = "aria2c";
-        IConfiguration _configuration;
+        private const string ProcessName = "aria2c";
+        private readonly IConfiguration _configuration;
 
         [Import]
         private ILogger _logger;
@@ -32,17 +31,11 @@ namespace Pagansoft.Aria2
             _proxy = new AriaClient();
         }
 
-        public bool IsRunning
-        {
-            get
-            {
-                return Process.GetProcessesByName(ProcessName).Any();
-            }
-        }
+        public bool IsRunning => Process.GetProcessesByName(ProcessName).Any();
 
-        public bool Start()
+        public async Task<bool> Start()
         {
-            if (IsRunning) 
+            if (IsRunning)
             {
                 _logger.LogDebug("Aria is already running!");
                 return true;
@@ -50,55 +43,59 @@ namespace Pagansoft.Aria2
 
             try
             {
-                var psInfo = new ProcessStartInfo();
-                
-                psInfo.FileName = FindExePath(ProcessName);
-                psInfo.CreateNoWindow = false;
-                
-                var arguments = new List<string>();
+                var psInfo = new ProcessStartInfo
+                {
+                    FileName = FindExePath(ProcessName),
+                    CreateNoWindow = false
+                };
 
                 var sessionFile = Path.Combine(_configuration.ConfigurationDirectory, "session.aria");
                 var ownPath = AppDomain.CurrentDomain.BaseDirectory;
+                var downloadsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                var ariaLogFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".hltc", "aria.log");
+                var downloadCompleteCommand = Path.Combine(ownPath, "hltvcomplete");
+                var downloadErrorCommand = Path.Combine(ownPath, "hltverror");
 
-                if (File.Exists(sessionFile))
-                    arguments.Add("--input-file=" + sessionFile);
-
-                arguments.Add("--enable-rpc");
-                arguments.Add("--rpc-listen-all");
-                arguments.Add("--rpc-listen-port=6800");
-                // arguments.Add("--rpc-secret=12345");
-                arguments.Add("--retry-wait=30");
-                arguments.Add("--pause");
-                arguments.Add("--dir=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"));
-                arguments.Add("--check-integrity=true"); // Check integrity
-                arguments.Add("--split=1"); // use only one connection per file
-                arguments.Add("--max-concurrent-downloads=5");
-                arguments.Add("--max-connection-per-server=5");
-                arguments.Add("--log-level=notice");
-                arguments.Add("--show-console-readout=false");
-                arguments.Add("--no-conf=true");
-                arguments.Add("--quiet");
-                arguments.Add("--log=" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".hltc", "aria.log"));
-                arguments.Add("--save-session=" + sessionFile);
-                arguments.Add(@"--on-download-complete=" + Path.Combine(ownPath, "hltvcomplete"));
-                arguments.Add(@"--on-download-error=" + Path.Combine(ownPath, "hltverror"));
-
-                psInfo.Arguments = string.Join(" ", arguments);
+                var arguments = new [] 
+                {
+                    File.Exists(sessionFile) ? $"--input-file={sessionFile}" : "",
+                    "--enable-rpc",
+                    "--rpc-listen-all",
+                    "--rpc-listen-port=6800",
+                    "--retry-wait=30",
+                    "--pause",
+                    $"--dir={downloadsFolder}",
+                    "--check-integrity=true", // Check integrity
+                    "--split=1", // use only one connection per file
+                    "--max-concurrent-downloads=5",
+                    "--max-connection-per-server=5",
+                    "--log-level=notice",
+                    "--show-console-readout=false",
+                    "--no-conf=true",
+                    "--quiet",
+                    $"--log={ariaLogFile}",
+                    $"--save-session={sessionFile}",
+                    $"--on-download-complete={downloadCompleteCommand}",
+                    $"--on-download-error={downloadErrorCommand}",
+                };
                 
-                var task = Task.Factory.StartNew(() =>
-                {
-                    _logger.LogInfo("Starting aria2c");
-                    var process = Process.Start(psInfo);
-                    process.WaitForExit();
-                });
+                psInfo.Arguments = string.Join(" ", arguments).Trim();
 
-                if (task.IsFaulted)
+                try
                 {
-                    _logger.LogError(task.Exception.Flatten(), "Could not start aria2c!");
+                    await Task.Run(() =>
+                    {
+                        _logger.LogInfo("Starting aria2c");
+                        Process.Start(psInfo);
+                    });
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Could not start aria2c!");
                     return false;
                 }
 
-                Thread.Sleep(200);
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
 
                 return IsRunning;
             }
@@ -121,20 +118,19 @@ namespace Pagansoft.Aria2
             exe = Environment.ExpandEnvironmentVariables(exe);
             var pathVar = Environment.GetEnvironmentVariable("PATH") ?? "";
 
-            if (!File.Exists(exe))
-            {
-                if (Path.GetDirectoryName(exe) == String.Empty)
-                {
-                    foreach (string test in (pathVar.Split(Path.PathSeparator)))
-                    {
-                        string path = test.Trim();
-                        if (!String.IsNullOrEmpty(path) && File.Exists(path = Path.Combine(path, exe)))
-                            return Path.GetFullPath(path);
-                    }
-                }
+            if (File.Exists(exe))
+                return Path.GetFullPath(exe);
+            if (Path.GetDirectoryName(exe) != string.Empty)
                 throw new FileNotFoundException(new FileNotFoundException().Message, exe);
+
+            foreach (var p in pathVar.Split(Path.PathSeparator).Select(p => p.Trim()))
+            {
+                var path = p;
+                if (!string.IsNullOrEmpty(path) && File.Exists(path = Path.Combine(path, exe)))
+                    return Path.GetFullPath(path);
             }
-            return Path.GetFullPath(exe);
+
+            throw new FileNotFoundException(new FileNotFoundException().Message, exe);
         }
 
         public async Task<GID> AddUri(IEnumerable<Uri> uris)

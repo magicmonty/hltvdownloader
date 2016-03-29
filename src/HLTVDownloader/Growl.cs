@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.Remoting.Messaging;
 
 namespace PaganSoft.HLTVDownloader
 {
@@ -19,66 +18,75 @@ namespace PaganSoft.HLTVDownloader
             _isRegistered = false;
         }
 
-        public async void Notify(string message = "Download complete")
+        public async Task Notify(string message = "Download complete")
         {
             try
             {
-                if (!_isRegistered) 
+                if (!_isRegistered)
                 {
                     await RegisterToGrowl();
                     _isRegistered = true;
                 }
-                
+
                 await SendNotification(message);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error notifying via Growl: {0}", e.Message);
+                Console.WriteLine($"Error notifying via Growl: {e.Message}");
             }
         }
 
-        private static Task SendToGrowl(IEnumerable<string> commands, IEnumerable<KeyValuePair<string, byte[]>> binaryResources = null)
+        private static async Task SendToGrowl(IEnumerable<string> commands, IEnumerable<KeyValuePair<string, byte[]>> binaryResources = null)
         {
-            return Task.Factory.StartNew(() =>
+            const int port = 23053;
+            var address = IPAddress.Parse("127.0.0.1");
+            var endPoint = new IPEndPoint(address, port);
+
+            using (var socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp))
             {
-                const int port = 23053;
-                var address = IPAddress.Parse("127.0.0.1");
-                var endPoint = new IPEndPoint(address, port);
-
-                using (var socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp))
+                socket.Connect(endPoint);
+                try
                 {
-                    socket.Connect(endPoint);
-                    try
-                    {
-                        foreach (var line in commands)
-                            socket.Send(Encoding.ASCII.GetBytes(line + "\r\n"));
-                        
-                        if (binaryResources != null)
-                        {
-                            foreach (var kvp in binaryResources)
-                            {
-                                if (kvp.Value.Length == 0)
-                                    continue;
+                    foreach (var line in commands)
+                        await Send(socket, Encoding.ASCII.GetBytes(line + "\r\n"));
 
-                                socket.Send(Encoding.ASCII.GetBytes(string.Format("Identifier: {0}\r\n", kvp.Key)));
-                                socket.Send(Encoding.ASCII.GetBytes(string.Format("Length: {0}\r\n", kvp.Value.Length)));
-                                socket.Send(Encoding.ASCII.GetBytes("\r\n"));
-                                socket.Send(kvp.Value);
-                                socket.Send(Encoding.ASCII.GetBytes("\r\n"));
-                            }
+                    if (binaryResources != null)
+                    {
+                        foreach (var kvp in binaryResources)
+                        {
+                            if (kvp.Value.Length == 0)
+                                continue;
+
+                            await Send(socket, Encoding.ASCII.GetBytes($"Identifier: {kvp.Key}\r\n"));
+                            await Send(socket, Encoding.ASCII.GetBytes($"Length: {kvp.Value.Length}\r\n"));
+                            await Send(socket, Encoding.ASCII.GetBytes("\r\n"));
+                            await Send(socket, kvp.Value);
+                            await Send(socket, Encoding.ASCII.GetBytes("\r\n"));
                         }
-                        socket.Send(Encoding.ASCII.GetBytes("\r\n"));
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Error sending message to Growl: {0}", e.Message);
-                    }
-                    finally
-                    {
-                        socket.Close();
-                    }
+
+                    await Send(socket, Encoding.ASCII.GetBytes("\r\n"));
                 }
-            }, TaskCreationOptions.LongRunning);
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error sending message to Growl: {e.Message}");
+                }
+                finally
+                {
+                    socket.Close();
+                }
+            }
+        }
+
+        private static async Task<int> Send(Socket socket, byte[] data)
+        {
+            if (data == null || data.Length == 0 || socket == null)
+                return 0;
+
+            SocketError errorCode;
+            return await Task.Factory.FromAsync<int>(
+                socket.BeginSend(data, 0, data.Length, SocketFlags.None, out errorCode, null, null),
+                socket.EndSend);
         }
 
         private static Task RegisterToGrowl()

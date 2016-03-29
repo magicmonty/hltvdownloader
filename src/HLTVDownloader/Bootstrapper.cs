@@ -34,7 +34,8 @@ namespace PaganSoft.HLTVDownloader
 
         public T GetExport<T>()
         {
-            return _iocContainer.GetExport<T>().Value;
+            var export = _iocContainer.GetExport<T>();
+            return export != null ? export.Value : default(T);
         }
     }
 }

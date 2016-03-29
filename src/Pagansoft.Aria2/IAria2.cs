@@ -12,7 +12,7 @@ namespace Pagansoft.Aria2
     {
         bool IsRunning { get; }
 
-        bool Start();
+        Task<bool> Start();
 
         Task<GID> AddUri(IEnumerable<Uri> uris);
 
@@ -76,15 +76,15 @@ namespace Pagansoft.Aria2
 
         Task<int> ChangePosition(string gid, int pos, string how);
 
-        Task<IEnumerable<int>> ChangeUri(string gid, 
-                                   int fileIndex, 
-                                   IEnumerable<string> delUris, 
+        Task<IEnumerable<int>> ChangeUri(string gid,
+                                   int fileIndex,
+                                   IEnumerable<string> delUris,
                                    IEnumerable<string> addUris);
 
-        Task<int[]> ChangeUri(string gid, 
-                        int fileIndex, 
-                        IEnumerable<string> delUris, 
-                        IEnumerable<string> addUris, 
+        Task<int[]> ChangeUri(string gid,
+                        int fileIndex,
+                        IEnumerable<string> delUris,
+                        IEnumerable<string> addUris,
                         int position);
 
         Task<IDictionary<string, string>> GetOption(string gid);

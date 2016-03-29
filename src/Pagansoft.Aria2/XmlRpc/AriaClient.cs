@@ -276,7 +276,7 @@ namespace Pagansoft.Aria2.XmlRpc
 
         private Task SendRequest(XmlRpcRequest request, WebRequest http)
         {
-            return Task.Factory.StartNew(() =>
+            return Task.Run(() =>
             {
                 using (var serialized = new MemoryStream())
                 {
@@ -292,7 +292,7 @@ namespace Pagansoft.Aria2.XmlRpc
 
         private async Task<TResult> GetResponse<TResult>(WebRequest http)
         {
-            var response = await Task.Factory.StartNew(() => http.GetResponse());
+            var response = await http.GetResponseAsync();
 
             using (var reader = new StreamReader(response.GetResponseStream()))
             {

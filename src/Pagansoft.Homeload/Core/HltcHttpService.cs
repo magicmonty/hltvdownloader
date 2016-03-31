@@ -17,22 +17,25 @@ namespace Pagansoft.Homeload.Core
         {
             _logger.LogTrace($"Sending request to {url}");
 
-            try 
+            try
             {
                 var request = WebRequest.Create(url);
                 using (var response = (HttpWebResponse)await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse(null, null), request.EndGetResponse))
                 {
                     if (response.ContentLength == 0)
                         return response.StatusDescription;
-                    
+
                     var responseStream = response.GetResponseStream();
+                    if (responseStream == null)
+                        return string.Empty;
+
                     using (var reader = new StreamReader(responseStream))
                     {
                         return reader.ReadToEnd();
                     }
                 }
-            } 
-            catch (Exception ex) 
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Error on SendGetRequest");
                 return string.Empty;

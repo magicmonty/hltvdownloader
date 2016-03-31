@@ -13,13 +13,7 @@ namespace Pagansoft.Homeload.Core
             _configuration = Conf.ConfigurationManager.OpenExeConfiguration(Conf.ConfigurationUserLevel.PerUserRoaming);
         }
 
-        public Conf.KeyValueConfigurationCollection AppSettings
-        {
-            get
-            {
-                return _configuration.AppSettings.Settings;
-            }
-        }
+        public Conf.KeyValueConfigurationCollection AppSettings => _configuration.AppSettings.Settings;
 
         public void Save()
         {

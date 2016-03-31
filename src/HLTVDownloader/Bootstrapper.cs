@@ -11,7 +11,20 @@ namespace PaganSoft.HLTVDownloader
     {
         private CompositionContainer _iocContainer = null;
 
-        public void Initialize(string className)
+        private static Bootstrapper _instance = null;
+        private static string _currentClassName = null;
+
+        public static void Initialize(string className)
+        {
+            if (_instance != null && string.Equals(className, _currentClassName, StringComparison.Ordinal))
+                return;
+
+            _instance = new Bootstrapper();
+            _instance.InternalInitialize(className);
+            _currentClassName = className;
+        }
+
+        private void InternalInitialize(string className)
         {
             var types = new [] {
                 typeof(Configuration),
@@ -32,7 +45,14 @@ namespace PaganSoft.HLTVDownloader
             _iocContainer.Compose(cb);
         }
 
-        public T GetExport<T>()
+        public static T GetExport<T>()
+        {
+            return _instance == null
+                ? default(T)
+                : _instance.InternalGetExport<T>();
+        }
+
+        private T InternalGetExport<T>()
         {
             var export = _iocContainer.GetExport<T>();
             return export != null ? export.Value : default(T);

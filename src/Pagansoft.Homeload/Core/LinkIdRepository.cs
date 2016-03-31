@@ -18,9 +18,9 @@ namespace Pagansoft.Homeload.Core
             _lock = new object();
         }
 
-        public int LinkCount { get { return Load().Count(); } }
+        public int LinkCount => Load().Count();
 
-        IEnumerable<LinkIdPersistenceModel> Load()
+        private IEnumerable<LinkIdPersistenceModel> Load()
         {
             lock (_lock)
             {
@@ -28,7 +28,7 @@ namespace Pagansoft.Homeload.Core
             }
         }
 
-        void Save(IEnumerable<LinkIdPersistenceModel> list)
+        private void Save(IEnumerable<LinkIdPersistenceModel> list)
         {
             lock (_lock)
             {
@@ -40,24 +40,18 @@ namespace Pagansoft.Homeload.Core
         {
             return Locked(() =>
             {
-                var item = Load().FirstOrDefault(e => e.Gid == gid);
-
-                if (item != null && !string.IsNullOrEmpty(item.ListId))
-                    return item.ListId;
-
-                return string.Empty;
+                return Load()
+                    .FirstOrDefault(e => e.Gid == gid)
+                    ?.ListId ?? string.Empty;
             });
         }
 
         public string GetLinkIdByGid(string gid)
-        {            
+        {
             return Locked(() => {
-                var item = Load().FirstOrDefault(e => e.Gid.Equals(gid));
-
-                if (item != null && !string.IsNullOrEmpty(item.LinkId))
-                    return item.LinkId;
-
-                return string.Empty;
+                return Load()
+                    .FirstOrDefault(e => e.Gid.Equals(gid))
+                    ?.LinkId ?? string.Empty;
             });
         }
 
@@ -66,7 +60,7 @@ namespace Pagansoft.Homeload.Core
             Locked(() =>
             {
                 var list = Load().ToList();
-                
+
                 Save(list.Except(list.Where(e => e.Gid == gid))
                     .Concat(new[] { new LinkIdPersistenceModel(listId, linkId, url, gid) }));
             });
@@ -83,25 +77,31 @@ namespace Pagansoft.Homeload.Core
 
         private string Locked(Func<string> f)
         {
-            _storage.Lock();
-            try
+            lock (_lock)
             {
-                return f();
-            }
-            finally {
-                _storage.Release();
+                _storage.Lock();
+                try
+                {
+                    return f();
+                }
+                finally {
+                    _storage.Release();
+                }
             }
         }
 
         private void Locked(Action f)
         {
-            _storage.Lock();
-            try
+            lock (_lock)
             {
-                f();
-            }
-            finally {
-                _storage.Release();
+                _storage.Lock();
+                try
+                {
+                    f();
+                }
+                finally {
+                    _storage.Release();
+                }
             }
         }
     }

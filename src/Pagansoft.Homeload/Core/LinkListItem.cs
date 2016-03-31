@@ -16,15 +16,15 @@ namespace Pagansoft.Homeload.Core
             Id = id;
         }
 
-        public string Url { get; private set; }
+        public string Url { get; }
 
-        public string Id { get; private set; }
+        public string Id { get; }
 
         public static LinkListItem Parse(string response)
         {
             var parts = response.Split(';');
-            return parts.Length >= 2 
-                ? new LinkListItem(parts[0], parts[1]) 
+            return parts.Length >= 2
+                ? new LinkListItem(parts[0], parts[1])
                 : null;
         }
     }

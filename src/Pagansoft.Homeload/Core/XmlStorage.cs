@@ -14,7 +14,7 @@ namespace Pagansoft.Homeload.Core
         {
             if (element == null)
                 return string.Empty;
-            
+
             return element
                 .Attributes(attributeName)
                 .Select(a => a.Value)
@@ -25,15 +25,13 @@ namespace Pagansoft.Homeload.Core
     [Export(typeof(IStorage))]
     public class XmlStorage : IStorage
     {
-        private IConfiguration _configuration;
         private readonly string _fileName;
         private readonly string _lockFileName;
 
         [ImportingConstructor]
         public XmlStorage(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _fileName = Path.Combine(_configuration.ConfigurationDirectory, "session.xml");
+            _fileName = Path.Combine(configuration.ConfigurationDirectory, "session.xml");
             _lockFileName = _fileName + ".lock";
         }
 
@@ -48,17 +46,22 @@ namespace Pagansoft.Homeload.Core
             }
             catch
             {
+                /* intentionally left blank */
             }
         }
 
         public void Release()
         {
-            if (File.Exists(_lockFileName)) {
-                try
-                {
-                    File.Delete(_lockFileName);
-                }
-                catch { }
+            if (!File.Exists(_lockFileName))
+                return;
+
+            try
+            {
+                File.Delete(_lockFileName);
+            }
+            catch
+            {
+                /* intentionally left blank */
             }
         }
 
@@ -72,13 +75,11 @@ namespace Pagansoft.Homeload.Core
                 var doc = XDocument.Load(_fileName);
 
                 var root = doc.Root;
-                if (root == null || root.Name != "links")
-                {
-                    File.Delete(_fileName);
-                    return Enumerable.Empty<LinkIdPersistenceModel>();
-                }
+                if (root != null && root.Name == "links")
+                    return root.Elements("link").Select(FromXml).ToList();
 
-                return root.Elements("link").Select(FromXml).ToList();
+                File.Delete(_fileName);
+                return Enumerable.Empty<LinkIdPersistenceModel>();
             }
             catch
             {
@@ -93,8 +94,8 @@ namespace Pagansoft.Homeload.Core
             var linkId = link.AttributeValue("linkId");
             var url = link.Value;
 
-            return new[] { gid, listId, linkId, url }.Any(string.IsNullOrEmpty) 
-                ? null 
+            return new[] { gid, listId, linkId, url }.Any(string.IsNullOrEmpty)
+                ? null
                 : new LinkIdPersistenceModel(listId, linkId, url, gid);
         }
 
@@ -104,13 +105,13 @@ namespace Pagansoft.Homeload.Core
             var root = new XElement("links");
 
             links.ToList()
-                 .ForEach(item => 
+                 .ForEach(item =>
                     root.Add(
                         new XElement(
-                            "link", 
-                            new XAttribute("linkId", item.LinkId), 
-                            new XAttribute("listId", item.ListId), 
-                            new XAttribute("gid", item.Gid), 
+                            "link",
+                            new XAttribute("linkId", item.LinkId),
+                            new XAttribute("listId", item.ListId),
+                            new XAttribute("gid", item.Gid),
                             item.Url)));
 
             doc.Add(root);

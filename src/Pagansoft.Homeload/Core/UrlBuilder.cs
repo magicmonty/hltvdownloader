@@ -8,19 +8,20 @@ namespace Pagansoft.Homeload.Core
     [Export(typeof(IUrlBuilder))]
     public class UrlBuilder : IUrlBuilder
     {
-        const string BaseUrl = "http://www.homeloadtv.com/api/?do={0}&uid={1}&password={2}";
-        string _username;
-        string _password;
+        private const string BaseUrl = "http://www.homeloadtv.com/api/?do={0}&uid={1}&password={2}";
+        private readonly string _username;
+        private readonly string _password;
 
         [ImportingConstructor]
         public UrlBuilder(IConfiguration configuration)
         {
             _username = configuration.HltvUserName;
             var md5 = MD5.Create();
-            _password = BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(configuration.HltvPassword)))
-                                    .Replace("-", "")
-                                    .Trim()
-                                    .ToUpper();
+            _password = BitConverter
+                .ToString(md5.ComputeHash(Encoding.Default.GetBytes(configuration.HltvPassword)))
+                .Replace("-", "")
+                .Trim()
+                .ToUpper();
         }
 
         public string BuildGetLinksUrl()
@@ -37,14 +38,15 @@ namespace Pagansoft.Homeload.Core
 
         public string BuildSetProcessingUrl(string listId)
         {
-            return string.Format(BaseUrl, "setstate", _username, _password) 
-                + string.Format("&list={0}&state=processing", listId);
+            return string.Format(BaseUrl, "setstate", _username, _password)
+                + $"&list={listId}&state=processing";
         }
 
         public string BuildSetStateUrl(string linkId, string state)
         {
-            var result = string.Format(BaseUrl, "setstate", _username, _password) 
-                + string.Format("&id={0}&state={1}", linkId, state);
+            var result = string.Format(BaseUrl, "setstate", _username, _password)
+                + $"&id={linkId}&state={state}";
+
             if (state == "finished" || state == "error")
                 result += "&error=";
 

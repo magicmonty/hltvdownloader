@@ -8,11 +8,11 @@ namespace Pagansoft.Homeload.Core
     [Export(typeof(IHltvApi))]
     public class Api : IHltvApi
     {
-        IHLTCHttpService _httpservice;
-        IUrlBuilder _urlBuilder;
+        private readonly IHLTCHttpService _httpservice;
+        private readonly IUrlBuilder _urlBuilder;
 
         [Import]
-        ILogger _logger;
+        private ILogger _logger;
 
         [ImportingConstructor]
         public Api(IHLTCHttpService httpservice, IUrlBuilder urlBuilder)
@@ -51,10 +51,9 @@ namespace Pagansoft.Homeload.Core
         public async Task<bool> SetState(string linkId, LinkState state)
         {
             var url = _urlBuilder.BuildSetStateUrl(
-                linkId, 
-                Enum.GetName(typeof(LinkState), 
-                state).ToLower());
-            
+                linkId,
+                Enum.GetName(typeof(LinkState), state)?.ToLower() ?? string.Empty);
+
             _logger.LogTrace($"setting {linkId} to state {state}...");
 
             return await SendAsyncRequest(url);
@@ -67,7 +66,7 @@ namespace Pagansoft.Homeload.Core
             return await SendAsyncRequest(url);
         }
 
-        async Task<bool> SendAsyncRequest(string url)
+        private async Task<bool> SendAsyncRequest(string url)
         {
             var request = await _httpservice.SendGetRequest(url);
             return request.Trim() == "OK";

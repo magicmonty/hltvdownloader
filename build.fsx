@@ -34,10 +34,8 @@ Target "BuildDebug" (fun _ ->
 
 Target "Test" (fun _ ->
     !!(testDir @@ "Pagansoft.*.Test.dll")
-      |> NUnit(fun p ->
-          { p with DisableShadowCopy = false
-                   OutputFile = testDir @@ "TestResults.xml"
-                   ToolPath = "packages/NUnit.Runners/tools"})
+      |> NUnit3(fun p ->
+          { p with OutputDir = testDir @@ "TestResults.xml" })
 )
 
 Target "BuildRelease" (fun _ ->
@@ -52,9 +50,7 @@ Target "Deploy" (fun _ ->
                                   TargetKind = Exe
                                   SearchDirectories = [ releaseDir ]
                                   AllowWildcards = true
-                                  Libraries = [
-                                    releaseDir @@ "*.dll"
-                                  ] })
+                                  Libraries = [ releaseDir @@ "*.dll" ] })
         (deployDir @@ "HLTVDownloader.exe")
 
   DeleteFile (deployDir @@ "HLTVDownloader.exe.mdb")

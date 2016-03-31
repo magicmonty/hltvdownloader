@@ -1,3 +1,5 @@
+using System;
+
 namespace Pagansoft.Homeload.Core
 {
     public class LinkIdPersistenceModel
@@ -10,13 +12,13 @@ namespace Pagansoft.Homeload.Core
             Url = url;
         }
 
-        public string Gid { get; private set; }
+        public string Gid { get; }
 
-        public string ListId { get; private set; }
+        public string ListId { get; }
 
-        public string LinkId { get; private set; }
+        public string LinkId { get; }
 
-        public string Url { get; private set; }
+        public string Url { get; }
 
         public override bool Equals(object obj)
         {
@@ -24,10 +26,10 @@ namespace Pagansoft.Homeload.Core
             if (other == (object)null)
                 return false;
 
-            return other.Gid == Gid
-                && other.LinkId == LinkId
-                && other.ListId == ListId
-                && other.Url == Url;
+            return string.Equals(other.Gid, Gid, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(other.LinkId, LinkId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(other.ListId, ListId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(other.Url, Url, StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode()

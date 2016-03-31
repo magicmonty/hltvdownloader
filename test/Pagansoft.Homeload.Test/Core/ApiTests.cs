@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Shouldly;
 using Moq;
@@ -8,17 +9,17 @@ namespace Pagansoft.Homeload.Core
     [TestFixture]
     public class ApiTests
     {
-        const string LinkListResponse = @"INTERVAL=60;NUMBER_OF_LINKS=1;LIST=3828;LINKCOUNT=2;HHSTART=0;HHEND=8;
+        private const string LinkListResponse = @"INTERVAL=60;NUMBER_OF_LINKS=1;LIST=3828;LINKCOUNT=2;HHSTART=0;HHEND=8;
 http://81.95.11.6/download/1811986/1/7875449/805df047b6ed2dd2cfe1cea7a6da49ed/de/Unser_Sandmaennchen_13.08.29_18-54_mdr_6_TVOON_DE.mpg.avi;11272262;
 http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de/Unser_Sandmaennchen_13.08.30_18-54_mdr_6_TVOON_DE.mpg.avi;11274936;";
-        const string GetLinksUrl = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99";
-        const string GetLinksUrlProcToNew = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&proctonew=true";
-        const string SetStateUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&state=finished&error=";
-        const string SetErrorUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&state=error&error=brokenonopen";
-        const string SetProcessingUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&list=listId&state=processing";
-        Api _sut;
-        Mock<IHLTCHttpService> _httpService;
-        Mock<IConfiguration> _configuration;
+        private const string GetLinksUrl = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99";
+        private const string GetLinksUrlProcToNew = "http://www.homeloadtv.com/api/?do=getlinks&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&proctonew=true";
+        private const string SetStateUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&state=finished&error=";
+        private const string SetErrorUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&id=linkId&state=error&error=brokenonopen";
+        private const string SetProcessingUrl = "http://www.homeloadtv.com/api/?do=setstate&uid=user&password=5F4DCC3B5AA765D61D8327DEB882CF99&list=listId&state=processing";
+        private Api _sut;
+        private Mock<IHLTCHttpService> _httpService;
+        private Mock<IConfiguration> _configuration;
 
         private void CreateSut()
         {
@@ -31,7 +32,7 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
         }
 
         [Test]
-        public async void ShouldReturnLinkListOnSuccessfulGetInitialLinks()
+        public async Task ShouldReturnLinkListOnSuccessfulGetInitialLinks()
         {
             CreateSut();
             _httpService
@@ -67,7 +68,7 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
         }
 
         [Test]
-        public async void ShouldReturnLinkListOnSuccessfulGetLinks()
+        public async Task ShouldReturnLinkListOnSuccessfulGetLinks()
         {
             CreateSut();
 
@@ -83,7 +84,7 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
         }
 
         [Test]
-        public async void ShouldExecuteSetStateInHttpServiceIfSetStateIsTriggered()
+        public async Task ShouldExecuteSetStateInHttpServiceIfSetStateIsTriggered()
         {
             CreateSut();
 
@@ -92,14 +93,14 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
                 .ReturnsAsync("OK");
 
             var actual = await _sut.SetState("linkId", LinkState.Finished);
-           
+
             _httpService.Verify();
-           
+
             actual.ShouldBeTrue();
         }
 
         [Test]
-        public async void ShouldExecuteSetErrorInHttpServiceIfSetErrorIsTriggered()
+        public async Task ShouldExecuteSetErrorInHttpServiceIfSetErrorIsTriggered()
         {
             CreateSut();
 
@@ -115,7 +116,7 @@ http://81.95.11.6/download/1811986/1/7878195/458cd9d2b67c8704ab731ea9853306a2/de
         }
 
         [Test]
-        public async void ShouldExecuteSetProcessingInHttpServiceIfSetProcessingIsTriggered()
+        public async Task ShouldExecuteSetProcessingInHttpServiceIfSetProcessingIsTriggered()
         {
             CreateSut();
 

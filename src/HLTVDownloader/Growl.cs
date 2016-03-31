@@ -9,16 +9,26 @@ namespace PaganSoft.HLTVDownloader
 {
     public class Growl
     {
+        private static Growl _instance = null;
+
         private bool _isRegistered;
         private const string ApplicationName = "HLTVDownloader";
         private const string DownloadComplete = "Download Complete";
 
-        public Growl()
+        private Growl()
         {
             _isRegistered = false;
         }
 
-        public async Task Notify(string message = "Download complete")
+        public static Task Notify(string message = "Download complete")
+        {
+            if (_instance == null)
+                _instance = new Growl();
+
+            return _instance.NotifyInternal(message);
+        }
+
+        private async Task NotifyInternal(string message)
         {
             try
             {
@@ -44,7 +54,16 @@ namespace PaganSoft.HLTVDownloader
 
             using (var socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp))
             {
-                socket.Connect(endPoint);
+                try
+                {
+                    await Task.Factory.FromAsync(socket.BeginConnect(endPoint, null, socket), socket.EndConnect);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error connecting to Growl: {e.Message}");
+                    return;
+                }
+
                 try
                 {
                     foreach (var line in commands)
@@ -85,7 +104,7 @@ namespace PaganSoft.HLTVDownloader
 
             SocketError errorCode;
             return await Task.Factory.FromAsync<int>(
-                socket.BeginSend(data, 0, data.Length, SocketFlags.None, out errorCode, null, null),
+                socket.BeginSend(data, 0, data.Length, SocketFlags.None, out errorCode, null, socket),
                 socket.EndSend);
         }
 

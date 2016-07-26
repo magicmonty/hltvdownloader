@@ -1,6 +1,7 @@
 # Homeload.tv Downloader
 
 [![Build Status](https://travis-ci.org/magicmonty/hltvdownloader.svg?branch=master)](https://travis-ci.org/magicmonty/hltvdownloader)
+[![Dependency Status](https://dependencyci.com/github/magicmonty/hltvdownloader/badge)](https://dependencyci.com/github/magicmonty/hltvdownloader)
 
 This is an effort to build a downloader for [HomeloadTv.com](http://www.homeloadtv.com/) based on aria2.
 
